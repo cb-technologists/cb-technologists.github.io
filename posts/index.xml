@@ -1,0 +1,40 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Posts on CloudBees Technologists</title>
+        <link>https://cb-technologists.github.io/posts/</link>
+        <description>Recent content in Posts on CloudBees Technologists</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>en-us</language>
+        <lastBuildDate>Thu, 23 May 2019 19:10:46 -0400</lastBuildDate>
+        <atom:link href="https://cb-technologists.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+        
+        <item>
+            <title>Introducing the Technologists, A CloudBees Solution Architecture Team</title>
+            <link>https://cb-technologists.github.io/posts/introducing-technologists/</link>
+            <pubDate>Thu, 23 May 2019 19:10:46 -0400</pubDate>
+            
+            <guid>https://cb-technologists.github.io/posts/introducing-technologists/</guid>
+            <description>The Technologists is a new team of CloudBees Solution Architects. Technologists have a passion for emerging technologies, continuously learning and teaching through thought leadership, providing technical direction within CloudBees and the broader tech community, and driving the best technical solutions for customers.
+ Technical integrity is of the utmost importance for a Technologist - always providing the RIGHT solution. We are Technologists focused on providing best practices, solutions, and adoption paths to organizations navigating software delivery transformations with leading edge technologies.</description>
+            <content type="html"><![CDATA[<p>The Technologists is a new team of CloudBees Solution Architects. Technologists have a passion for emerging technologies, continuously learning and teaching through thought leadership, providing technical direction within CloudBees and the broader tech community, and driving the best technical solutions for customers.</p>
+
+<ul>
+<li>Technical integrity is of the utmost importance for a Technologist - always providing the RIGHT solution.</li>
+<li>We are Technologists focused on providing best practices, solutions, and adoption paths to organizations navigating software delivery transformations with leading edge technologies.</li>
+<li>Technologists are Thought Leaders internally at CloudBees and in the DevOps and wider Tech community - writing blog posts, speaking at conferences and meetups, contributing to open source projects on technologies and technical practices related to CloudBees&rsquo; products and to the DevOps space in general.</li>
+</ul>
+
+<p>From Cloud Native CD to microservice and even nanoservice architecture to service meshes and API gateways, Technologists are early adopters of the best of the best emerging technologies related to software delivery. Look to this website for interesting posts on a number of technical subjects related to CloudBees&rsquo; products and DevOps in general, like:</p>
+
+<ul>
+<li>Native Kubernetes Continuous Delivery</li>
+<li>Jenkins Plugins: The Good, the Bad and the Ugly</li>
+<li>The State of DevOps Analytics</li>
+</ul>
+
+<p>Stay tuned for more&hellip;</p>
+]]></content>
+        </item>
+        
+    </channel>
+</rss>
