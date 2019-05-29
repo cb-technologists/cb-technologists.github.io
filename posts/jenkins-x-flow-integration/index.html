@@ -1,21 +1,130 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-    <channel>
-        <title>Posts on CloudBees Technologists</title>
-        <link>https://cb-technologists.github.io/posts/</link>
-        <description>Recent content in Posts on CloudBees Technologists</description>
-        <generator>Hugo -- gohugo.io</generator>
-        <language>en-us</language>
-        <lastBuildDate>Wed, 29 May 2019 12:47:46 -0400</lastBuildDate>
-        <atom:link href="https://cb-technologists.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="author"
+    content="map[name:Josh Hendrick]">
+<meta name="description"
+    content="Jenkins X is quickly becoming the de facto standard for high performing teams wanting to do CI/CD in a highly scalable and fault tolerant environment. For those who haven’t gotten the opportunity to try out Jenkins X, it allows teams to run CI/CD workloads natively in a Kubernetes environment while taking advantage of modern operating patterns like GitOps and serverless architectures. For teams wanting to modernize their continuous integration and continuous deployment capabilities, Jenkins X is the go to solution." />
+<meta name="keywords" content="" />
+<meta name="robots" content="noodp" />
+<link rel="canonical" href="https://cb-technologists.github.io/posts/jenkins-x-flow-integration/" />
+
+
+<title>
+    
+    Extending Jenkins X for Traditional Deployments with CloudBees Flow :: CloudBees Technologists 
+    
+</title>
+
+
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.1/css/flag-icon.min.css" rel="stylesheet"
+    type="text/css">
+
+
+
+<link rel="stylesheet" href="/main.min.a4cbab61ed5fc2479e6b0e2b31c4c73ce7d7682a7bae5b884b5fad3d808c462e.css">
+
+
+
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#252627">
+<link rel="shortcut icon" href="/favicon.ico">
+<meta name="theme-color" content="#252627">
+<meta itemprop="name" content="Extending Jenkins X for Traditional Deployments with CloudBees Flow">
+<meta itemprop="description" content="Jenkins X is quickly becoming the de facto standard for high performing teams wanting to do CI/CD in a highly scalable and fault tolerant environment. For those who haven’t gotten the opportunity to try out Jenkins X, it allows teams to run CI/CD workloads natively in a Kubernetes environment while taking advantage of modern operating patterns like GitOps and serverless architectures. For teams wanting to modernize their continuous integration and continuous deployment capabilities, Jenkins X is the go to solution.">
+
+
+<meta itemprop="datePublished" content="2019-05-29T12:47:46-04:00" />
+<meta itemprop="dateModified" content="2019-05-29T20:43:20&#43;00:00" />
+<meta itemprop="wordCount" content="1852">
+
+
+
+<meta itemprop="keywords" content="jenkins,jenkins x,cloudbees flow,tekon,extending jenkins x," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Extending Jenkins X for Traditional Deployments with CloudBees Flow"/>
+<meta name="twitter:description" content="Jenkins X is quickly becoming the de facto standard for high performing teams wanting to do CI/CD in a highly scalable and fault tolerant environment. For those who haven’t gotten the opportunity to try out Jenkins X, it allows teams to run CI/CD workloads natively in a Kubernetes environment while taking advantage of modern operating patterns like GitOps and serverless architectures. For teams wanting to modernize their continuous integration and continuous deployment capabilities, Jenkins X is the go to solution."/>
+
+
+
+
+<meta property="article:published_time" content="2019-05-29 12:47:46 -0400 -0400" />
+
+
+
+
+
+
+
+    </head>
+
+    <body class="dark-theme">
+        <div class="container">
+            <header class="header">
+    <span class="header__inner">
+        <a href="https://cb-technologists.github.io/" style="text-decoration: none;">
+    <div class="logo">
         
-        <item>
-            <title>Extending Jenkins X for Traditional Deployments with CloudBees Flow</title>
-            <link>https://cb-technologists.github.io/posts/jenkins-x-flow-integration/</link>
-            <pubDate>Wed, 29 May 2019 12:47:46 -0400</pubDate>
+            <span class="logo__mark">></span>
+            <span class="logo__text">technologists</span>
+            <span class="logo__cursor"></span>
+        
+    </div>
+</a>
+
+
+        <span class="header__right">
             
-            <guid>https://cb-technologists.github.io/posts/jenkins-x-flow-integration/</guid>
-            <description>Jenkins X is quickly becoming the de facto standard for high performing teams wanting to do CI/CD in a highly scalable and fault tolerant environment. For those who haven’t gotten the opportunity to try out Jenkins X, it allows teams to run CI/CD workloads natively in a Kubernetes environment while taking advantage of modern operating patterns like GitOps and serverless architectures. For teams wanting to modernize their continuous integration and continuous deployment capabilities, Jenkins X is the go to solution.</description>
-            <content type="html"><![CDATA[
+                <nav class="menu">
+    <ul class="menu__inner"><li><a href="https://cb-technologists.github.io/about">About</a></li><li><a href="https://cb-technologists.github.io/posts">Blog</a></li>
+    </ul>
+</nav>
+
+                <span class="menu-trigger">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+                    </svg>
+                </span>
+            
+
+            <span class="theme-toggle"><svg class="theme-toggler" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M22 41C32.4934 41 41 32.4934 41 22C41 11.5066 32.4934 3 22
+  3C11.5066 3 3 11.5066 3 22C3 32.4934 11.5066 41 22 41ZM7 22C7
+  13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22Z"/>
+</svg>
+</span>
+        </span>
+    </span>
+</header>
+
+
+            <div class="content">
+                
+    <main class="post">
+
+        <div class="post-info">
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>9 minutes
+
+            
+
+            </p>
+        </div>
+
+        <article>
+            <h1 class="post-title"><a href="https://cb-technologists.github.io/posts/jenkins-x-flow-integration/">Extending Jenkins X for Traditional Deployments with CloudBees Flow</a></h1>
+
+            
+
+            <div class="post-content">
+                
 
 <p><a href="https://jenkins-x.io">Jenkins X</a> is quickly becoming the de facto standard for high performing teams wanting to do CI/CD in a highly scalable and fault tolerant environment. For those who haven’t gotten the opportunity to try out Jenkins X, it allows teams to run CI/CD workloads natively in a Kubernetes environment while taking advantage of modern operating patterns like GitOps and serverless architectures. For teams wanting to modernize their continuous integration and continuous deployment capabilities, Jenkins X is the go to solution.</p>
 
@@ -239,36 +348,84 @@ Note that your first pipeline may take a few minutes to start while the necessar
 <p>In the above example we were able to use Jenkins X to build our application as well as store the built artifacts, and then utilize CloudBees flow to handle execution of our release pipeline.  This allows us to take advantage of the scalability and efficiency of Jenkins X while leveraging the power and control of CloudBees Flow for managing the release.</p>
 
 <p>For organizations who want to take advantage of modern CI/CD on Jenkins X but are not yet &ldquo;all in&rdquo; on Kubernetes and still deploying traditional applications, this provides a very solid approach to achieving Continuous Delivery.</p>
-]]></content>
-        </item>
+
+            </div>
+        </article>
+
+        <hr />
+
+        <div class="post-info">
+                <p>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="https://cb-technologists.github.io/tags/jenkins">jenkins</a></span><span class="tag"><a href="https://cb-technologists.github.io/tags/jenkins-x">jenkins x</a></span><span class="tag"><a href="https://cb-technologists.github.io/tags/cloudbees-flow">cloudbees flow</a></span><span class="tag"><a href="https://cb-technologists.github.io/tags/tekon">tekon</a></span><span class="tag"><a href="https://cb-technologists.github.io/tags/extending-jenkins-x">extending jenkins x</a></span>
+                </p>
+
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>1852 Words</p>
+
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2019-05-29 16:47 &#43;0000</p>
+                <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-git-commit"><circle cx="12" cy="12" r="4"></circle><line x1="1.05" y1="12" x2="7" y2="12"></line><line x1="17.01" y1="12" x2="22.96" y2="12"></line></svg><a href="6dbe8f028e04aab5c81ca093a6fb52cbaee2535b" target="_blank" rel="noopener">6dbe8f0</a> @ 2019-05-29</p>
+        </div>
+
         
-        <item>
-            <title>Introducing the Technologists, A CloudBees Solution Architecture Team</title>
-            <link>https://cb-technologists.github.io/posts/introducing-technologists/</link>
-            <pubDate>Thu, 23 May 2019 19:10:46 -0400</pubDate>
+            <div class="pagination">
+                <div class="pagination__title">
+                    <span class="pagination__title-h"></span>
+                    <hr />
+                </div>
+
+                <div class="pagination__buttons">
+                    
+
+                    
+                        <span class="button next">
+                            <a href="https://cb-technologists.github.io/posts/introducing-technologists/">
+                                <span class="button__text">Introducing the Technologists, A CloudBees Solution Architecture Team</span>
+                                <span class="button__icon">→</span>
+                            </a>
+                        </span>
+                    
+                </div>
+            </div>
+        
+
+        
+    </main>
+
+            </div>
+
             
-            <guid>https://cb-technologists.github.io/posts/introducing-technologists/</guid>
-            <description>The Technologists is a new team of CloudBees Solution Architects. Technologists have a passion for emerging technologies, continuously learning and teaching through thought leadership, providing technical direction within CloudBees and the broader tech community, and driving the best technical solutions for customers.
- Technical integrity is of the utmost importance for a Technologist - always providing the RIGHT solution. We are Technologists focused on providing best practices, solutions, and adoption paths to organizations navigating software delivery transformations with leading edge technologies.</description>
-            <content type="html"><![CDATA[<p>The Technologists is a new team of CloudBees Solution Architects. Technologists have a passion for emerging technologies, continuously learning and teaching through thought leadership, providing technical direction within CloudBees and the broader tech community, and driving the best technical solutions for customers.</p>
+                <footer class="footer">
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span>&copy; 2019</span>
+            
+            <span></span>
+            <span> <a href="https://cb-technologists.github.io/posts/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a></span>
+        </div>
+    </div>
+    <div class="footer__inner">
+        <div class="footer__content">
 
-<ul>
-<li>Technical integrity is of the utmost importance for a Technologist - always providing the RIGHT solution.</li>
-<li>We are Technologists focused on providing best practices, solutions, and adoption paths to organizations navigating software delivery transformations with leading edge technologies.</li>
-<li>Technologists are Thought Leaders internally at CloudBees and in the DevOps and wider Tech community - writing blog posts, speaking at conferences and meetups, contributing to open source projects on technologies and technical practices related to CloudBees&rsquo; products and to the DevOps space in general.</li>
-</ul>
+        </div>
+    </div>
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span>Powered by <a href="http://gohugo.io">Hugo</a></span>
+            <span>Made with &#10084; by <a href="https://github.com/rhazdon">rhazdon</a></span>
+        </div>
+    </div>
+</footer>
 
-<p>From Cloud Native CD to microservice and even nanoservice architecture to service meshes and API gateways, Technologists are early adopters of the best of the best emerging technologies related to software delivery. Look to this website for interesting posts on a number of technical subjects related to CloudBees&rsquo; products and DevOps in general, like:</p>
+            
+        </div>
 
-<ul>
-<li>Native Kubernetes Continuous Delivery</li>
-<li>Jenkins Plugins: The Good, the Bad and the Ugly</li>
-<li>The State of DevOps Analytics</li>
-</ul>
-
-<p>Stay tuned for more&hellip;</p>
-]]></content>
-        </item>
         
-    </channel>
-</rss>
+
+
+
+
+<script type="text/javascript" src="/bundle.min.cf7871ed49474a80ed457154d24e61f7881adbe0f9384951a74ac46b688a39a4dbfa68bc6d37baeb058186de354ead3487d4ee7f083ea4cba860c48600b694f3.js" integrity="sha512-z3hx7UlHSoDtRXFU0k5h94ga2&#43;D5OElRp0rEa2iKOaTb&#43;mi8bTe66wWBht41Tq00h9Tufwg&#43;pMuoYMSGALaU8w=="></script>
+
+
+
+    </body>
+</html>
