@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="author"
+    content="map[name:Kurt Madel]">
+<meta name="description"
+    content="There are over 1400 Jenkins plugins and that is both a blessing and a curse. Of those 1400 plugins only a small percentage are well maintained and tested, and even fewer (140 of 1400&#43;) are part of the CloudBees Assurance Program (CAP) as verified and/or compatible plugins - well tested to interoperate with the rest of the CAP plugins (and their dependencies) and with a specific LTS version of Jenkins." />
+<meta name="keywords" content="" />
+<meta name="robots" content="noodp" />
+<link rel="canonical" href="https://cb-technologists.github.io/posts/jenkins-plugins-good-bad-ugly/" />
+
+
+<title>
+    
+    Jenkins Plugins: The Good, the Bad and the Ugly :: CloudBees Technologists 
+    
+</title>
+
+
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.1/css/flag-icon.min.css" rel="stylesheet"
+    type="text/css">
+
+
+
+<link rel="stylesheet" href="/main.min.690a789d9ffdc3196b3a5123f0e6c6345e93fc22854c783c245ebb1e2d7d68ee.css">
+
+
+
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#252627">
+<link rel="shortcut icon" href="/favicon.ico">
+<meta name="theme-color" content="#252627">
+<meta itemprop="name" content="Jenkins Plugins: The Good, the Bad and the Ugly">
+<meta itemprop="description" content="There are over 1400 Jenkins plugins and that is both a blessing and a curse. Of those 1400 plugins only a small percentage are well maintained and tested, and even fewer (140 of 1400&#43;) are part of the CloudBees Assurance Program (CAP) as verified and/or compatible plugins - well tested to interoperate with the rest of the CAP plugins (and their dependencies) and with a specific LTS version of Jenkins.">
+
+
+<meta itemprop="datePublished" content="2019-05-30T05:50:46-04:00" />
+<meta itemprop="dateModified" content="2019-05-30T10:01:24&#43;00:00" />
+<meta itemprop="wordCount" content="1815">
+
+
+
+<meta itemprop="keywords" content="jenkins,plugins,containers,CasC," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Jenkins Plugins: The Good, the Bad and the Ugly"/>
+<meta name="twitter:description" content="There are over 1400 Jenkins plugins and that is both a blessing and a curse. Of those 1400 plugins only a small percentage are well maintained and tested, and even fewer (140 of 1400&#43;) are part of the CloudBees Assurance Program (CAP) as verified and/or compatible plugins - well tested to interoperate with the rest of the CAP plugins (and their dependencies) and with a specific LTS version of Jenkins."/>
+
+
+
+
+<meta property="article:published_time" content="2019-05-30 05:50:46 -0400 -0400" />
+
+
+
+
+
+
+
+    </head>
+
+    <body class="dark-theme">
+        <div class="container">
+            <header class="header">
+    <span class="header__inner">
+        <a href="https://cb-technologists.github.io/" style="text-decoration: none;">
+    <div class="logo">
+        
+            <span class="logo__mark">></span>
+            <span class="logo__text">technologists</span>
+            <span class="logo__cursor"></span>
+        
+    </div>
+</a>
+
+
+        <span class="header__right">
+            
+                <nav class="menu">
+    <ul class="menu__inner"><li><a href="https://cb-technologists.github.io/about">About</a></li><li><a href="https://cb-technologists.github.io/posts">Blog</a></li>
+    </ul>
+</nav>
+
+                <span class="menu-trigger">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+                    </svg>
+                </span>
+            
+
+            <span class="theme-toggle"><svg class="theme-toggler" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M22 41C32.4934 41 41 32.4934 41 22C41 11.5066 32.4934 3 22
+  3C11.5066 3 3 11.5066 3 22C3 32.4934 11.5066 41 22 41ZM7 22C7
+  13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22Z"/>
+</svg>
+</span>
+        </span>
+    </span>
+</header>
+
+
+            <div class="content">
+                
+    <main class="post">
+
+        <div class="post-info">
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>9 minutes
+
+            
+
+            </p>
+        </div>
+
+        <article>
+            <h1 class="post-title"><a href="https://cb-technologists.github.io/posts/jenkins-plugins-good-bad-ugly/">Jenkins Plugins: The Good, the Bad and the Ugly</a></h1>
+
+            
+            
+            
+            <div class="box">
+              <figure class="series-photo" itemprop="associatedMedia" itemscope="" itemtype="http://schema.org/ImageObject">
+                <div class="img">
+                  <img itemprop="thumbnail" src="/img/jenkins-plugins-good-bad-ugly/wythe-alley-electric-pole.jpg" alt="SONY RX-100 ISO 125 32.17mm ƒ/5.6 1/400">
+                </div>
+                <a href="/img/jenkins-plugins-good-bad-ugly/wythe-alley-electric-pole.jpg" itemprop="contentUrl"></a>
+                <figcaption>Photograph by Kurt Madel ©2019</figcaption>
+              </figure>
+            </div>
+            
+
+            <div class="post-content">
+                
+
+<p>There are over 1400 Jenkins plugins and that is both a blessing and a curse. Of those 1400 plugins only a small percentage are well maintained and tested, and even fewer (140 of 1400+) are part of the <a href="https://go.cloudbees.com/docs/cloudbees-documentation/assurance-program/">CloudBees Assurance Program (CAP)</a> as verified and/or compatible plugins - well tested to interoperate with the rest of the CAP plugins (and their dependencies) and with a specific LTS version of Jenkins. Problems can arise when you use plugins that aren&rsquo;t part of CAP, or a plugin that isn&rsquo;t well maintained or tested to work with all of the other plugins you are using and the specific version of Jenkins that you are using. But the extensibility offered by plugins has helped make Jenkins the most popular CI tool on the planet.</p>
+
+<p>I typically like to end posts on a good note, so I will start with <em>The Ugly</em> and end with <em>The Good</em> - and then offer some opinionated ideas/best practices on Jenkins plugin management and usage.</p>
+
+<h1 id="the-ugly">The Ugly</h1>
+
+<p>There are hundreds of Jenkins plugins that have security vulnerabilities. Over 55 plugins were listed as part of the <a href="https://jenkins.io/security/advisory/2019-04-03/">2019-04-03 Jenkins Security Advisory</a>. Even worse is when you find out that a plugin that you are using has a security vulnerability and you also find out that the plugin is not maintained anymore. You could search the 1400+ Jenkins plugins to see if there is another plugin that is maintained and that does what you need, or you could become a plugin maintainer - not exactly what you intended to sign up for when you first started using Jenkins. Are you developing your own applications or are you looking to become a Jenkins plugin developer?</p>
+
+<p>Another <em>ugly</em> issue arises when you have numerous Jenkins masters in your organization. These Jenkins instances are often snowflakes comprised of many different plug-ins. So managing more than one Jenkins master with disparate sets of plugins can become very ugly, very quickly. CloudBees can certainly help you with this through CAP and something we call <a href="https://go.cloudbees.com/docs/cloudbees-documentation/admin-cje/cje-ux/#_when_to_use_a_team_master_when_to_use_a_managed_master">Team Masters - easily provisioned and managed team specific Jenkins masters</a> with an opinionated set of very stable and tested plugins. However, there is nothing stopping individual Jenkins master admins from manually installing a plugin and sometimes ending up with an unusable Jenkins master.</p>
+
+<h1 id="the-bad">The Bad</h1>
+
+<p>Installing a lot of plugins can result in maintenance hell and sometimes your Jenkins master doesn&rsquo;t even restart successfully after upgrading a plugin.</p>
+
+
+    <img src="/img/jenkins-plugins-good-bad-ugly/jenkins_devil.png"  alt="Jenkins Devil"  class="left"  />
+
+
+
+<p>And although the Jenkins Devil makes for a very cool sticker, it isn&rsquo;t something you ever want to see on <strong>your</strong> Jenkins Master, especially after restarting Jenkins for a plugin update. Backing out a plugin update that causes Jenkins to crash is not a fun thing to deal with and will slow down your software delivery.</p>
+
+<p>Dependency hell is another <em>bad</em> thing that Jenkins admins have to deal with all the time. Sometimes upgrading just one plugin results in the need to update dozens others, and many Jenkins admins do this directly on their production Jenkins master. Blue Ocean, while a noble attempt at a new UI for Jenkins Pipelines, requires dozens of dependencies, many of which you probably have no use for - for example the Blue Ocean plugin suite requires both the <em>Bitbucket Pipeline for Blue Ocean</em> and the <em>GitHub Pipeline for Blue Ocean</em> plugins even if you don&rsquo;t use either Bitbucket or GitHub for source control.</p>
+
+<p>Too many plugins that do the same thing - how do you choose? Search the Jenkins plugin site for <em>Docker</em> and you get 26 results. If I want Docker based agents should I use the <strong>Docker plugin</strong> or <strong>Yet Another Docker plugin</strong>? With 1400+ plugins, sometimes it can be hard to choose the right one.</p>
+
+<h1 id="the-good">The Good</h1>
+
+<p>The extensibility and integrations provided by Jenkins plugins are amazing. I don&rsquo;t believe that there is any other CI platform that integrates with as many source control tools/platforms as Jenkins. Without Jenkins&rsquo; extensive plugin ecosystem it would not be the CI automation tool of choice that it has become. Jenkins is by far the most flexible CI platform available, bar none, and the Jenkins plugin ecosystem is a big reason why.</p>
+
+<p>There are a lot of very <em>good</em>, and even necessary, plugins. Like plugins for credentials and for source control - Jenkins has awesome integration with GitHub and Bitbucket for example. And the Jenkins Pipeline plugin suite (although another example of dependency hell) provides a <a href="https://jenkins.io/doc/book/pipeline/syntax/#declarative-pipeline">Declarative approach to building you CI/CD pipelines</a> that can be <a href="https://jenkins.io/doc/book/pipeline/jenkinsfile/">easily managed as-code in source control</a>. And finally, the <a href="https://jenkins.io/projects/jcasc/">JCasC plugin</a> makes it easier than ever to manager your Jenkins master configuration as-code in source control.</p>
+
+<p>So there are some very <em>good</em> reasons to use <strong>some</strong> plugins.</p>
+
+<h1 id="so-what-to-do">So What to Do</h1>
+
+<p>CloudBees can certainly help. All of the CloudBees distributions, including the <a href="https://www.cloudbees.com/products/cloudbees-jenkins-distribution">free CloudBees Jenkins Distribution</a>, include CAP with Beekeeper. I have managed a few demo/workshop environments for the CloudBees Solution Architecture team for the last 4 years and update those environments almost every month. I have yet to have an update that has resulted in the Jenkins Devil - ok maybe one.</p>
+
+<p>There are a few other things you can do right <strong>now</strong> , whether you use a CloudBees Distro or not, to make using Jenkins Plugins easier to manage and less impactful to your production Jenkins master - allowing you to focus on CD for the applications you are delivering instead of spending too much time managing Jenkins.</p>
+
+<h2 id="use-jenkins-pipeline">Use Jenkins Pipeline</h2>
+
+<p>Although Jenkins Pipeline does require a <a href="https://plugins.jenkins.io/workflow-aggregator">number of plugins and plugin dependencies</a> its advantages far outweigh the disadvantages of using Jenkins without Pipeline jobs. Using Jenkins Pipelines with a Jenkinsfile in source control and <a href="https://jenkins.io/doc/book/pipeline/shared-libraries/">Pipeline Shared Libraries</a> can greatly reduce the number of additional plugins you need to install and manage. For example if you need to send a Slack message, just run a simple <code>curl</code> command in a lightweight container instead of installing the <a href="https://github.com/jenkinsci/slack-plugin/issues">Jenkins Slack plugin</a>:</p>
+
+<pre><code class="language-bash">curl -X POST -H 'Content-type: application/json' --data '{&quot;text&quot;:&quot;The build is broken :(&quot;}' YOUR_WEBHOOK_URL
+</code></pre>
+
+<p>This is actually considered a best practice for Jenkins Pipelines as any <code>step</code> that is run from a plugin will actually run on the Jenkins master, not on the agent (other than the <code>sh</code>, <code>bat</code> and <code>pwsh</code> steps). This will result in worse performance for your Jenkins master and may even bring your Jenkins master down - once again slowing down your application delivery.</p>
+
+<p>Another big plus with replacing Jenkins Pipeline plugin based steps with lightweight shell scripts is that it provides easier testing and more portability of your CD pipelines to other platforms. For example, Jenkins X Pipelines with Tekton runs every pipeline step as a command in a container - adopting that approach with Jenkins Pipelines now will make it much easier to migrate to better emerging solutions in the future.</p>
+
+<h2 id="use-fewer-plugins">Use Fewer Plugins</h2>
+
+<p>Using fewer plugs will reduce the amount of pain you will incur from many of the <em>ugly</em> and <em>bad</em> issues mentioned above. Migrating as many Jenkins Pipeline <code>steps</code> from plugins to <code>sh</code> steps running in containers not only reduces the <em>bad</em> and <em>ugly</em> above, it also makes it easier to test and reduce dependencies on the less than stellar plugin maintainers (like me), and provides better portability to other emerging CD technologies - like <a href="https://kurtmadel.com/posts/native-kubernetes-continuous-delivery/jenkins-x-goes-native/#re-tooling-with-tekton">Jenkins X Pipelines with Tekton</a>.</p>
+
+<p>Do you really need the Docker plugin and the Yet Another Docker plugin? Or the Chuck Noris plugin? The fewer plugins that you install, the fewer plugins you have to manage and the less chance that they will have security issues or even worse, bring your Jenkins master down - Jenkins Devil and all.</p>
+
+<h2 id="test">Test</h2>
+
+<p>Always test any new plugin or plugin update before you put it into your production Jenkins master(s). Running Jenkins as a container can certainly make this easier - and is what I suggest - but there is no reason why you can&rsquo;t use Jenkins to automate this kind of testing regardless of how you deploy Jenkins. Just spin up a Jenkins master with a few <em>fake</em> jobs that use the plugins in a similar way to how you use them in your <em>real</em> jobs. All of this can be automated with Jenkins itself.</p>
+
+<p>The <a href="https://github.com/jenkins-x/jenkins-x-serverless-filerunner">Jenkins X ephemeral masters</a> basically went with this approach - extensive testing whenever a new <a href="https://github.com/jenkins-x/jenkins-x-serverless-filerunner/blob/master/pom.xml#L32">plugin was added to the the CasC Master container image</a>.</p>
+
+<h2 id="manage-plugins-with-casc">Manage Plugins with CasC</h2>
+
+<p>Never use the Jenkins UI to install plugins. Maintain your plugins as code in source control, where every new plugin and plugin upgrade can be tracked as commits. The easiest and best way to do this, in my opinion, is to use a customized Docker image that includes the plugins you <strong>absolutely need</strong> - in addition to other configuration via JCasC (and if necessary, <a href="https://wiki.jenkins.io/display/JENKINS/Post-initialization+script"><code>init</code> scripts</a>). If you have read any of my other posts you will know that I am a big fan of containers - and have always run Jenkins with containers since I started at CloudBees back in 2015. The Jenkins GitHub Org <em>docker</em> project <a href="https://github.com/jenkinsci/docker/blob/master/install-plugins.sh">provides a script</a> for <a href="https://github.com/jenkinsci/docker#preinstalling-plugins">preinstalling plugins</a> from a simple <code>plugins.txt</code> file so your Jenkins master container image has all the plugins you need on startup. This makes it easier to test plugin changes and all of your plugin changes are captured as code commits - and a tool like Git (GitHub, BitBucket, even GitLab) is much better at tracking/auditing/controlling such changes than Jenkins was ever meant to be. Here is a simple <code>plugins.txt</code> file and <code>Dockerfile</code> to get you started:</p>
+
+<p><em>plugins.txt</em></p>
+
+<pre><code class="language-txt">configuration-as-code:1.17
+configuration-as-code-support:1.17
+</code></pre>
+
+<p>Yes, only two plugins (and the <code>configuration-as-code-support</code> won&rsquo;t even be <a href="https://github.com/jenkinsci/configuration-as-code-plugin/pull/863">needed</a> <a href="https://github.com/jenkinsci/configuration-as-code-plugin/pull/897">soon</a>). The reason why we only need these two plugins is because the <a href="https://www.cloudbees.com/blog/cloudbees-jenkins-distribution-adds-stability-and-security-your-jenkins-environment">CloudBees Jenkins Distribution</a> already contains a curated set of plugins for Jenkins Pipeline, Blue Ocean, source controll management and everything else we need - all well tested for us already.</p>
+
+<p><em>Extending the CloudBees Jenkins Distribution container image with plugins and JCasC</em></p>
+
+<pre><code class="language-Dockerfile">FROM cloudbees/cloudbees-jenkins-distribution:2.164.3.2
+
+# optional, but you might want to let everyone know who is responsible for their Jenkins ;)
+LABEL maintainer &quot;kmadel@cloudbees.com&quot;
+
+#set java opts variable to skip setup wizard; plugins will be installed via license activated script
+ENV JAVA_OPTS=&quot;-Djenkins.install.runSetupWizard=false&quot;
+#skip setup wizard; per https://github.com/jenkinsci/docker/tree/master#preinstalling-plugins
+RUN echo 2.0 &gt; /usr/share/jenkins/ref/jenkins.install.UpgradeWizard.state
+
+# diable cli
+ENV JVM_OPTS -Djenkins.CLI.disabled=true -server
+# set your timezone
+ENV TZ=&quot;/usr/share/zoneinfo/America/New_York&quot;
+
+#config-as-code plugin configuration
+COPY config-as-code.yml /usr/share/jenkins/config-as-code.yml
+ENV CASC_JENKINS_CONFIG /usr/share/jenkins/config-as-code.yml
+
+# use CloudBees' update center to ensure you don't allow any really bad plugins
+ENV JENKINS_UC http://jenkins-updates.cloudbees.com
+
+#install suggested and additional plugins
+COPY plugins.txt /usr/share/jenkins/ref/plugins.txt
+COPY jenkins-support /usr/local/bin/jenkins-support
+COPY install-plugins.sh /usr/local/bin/install-plugins.sh
+RUN bash /usr/local/bin/install-plugins.sh &lt; /usr/share/jenkins/ref/plugins.txt
+</code></pre>
+
+<h1 id="use-plugins-you-need-and-no-more">Use Plugins You Need and No More</h1>
+
+<p>So, don&rsquo;t avoid Jenkins plugins - they are an important part of what makes Jenkins great and add critical features to the way you will use Jenkins - but be smart about the plugins you use and keep your application delivery your primary focus - not your CI tool.</p>
+
+            </div>
+        </article>
+
+        <hr />
+
+        <div class="post-info">
+                <p>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="https://cb-technologists.github.io/tags/jenkins">jenkins</a></span><span class="tag"><a href="https://cb-technologists.github.io/tags/plugins">plugins</a></span><span class="tag"><a href="https://cb-technologists.github.io/tags/containers">containers</a></span><span class="tag"><a href="https://cb-technologists.github.io/tags/casc">CasC</a></span>
+                </p>
+
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>1815 Words</p>
+
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2019-05-30 09:50 &#43;0000</p>
+                <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-git-commit"><circle cx="12" cy="12" r="4"></circle><line x1="1.05" y1="12" x2="7" y2="12"></line><line x1="17.01" y1="12" x2="22.96" y2="12"></line></svg><a href="https://github.com/cb-technologists/blog/commit/8d822884cc8a301ec280407438c09c8e5e8fc6f7" target="_blank" rel="noopener">8d82288</a> @ 2019-05-30</p>
+        </div>
+
+        
+            <div class="pagination">
+                <div class="pagination__title">
+                    <span class="pagination__title-h"></span>
+                    <hr />
+                </div>
+
+                <div class="pagination__buttons">
+                    
+
+                    
+                        <span class="button next">
+                            <a href="https://cb-technologists.github.io/posts/jenkins-x-flow-integration/">
+                                <span class="button__text">Extending Jenkins X for Traditional Deployments with CloudBees Flow</span>
+                                <span class="button__icon">→</span>
+                            </a>
+                        </span>
+                    
+                </div>
+            </div>
+        
+
+        
+    </main>
+
+            </div>
+
+            
+                <footer class="footer">
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span>&copy; 2019</span>
+            
+            <span></span>
+            <span> <a href="https://cb-technologists.github.io/posts/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a></span>
+        </div>
+    </div>
+    <div class="footer__inner">
+        <div class="footer__content">
+
+        </div>
+    </div>
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span>Powered by <a href="http://gohugo.io">Hugo</a></span>
+            <span>Made with &#10084; by <a href="https://github.com/rhazdon">rhazdon</a></span>
+        </div>
+    </div>
+</footer>
+
+            
+        </div>
+
+        
+
+
+
+
+<script type="text/javascript" src="/bundle.min.cf7871ed49474a80ed457154d24e61f7881adbe0f9384951a74ac46b688a39a4dbfa68bc6d37baeb058186de354ead3487d4ee7f083ea4cba860c48600b694f3.js" integrity="sha512-z3hx7UlHSoDtRXFU0k5h94ga2&#43;D5OElRp0rEa2iKOaTb&#43;mi8bTe66wWBht41Tq00h9Tufwg&#43;pMuoYMSGALaU8w=="></script>
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-141077309-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+
+
+    </body>
+</html>

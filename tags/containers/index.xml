@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>containers on CloudBees Technologists</title>
+    <link>https://cb-technologists.github.io/tags/containers/</link>
+    <description>Recent content in containers on CloudBees Technologists</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 30 May 2019 05:50:46 -0400</lastBuildDate>
+    
+	<atom:link href="https://cb-technologists.github.io/tags/containers/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Jenkins Plugins: The Good, the Bad and the Ugly</title>
+      <link>https://cb-technologists.github.io/posts/jenkins-plugins-good-bad-ugly/</link>
+      <pubDate>Thu, 30 May 2019 05:50:46 -0400</pubDate>
+      
+      <guid>https://cb-technologists.github.io/posts/jenkins-plugins-good-bad-ugly/</guid>
+      <description>There are over 1400 Jenkins plugins and that is both a blessing and a curse. Of those 1400 plugins only a small percentage are well maintained and tested, and even fewer (140 of 1400+) are part of the CloudBees Assurance Program (CAP) as verified and/or compatible plugins - well tested to interoperate with the rest of the CAP plugins (and their dependencies) and with a specific LTS version of Jenkins.</description>
+    </item>
+    
+  </channel>
+</rss>
