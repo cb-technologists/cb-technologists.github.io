@@ -17,7 +17,7 @@
       <pubDate>Thu, 30 May 2019 05:50:46 -0400</pubDate>
       
       <guid>https://cb-technologists.github.io/posts/jenkins-plugins-good-bad-ugly/</guid>
-      <description>There are over 1400 Jenkins plugins and that is both a blessing and a curse. Of those 1400 plugins only a small percentage are well maintained and tested, and even fewer (140 of 1400+) are part of the CloudBees Assurance Program (CAP) as verified and/or compatible plugins - well tested to interoperate with the rest of the CAP plugins (and their dependencies) and with a specific LTS version of Jenkins.</description>
+      <description>There are over 1600 Jenkins plugins and that is both a blessing and a curse. Of those 1600 plugins only a small percentage are well maintained and tested, and even fewer (140 of 1600+) are part of the CloudBees Assurance Program (CAP) as verified and/or compatible plugins - well tested to interoperate with the rest of the CAP plugins (and their dependencies) and with a specific LTS version of Jenkins.</description>
     </item>
     
   </channel>
