@@ -42,8 +42,8 @@
 
 
 <meta itemprop="datePublished" content="2019-06-10T07:50:46-04:00" />
-<meta itemprop="dateModified" content="2019-06-10T12:53:36&#43;00:00" />
-<meta itemprop="wordCount" content="2195">
+<meta itemprop="dateModified" content="2019-06-10T21:50:37&#43;00:00" />
+<meta itemprop="wordCount" content="2194">
 
 
 
@@ -200,11 +200,11 @@
 
 <ul>
 <li><strong>Faster scans:</strong> since you don&rsquo;t have to wait for the Anchore engine to start-up for each job.</li>
-<li><strong>Reduced infrastructure costs:</strong> if you only do a few scans a day then this is less of an advantage as you will have a constant infrastructure cost for the static Anchore engine. But if you are doing 100s of scan per day then you will defintely realize savings with this approach.</li>
+<li><strong>Reduced infrastructure costs:</strong> if you only do a few scans a day then this is less of an advantage as you will have a constant infrastructure cost for the static Anchore engine. But if you are doing 100s of scan per day then you will definitely realize savings with this approach.</li>
 <li><strong>More secure:</strong> as we will see in the <strong>inline scan</strong> example below, the Anchore <code>inline_scan</code> script requires access to a Docker daemon. And in this example we are using the <a href="https://github.com/jenkinsci/kubernetes-plugin">Jenkins Kubernetes plugin</a> to provide dynamic and ephemeral agent pods for the Anchore inline scan job. A quick and dirty approach - that has a number of security implications - for providing a K8s pod agent access to the Docker daemon is to mount the Docker socket as a <code>volume</code> on the pod.</li>
 </ul>
 
-<p>But again, we will use the newer Anchore <strong>inline scan</strong> in this example to highlight how fast you can add container scans to your own Jenkisn Pipelines.</p>
+<p>But again, we will use the newer Anchore <strong>inline scan</strong> in this example to highlight how fast you can add container scans to your own Jenkins Pipelines.</p>
 
 <p><em>Anchore inline scan Pod</em> - <code>dockerClientPod.yml</code></p>
 
@@ -239,7 +239,7 @@ spec:
 
 <p><em>CloudBees&rsquo; Pipeline Template Catalog, Pipeline Shared Library, and Cross Team Collaboration</em></p>
 
-<p>By combining the new <a href="https://go.cloudbees.com/docs/cloudbees-core/cloud-admin-guide/pipeline/#_setting_up_a_pipeline_template_catalog">CloudBees&rsquo; Pipeline Template Catalogs</a> with a Pipeline Shared Library and CloudBees&rsquo; Cross Team Collaboration we are able to provide robust DevSecOps application delivery Pipeleins that are very easy for development teams to adopt quickly.</p>
+<p>By combining the new <a href="https://go.cloudbees.com/docs/cloudbees-core/cloud-admin-guide/pipeline/#_setting_up_a_pipeline_template_catalog">CloudBees&rsquo; Pipeline Template Catalogs</a> with a Pipeline Shared Library and CloudBees&rsquo; Cross Team Collaboration we are able to provide robust DevSecOps application delivery Pipelines that are very easy for development teams to adopt quickly.</p>
 
 <p>First we have the Pipeline Shared Library for building our container images with <a href="https://github.com/GoogleContainerTools/kaniko">Kaniko</a>:</p>
 
@@ -357,7 +357,7 @@ pipeline {
 }
 </code></pre>
 
-<p>Note the <code>eventTrigger</code> step uses <code>jmespathQuery</code> to listen for the <code>containerImagePush</code> <code>eventType</code>. Also note the <code>triggerdBy</code> condition <code>EventTriggerCause</code> in the <a href="https://jenkins.io/doc/book/pipeline/syntax/#when"><code>when</code> directive</a> - this will result in the <code>Anchore Scan</code> stage only running (and the provisioning of a K8s pod based agent used for the scan) if this job is triggered by a Cross Team Collaboration event.</p>
+<p>Note the <code>eventTrigger</code> step uses <code>jmespathQuery</code> to listen for the <code>containerImagePush</code> <code>eventType</code>. Also note the <code>triggeredBy</code> condition <code>EventTriggerCause</code> in the <a href="https://jenkins.io/doc/book/pipeline/syntax/#when"><code>when</code> directive</a> - this will result in the <code>Anchore Scan</code> stage only running (and the provisioning of a K8s pod based agent used for the scan) if this job is triggered by a Cross Team Collaboration event.</p>
 
 <p>If the newly built container image doesn&rsquo;t pass all of the policies specified in the <a href="https://github.com/cloudbees-days/anchore-scan/blob/master/.anchore_policy.json"><code>.anchore_policy.json</code></a> file then the job will fail.</p>
 
@@ -388,7 +388,7 @@ Policy ID: custom-anchore-policy-nodejs
 <h3 id="some-improvements">Some Improvements</h3>
 
 <ul>
-<li>One improvement would be to run this without mounting the Docker socket in the <a href="https://github.com/cloudbees-days/anchore-scan/blob/declarative/dockerClientPod.yml"><code>docker-client</code> container</a>. The Anchore inline-scan script runs a number of Docker commands that requires a Docker daemon - but this is not good security. Using a static Anchore engine would allows us to do container scans without mounting the Docker socket.</li>
+<li>One improvement would be to run this without mounting the Docker socket in the <a href="https://github.com/cloudbees-days/anchore-scan/blob/declarative/dockerClientPod.yml"><code>docker-client</code> container</a>. The Anchore inline-scan script runs a number of Docker commands that requires a Docker daemon - but this is not good security. Using a static Anchore engine would allow us to do container scans without mounting the Docker socket.</li>
 <li>Another improvement would be to extend the <code>anchore-scan</code> job to push the container image to a <strong>Prod</strong> container registry on success and notify interested dev teams that their image is now available for production deployments.</li>
 </ul>
 
@@ -418,7 +418,7 @@ Router r = new OperationsCenterRouter();
 
 <h2 id="add-devsecops-to-your-cd-with-cloudbees-now">Add DevSecOps to Your CD with CloudBees Now</h2>
 
-<p>So there is really no execuse NOT to add asynchronous container security scans to your container image CD pipelines with CloudBees Core v2, our Cross Team Collaboration feature and the Anchore <strong>inline scan</strong> - when it is as easy as this!</p>
+<p>So there&rsquo;s really no excuse NOT to add asynchronous container security scans to your container image CD pipelines with CloudBees Core v2, our Cross Team Collaboration feature and the Anchore <strong>inline scan</strong> - when it is as easy as this!</p>
 
             </div>
         </article>
@@ -448,10 +448,10 @@ Router r = new OperationsCenterRouter();
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="https://cb-technologists.github.io/tags/jenkins">jenkins</a></span><span class="tag"><a href="https://cb-technologists.github.io/tags/plugins">plugins</a></span><span class="tag"><a href="https://cb-technologists.github.io/tags/containers">containers</a></span><span class="tag"><a href="https://cb-technologists.github.io/tags/casc">CasC</a></span><span class="tag"><a href="https://cb-technologists.github.io/tags/devsecops">DevSecOps</a></span><span class="tag"><a href="https://cb-technologists.github.io/tags/security">security</a></span><span class="tag"><a href="https://cb-technologists.github.io/tags/anchore">anchore</a></span><span class="tag"><a href="https://cb-technologists.github.io/tags/container-scanning">container scanning</a></span>
                 </p>
 
-            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>2195 Words</p>
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>2194 Words</p>
 
             <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2019-06-10 11:50 &#43;0000</p>
-                <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-git-commit"><circle cx="12" cy="12" r="4"></circle><line x1="1.05" y1="12" x2="7" y2="12"></line><line x1="17.01" y1="12" x2="22.96" y2="12"></line></svg><a href="https://github.com/cb-technologists/blog/commit/855a37add84900e492968ae583b1525093f90ac3" target="_blank" rel="noopener">855a37a</a> @ 2019-06-10</p>
+                <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-git-commit"><circle cx="12" cy="12" r="4"></circle><line x1="1.05" y1="12" x2="7" y2="12"></line><line x1="17.01" y1="12" x2="22.96" y2="12"></line></svg><a href="https://github.com/cb-technologists/blog/commit/9edb88b71a7ce337c00d153a84331d6aabad3f6e" target="_blank" rel="noopener">9edb88b</a> @ 2019-06-10</p>
         </div>
 
         
