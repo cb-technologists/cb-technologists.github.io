@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>plugins on CloudBees Technologists</title>
-    <link>https://cb-technologists.github.io/tags/plugins/</link>
-    <description>Recent content in plugins on CloudBees Technologists</description>
+    <title>security on CloudBees Technologists</title>
+    <link>https://cb-technologists.github.io/tags/security/</link>
+    <description>Recent content in security on CloudBees Technologists</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Mon, 10 Jun 2019 07:50:46 -0400</lastBuildDate>
     
-	<atom:link href="https://cb-technologists.github.io/tags/plugins/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://cb-technologists.github.io/tags/security/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -18,15 +18,6 @@
       
       <guid>https://cb-technologists.github.io/posts/cloudbees-cross-team-and-dev-sec-ops/</guid>
       <description>What is Cross Team Collaboration? CloudBees&amp;rsquo; Cross Team Collaboration provides the ability to publish an event from a Jenkins job that triggers any other Jenkins job on the same master or different masters that are listening for that event. It is basically a light-weight PubSub for CloudBees Core Masters connected to CloudBees Operations Center. Jenkins has had the ability to trigger other jobs for quite a while now (and with CloudBees this is even easy to do across Masters), but it always required that the upstream job be aware of the downstream job(s) to be triggered.</description>
-    </item>
-    
-    <item>
-      <title>Jenkins Plugins: The Good, the Bad and the Ugly</title>
-      <link>https://cb-technologists.github.io/posts/jenkins-plugins-good-bad-ugly/</link>
-      <pubDate>Thu, 30 May 2019 05:50:46 -0400</pubDate>
-      
-      <guid>https://cb-technologists.github.io/posts/jenkins-plugins-good-bad-ugly/</guid>
-      <description>There are over 1600 Jenkins plugins and that is both a blessing and a curse. Of those 1600 plugins only a small percentage are well maintained and tested, and even fewer (140 of 1600+) are part of the CloudBees Assurance Program (CAP) as verified and/or compatible plugins - well tested to interoperate with the rest of the CAP plugins (and their dependencies) and with a specific LTS version of Jenkins.</description>
     </item>
     
   </channel>

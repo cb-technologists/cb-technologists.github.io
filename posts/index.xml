@@ -5,8 +5,301 @@
         <description>Recent content in Posts on CloudBees Technologists</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>en-us</language>
-        <lastBuildDate>Thu, 30 May 2019 05:50:46 -0400</lastBuildDate>
+        <lastBuildDate>Mon, 10 Jun 2019 07:50:46 -0400</lastBuildDate>
         <atom:link href="https://cb-technologists.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+        
+        <item>
+            <title>CloudBees&#39; Cross Team Collaboration for Asynchronous DevSecOps</title>
+            <link>https://cb-technologists.github.io/posts/cloudbees-cross-team-and-dev-sec-ops/</link>
+            <pubDate>Mon, 10 Jun 2019 07:50:46 -0400</pubDate>
+            
+            <guid>https://cb-technologists.github.io/posts/cloudbees-cross-team-and-dev-sec-ops/</guid>
+            <description>What is Cross Team Collaboration? CloudBees&amp;rsquo; Cross Team Collaboration provides the ability to publish an event from a Jenkins job that triggers any other Jenkins job on the same master or different masters that are listening for that event. It is basically a light-weight PubSub for CloudBees Core Masters connected to CloudBees Operations Center. Jenkins has had the ability to trigger other jobs for quite a while now (and with CloudBees this is even easy to do across Masters), but it always required that the upstream job be aware of the downstream job(s) to be triggered.</description>
+            <content type="html"><![CDATA[
+
+<h2 id="what-is-cross-team-collaboration">What is Cross Team Collaboration?</h2>
+
+<p>CloudBees&rsquo; Cross Team Collaboration provides the ability to publish an event from a Jenkins job that triggers any other Jenkins job on the same master or different masters that are listening for that event. It is basically a light-weight <a href="https://en.wikipedia.org/wiki/Publish%E2%80%93subscribe_pattern"><strong>PubSub</strong></a> for CloudBees Core Masters connected to <a href="https://go.cloudbees.com/docs/cloudbees-core/cloud-admin-guide/operating/#managing-operation-center">CloudBees Operations Center</a>. Jenkins has had the ability to <a href="https://jenkins.io/doc/pipeline/steps/pipeline-build-step/">trigger other jobs</a> for quite a while now (and <a href="https://support.cloudbees.com/hc/en-us/articles/226408088-Trigger-jobs-across-masters">with CloudBees this is even easy to do across Masters</a>), but it always required that the upstream job be aware of the downstream job(s) to be triggered. The Cross Team Collaboration feature provides a loosely coupled link between upstream and downstream Jenkins jobs - so that any job that is interested in a certain event, for whatever reason, can subscribe to that event and get triggered whenever that event is published.</p>
+
+<p>Here are a few good CloudBees&rsquo; blog posts and CloudBees&rsquo; documentation on CloudBees&rsquo; Cross Team Collaboration:</p>
+
+<ul>
+<li><a href="https://www.cloudbees.com/blog/cross-team-collaboration-part-1">Cross Team Collaboration (Part 1)</a></li>
+<li><a href="https://www.cloudbees.com/blog/cross-team-collaboration-part-2">Cross Team Collaboration (Part 2)</a></li>
+<li><a href="https://go.cloudbees.com/docs/cloudbees-core/cloud-admin-guide/cross-team-collaboration/">Cross Team Collaboration documentation</a></li>
+</ul>
+
+<h2 id="devsecops">DevSecOps</h2>
+
+<p><a href="https://tech.gsa.gov/guides/understanding_differences_agile_devsecops/">DevSecOps</a> - the idea of shifting security left in your Continuous Delivery pipelines - is becoming a vital component of successful CD. DevSecOps is all about speeding up software delivery, while maintaining, or even improving, the level of security for delivered application code. However, even though you should be shifting automated security left - you still don&rsquo;t want it to impede developers trying to deliver software more quickly. CloudBees&rsquo; Cross Team Collaboration feature is a perfect capability for automating security while at the same time getting out of the way of developers - improving the security and quality of your software delivery while minimizing the impact on delivery speed.</p>
+
+<h2 id="use-case-asynchronously-scan-container-images-for-vulnerabilities-and-compliance">Use Case: Asynchronously Scan Container Images for Vulnerabilities and Compliance</h2>
+
+<p>As containers become a more and more ubiquitous method for delivering your applications, ensuring that your container images don&rsquo;t have security vulnerabilities and/or organization specific security compliance issues is an important aspect of CD for containerized application delivery. However, scanning containers images isn&rsquo;t the fastest process in the world and you don&rsquo;t want to unnecessarily slow down developers trying to get stuff done. You also may not want to depend on individual development teams to configure and manage important securitys steps in their delivery pipelines.</p>
+
+<p>Cross Team Collaboration enables you to publish an event from a <a href="https://jenkins.io/doc/book/pipeline/shared-libraries/">Pipeline Shared Library</a> for <a href="https://github.com/cloudbees-days/pipeline-library/blob/master/vars/kanikoBuildPush.groovy">securely building container images</a> and then asynchronously triggering <em>not-so-quick</em> security related jobs listening for events, making it very easy to provide security as part of the CD pipelines for an entire organization.</p>
+
+<p>So, this container scan job can be run on different Jenkins Masters (or as we at CloudBees refer to them: <a href="https://www.cloudbees.com/blog/team-masters-continuous-delivery">Team Masters</a>) and are able to run automatically thanks to the <a href="https://go.cloudbees.com/docs/cloudbees-core/cloud-admin-guide/cross-team-collaboration/#cross-team-config">Cross Team Collaboration queue</a> managed by the <a href="https://go.cloudbees.com/docs/cloudbees-core/cloud-admin-guide/operating/#managing-operation-center">Operations Center</a> in CloudBees Core. Pipelines for building containers and checking vulnerabilities are then decoupled, but they run any time you build a container in an upstream job (e.g. every time engineering teams build containers, the vulnerabilities and compliance will be checked, but running this container scan doesn&rsquo;t require building the container again).</p>
+
+<h3 id="cross-team-collaboration-events">Cross Team Collaboration Events</h3>
+
+<p>There are basically <a href="https://go.cloudbees.com/docs/cloudbees-core/cloud-admin-guide/cross-team-collaboration/#cross-team-event-types">two types of Cross Team Collaboration events</a>:</p>
+
+<p><strong>Simple Event:</strong></p>
+
+<pre><code class="language-groovy">publishEvent simpleEvent(&quot;${dockerReg}/helloworld-nodejs:${repoName}-${BUILD_NUMBER}&quot;)
+</code></pre>
+
+<p><strong>JSON Event:</strong></p>
+
+<pre><code class="language-groovy">publishEvent event:jsonEvent(&quot;{'eventType':'containerImagePush', 'image':'${dockerReg}/helloworld-nodejs:${repoName}-${BUILD_NUMBER}'}&quot;), verbose: true
+</code></pre>
+
+<p>For this example we will be using the more verbose JSON event. The problem with the <strong>Simple Event</strong> approach is that the triggered job would have to subscribe to a single <code>string</code> value and in this case a specific container <code>image</code>. But what we really want is to run an Anchore scan for all container images being pushed to our DEV container registry. The <strong>JSON Event</strong> approach allows us to subscribe to a more generic event, <code>containerImagePush</code>, while passing the exact container image being pushed as an additional JSON value for the key <code>image</code>.  But to use this approach the triggered job(s) must retrieve the value of the <code>image</code> key from the event payload.</p>
+
+<h3 id="capturing-the-cross-team-collaboration-event-payload">Capturing the Cross Team Collaboration Event Payload</h3>
+
+<p>Now let&rsquo;s compare using groovy code vs a <code>curl</code> call against the <a href="https://wiki.jenkins.io/display/JENKINS/Remote+access+API">Jenkins REST API</a> to get the JSON event payload:</p>
+
+<ul>
+<li>You could get the event JSON with the following: <code>currentBuild.getBuildCauses()[0].event.toString()</code>. But that will run on the Jenkins Master, not the Jenkins agent and will impact performance when you are scanning hundreds or even thousands of container images.</li>
+<li>A better approach is to use the <code>sh</code> step with a <code>curl</code> call against the Jenkins REST API with a <a href="https://jenkins.io/blog/2018/07/02/new-api-token-system/">Jenkins API token</a> to get the JSON representation of the current build, and then piping the JSON response to <a href="https://stedolan.github.io/jq/"><strong>jq</strong></a> to get the value for the <code>image</code> key from the event payload in a Jenkins Pipeline triggered by the <code>EventTriggerCause</code>: <code>curl -u 'beedemo-admin':$TOKEN --silent ${BUILD_URL}/api/json| jq '.actions[0].causes[0].event.image'</code>. The advantages of this approach are:
+
+<ul>
+<li>The <code>sh</code> step will run on the agent, not the Jenkins Master, allowing you to scale across as many agents as needed for your container scans with very little impact on the performance of the Jenkins Master.</li>
+<li>Using lightweight shell scripts provide easier testing and more portability of your CD pipelines to other platforms.</li>
+</ul></li>
+</ul>
+
+<p>| NOTE: <code>BUILD_URL</code> is one of many <a href="https://jenkins.io/doc/book/pipeline/getting-started/#global-variable-reference">Pipeline global variables</a> available to all Jenkins Pipeline jobs.</p>
+
+<h3 id="anchore-inline-scan">Anchore Inline Scan</h3>
+
+<p>Earlier this year, <a href="https://anchore.com/">Anchore</a> provided some new tools and scripts to make it easier to execute Anchore scans without constantly running an Anchore Engine. The <a href="https://anchore.com/inline-scanning-with-anchore-engine/">Anchore <strong>inline scan</strong></a> provides the same analysis/vulnerability/policy evaluation and reporting as a statically managed Anchore engine and is used in this example to highlight how easy and fast you can add container security scanning to your own CD pipelines. However, a better long-term approach would be to stand-up your own centralized, managed and stable Anchore engine to use across all of you dev teams. The advantages of a static, always running Anchore Engine include:</p>
+
+<ul>
+<li><strong>Faster scans:</strong> since you don&rsquo;t have to wait for the Anchore engine to start-up for each job.</li>
+<li><strong>Reduced infrastructure costs:</strong> if you only do a few scans a day then this is less of an advantage as you will have a constant infrastructure cost for the static Anchore engine. But if you are doing 100s of scan per day then you will defintely realize savings with this approach.</li>
+<li><strong>More secure:</strong> as we will see in the <strong>inline scan</strong> example below, the Anchore <code>inline_scan</code> script requires access to a Docker daemon. And in this example we are using the <a href="https://github.com/jenkinsci/kubernetes-plugin">Jenkins Kubernetes plugin</a> to provide dynamic and ephemeral agent pods for the Anchore inline scan job. A quick and dirty approach - that has a number of security implications - for providing a K8s pod agent access to the Docker daemon is to mount the Docker socket as a <code>volume</code> on the pod.</li>
+</ul>
+
+<p>But again, we will use the newer Anchore <strong>inline scan</strong> in this example to highlight how fast you can add container scans to your own Jenkisn Pipelines.</p>
+
+<p><em>Anchore inline scan Pod</em> - <code>dockerClientPod.yml</code></p>
+
+<pre><code class="language-yaml">apiVersion: v1
+kind: Pod
+spec:
+  containers:
+  - name: docker-client
+    image: gcr.io/technologists/docker-client:0.0.3
+    command: ['cat']
+    tty: true
+    volumeMounts:
+    - name: dockersock
+      mountPath: /var/run/docker.sock
+  volumes:
+  - name: dockersock
+    hostPath:
+      path: /var/run/docker.sock
+</code></pre>
+
+<p>Even though there is an <a href="https://plugins.jenkins.io/anchore-container-scanner">Anchore plugin for Jenkins</a>, there is no reason to install another plugin when you can accomplish the same thing with a straightforward <code>sh</code> step. As mentioned in my <a href="./jenkins-plugins-good-bad-ugly/">last post here on the Technologists site</a> - using fewer Jenkins plugins is a <strong>good</strong> thing.</p>
+
+<pre><code class="language-groovy">container('docker-client'){
+  sh &quot;curl -s https://ci-tools.anchore.io/inline_scan-v0.3.3 \
+  | bash -s -- -f -b ./.anchore_policy.json -p ${containerImage}&quot;
+}
+</code></pre>
+
+<p>Again, the only thing required to run the scan above is a Docker daemon. So you could just as easily run that command on your laptop running Docker as on a Jenkins agent that has access to a Docker daemon.</p>
+
+<h3 id="putting-it-all-together">Putting It All Together</h3>
+
+<p><em>CloudBees&rsquo; Pipeline Template Catalog, Pipeline Shared Library, and Cross Team Collaboration</em></p>
+
+<p>By combining the new <a href="https://go.cloudbees.com/docs/cloudbees-core/cloud-admin-guide/pipeline/#_setting_up_a_pipeline_template_catalog">CloudBees&rsquo; Pipeline Template Catalogs</a> with a Pipeline Shared Library and CloudBees&rsquo; Cross Team Collaboration we are able to provide robust DevSecOps application delivery Pipeleins that are very easy for development teams to adopt quickly.</p>
+
+<p>First we have the Pipeline Shared Library for building our container images with <a href="https://github.com/GoogleContainerTools/kaniko">Kaniko</a>:</p>
+
+<p><em>pipeline shared library</em> - <code>kanikoBuildPush.groovy</code></p>
+
+<pre><code class="language-groovy">def call(String imageName, String imageTag = env.BUILD_NUMBER, String gcpProject = &quot;core-workshop&quot;, String target = &quot;.&quot;, String dockerFile=&quot;Dockerfile&quot;, Closure body) {
+  def dockerReg = &quot;gcr.io/${gcpProject}&quot;
+  imageName = &quot;helloworld-nodejs&quot;
+  def label = &quot;kaniko-${UUID.randomUUID().toString()}&quot;
+  def podYaml = libraryResource 'podtemplates/dockerBuildPush.yml'
+  podTemplate(name: 'kaniko', label: label, yaml: podYaml, inheritFrom: 'default-jnlp', nodeSelector: 'type=agent') {
+    node(label) {
+      body()
+      imageNameTag()
+      gitShortCommit()
+      def repoName = env.IMAGE_REPO.toLowerCase()
+      container(name: 'kaniko', shell: '/busybox/sh') {
+        withEnv(['PATH+EXTRA=/busybox:/kaniko']) {
+          sh &quot;&quot;&quot;#!/busybox/sh
+            /kaniko/executor -f ${pwd()}/${dockerFile} -c ${pwd()} --build-arg context=${repoName} --build-arg buildNumber=${BUILD_NUMBER} --build-arg shortCommit=${env.SHORT_COMMIT} --build-arg commitAuthor=${env.COMMIT_AUTHOR} -d ${dockerReg}/helloworld-nodejs:${repoName}-${BUILD_NUMBER}
+          &quot;&quot;&quot;
+        }
+      }
+      publishEvent event:jsonEvent(&quot;{'eventType':'containerImagePush', 'image':'${dockerReg}/helloworld-nodejs:${repoName}-${BUILD_NUMBER}'}&quot;), verbose: true
+    }
+  }
+}
+</code></pre>
+
+<p>Note the <code>publishEvent</code> step at the end - after the container image has been successfully built and pushed to our <strong>dev</strong> container registry it will <strong>publish</strong> the <code>containerImagePush</code> event.</p>
+
+<p><em>The JSON output for the <code>publishEvent</code> step - note the <code>image</code> key value is the container image just built and pushed by Kaniko:</em></p>
+
+<pre><code class="language-json">{
+  &quot;eventType&quot;: &quot;containerImagePush&quot;,
+  &quot;image&quot;: &quot;gcr.io/core-workshop/helloworld-nodejs:beeops-cb-days-7&quot;,
+  &quot;source&quot;:     {
+      &quot;type&quot;: &quot;JenkinsTeamBuild&quot;,
+      &quot;buildInfo&quot;:         {
+          &quot;build&quot;: 7,
+          &quot;job&quot;: &quot;template-jobs/beedemo-admin-helloworld-nodejs/master&quot;,
+          &quot;jenkinsUrl&quot;: &quot;https://********/teams-sec/&quot;,
+          &quot;instanceId&quot;: &quot;d37a81cc1906b6fe684f253a8a07834c&quot;,
+          &quot;team&quot;: &quot;sec&quot;
+      }
+  }
+}
+</code></pre>
+
+<p>Next, the <code>kanikoBuildPush</code> shared library is consumed by a <a href="https://github.com/cloudbees-days/pipeline-template-catalog">Pipeline Template Catalog</a> template. In this case a <a href="https://github.com/cloudbees-days/pipeline-template-catalog/tree/master/templates/nodejs-app">template for Node.js applications</a>:</p>
+
+<p><a href="https://github.com/cloudbees-days/pipeline-template-catalog/blob/master/templates/nodejs-app/Jenkinsfile"><em>Pipeline Template</em></a> - <strong>Build and Push Image</strong> <code>stage</code></p>
+
+<pre><code class="language-groovy">    stage('Build and Push Image') {
+      when {
+        beforeAgent true
+        branch 'master'
+      }
+      steps {  
+        echo &quot;${repoOwner}&quot;
+        kanikoBuildPush(env.IMAGE_NAME, env.IMAGE_TAG, &quot;${gcpProject}&quot;) {
+          checkout scm
+        }
+      }
+      post {
+        success {
+          slackSend message: &quot;${JOB_NAME} pipeline job is awaiting approval at: ${RUN_DISPLAY_URL}&quot;
+        }
+      }
+    }
+</code></pre>
+
+<p>Again, if the <code>kanikoBuildPush</code> library step is successful it will publish a <code>containerImagePush</code> event.</p>
+
+<p>Finally, we set-up a job on our <strong>Security</strong> Jenkins Master to listen for the <code>containerImagePush</code> event:</p>
+
+<p><a href="https://github.com/cloudbees-days/anchore-scan/blob/master/Jenkinsfile"><strong>anchore-scan</strong> <code>Jenkinsfile</code></a></p>
+
+<pre><code class="language-groovy">def containerImage
+pipeline {
+  agent none
+
+  triggers {
+      eventTrigger jmespathQuery(&quot;eventType=='containerImagePush'&quot;)
+  }
+  
+  stages {
+    stage('Anchore Scan') {
+      agent {
+        kubernetes {
+          label 'docker-client'
+          yamlFile 'dockerClientPod.yml'
+        }
+      }
+      when { 
+        triggeredBy 'EventTriggerCause' 
+        beforeAgent true
+      }
+      environment {
+        TOKEN = credentials('beedemo-admin-api-key')
+      }
+      steps {
+        script {
+          containerImage = sh(script: &quot;&quot;&quot;
+             curl -u 'beedemo-admin':$TOKEN --silent ${BUILD_URL}/api/json| jq '.actions[0].causes[0].event.image'
+          &quot;&quot;&quot;, returnStdout: true)
+        }
+        echo containerImage
+        container('docker-client'){
+          sh &quot;curl -s https://ci-tools.anchore.io/inline_scan-v0.3.3 | bash -s -- -f -b ./.anchore_policy.json -p ${containerImage}&quot;
+        }
+      }
+    }
+  }
+}
+</code></pre>
+
+<p>Note the <code>eventTrigger</code> step uses <code>jmespathQuery</code> to listen for the <code>containerImagePush</code> <code>eventType</code>. Also note the <code>triggerdBy</code> condition <code>EventTriggerCause</code> in the <a href="https://jenkins.io/doc/book/pipeline/syntax/#when"><code>when</code> directive</a> - this will result in the <code>Anchore Scan</code> stage only running (and the provisioning of a K8s pod based agent used for the scan) if this job is triggered by a Cross Team Collaboration event.</p>
+
+<p>If the newly built container image doesn&rsquo;t pass all of the policies specified in the <a href="https://github.com/cloudbees-days/anchore-scan/blob/master/.anchore_policy.json"><code>.anchore_policy.json</code></a> file then the job will fail.</p>
+
+<p>Here is an example Anchore report for a failed <code>anchore-scan</code> job:</p>
+
+<pre><code class="language-console">Image Digest: sha256:e03d86b75d38d1d18035b58e9e43088c9d0d5dd6e49f2c507d949937174f3465
+Full Tag: anchore-engine:5000/helloworld-nodejs:beeops-cb-days-5
+Image ID: 0b22d7798cd24465252335d602059fea88128244b623bc4af20926eeec8f9b4c
+Status: fail
+Last Eval: 2019-06-07T12:56:03Z
+Policy ID: custom-anchore-policy-nodejs
+Final Action: stop
+Final Action Reason: policy_evaluation
+
+Gate              Trigger               Detail                                                                                     Status        
+dockerfile        effective_user        User root found as effective user, which is explicity not allowed list                     stop          
+dockerfile        instruction           Dockerfile directive 'HEALTHCHECK' not found, matching condition 'not_exists' check        warn          
+
+Image Digest: sha256:e03d86b75d38d1d18035b58e9e43088c9d0d5dd6e49f2c507d949937174f3465
+Full Tag: anchore-engine:5000/helloworld-nodejs:beeops-cb-days-5
+Status: fail
+Last Eval: 2019-06-07T12:56:04Z
+Policy ID: custom-anchore-policy-nodejs
+</code></pre>
+
+<p>As you can see from the above output the scan failed because of the <code>effective_user</code> trigger - <a href="https://github.com/nodejs/docker-node/blob/master/10/alpine/Dockerfile">the official <code>node</code> container image we are using from DockerHub runs as <code>root</code></a> and <a href="https://snyk.io/blog/10-docker-image-security-best-practices/">this is a very bad security practice</a> as it allows <strong>container breakouts</strong> where the container user is able to escape the container namespace and interact with other processes on the host.</p>
+
+<h3 id="some-improvements">Some Improvements</h3>
+
+<ul>
+<li>One improvement would be to run this without mounting the Docker socket in the <a href="https://github.com/cloudbees-days/anchore-scan/blob/declarative/dockerClientPod.yml"><code>docker-client</code> container</a>. The Anchore inline-scan script runs a number of Docker commands that requires a Docker daemon - but this is not good security. Using a static Anchore engine would allows us to do container scans without mounting the Docker socket.</li>
+<li>Another improvement would be to extend the <code>anchore-scan</code> job to push the container image to a <strong>Prod</strong> container registry on success and notify interested dev teams that their image is now available for production deployments.</li>
+</ul>
+
+<h3 id="casc-for-cross-team-collaboration-configuration-for-your-cloudbees-core-v2-masters">CasC for Cross Team Collaboration Configuration for your CloudBees Core v2 Masters</h3>
+
+<p>In order for all of this to work you have to turn on Cross Team Collaboration for all of your Core v2 Masters that you want to publish and subscribe to events. I am a big proponent of CasC for everything so here is an <a href="https://wiki.jenkins.io/display/JENKINS/Post-initialization+script"><code>init.groovy.d</code></a> script to set-up CasC to automatically enable Cross Team Collaboration notifications for your CloudBees Core v2 Masters on start-up:</p>
+
+<p><a href="https://github.com/kypseli/cb-core-mm-workshop/blob/master/quickstart/init_61_notification_api.groovy"><em>cb-core-mm-workshop/quickstart/init_61_notification_api.groovy</em></a>:</p>
+
+<pre><code class="language-groovy">import jenkins.model.Jenkins
+import hudson.ExtensionList
+
+import com.cloudbees.jenkins.plugins.notification.api.NotificationConfiguration
+import com.cloudbees.jenkins.plugins.notification.spi.Router
+import com.cloudbees.opscenter.plugins.notification.OperationsCenterRouter
+
+jenkins = Jenkins.getInstance()
+
+NotificationConfiguration config = ExtensionList.lookupSingleton(NotificationConfiguration.class);
+Router r = new OperationsCenterRouter();
+        config.setRouter(r);
+        config.setEnabled(true);
+        config.onLoaded();
+</code></pre>
+
+<p>I&rsquo;m also a big fan of the Jenkins Config-as-Code plugin. However, currently, the CloudBees&rsquo; plugins for Cross Team Collaboration do not yet support <a href="https://github.com/jenkinsci/configuration-as-code-plugin">JCasC</a> (but support for JCasC is coming soon).</p>
+
+<h2 id="add-devsecops-to-your-cd-with-cloudbees-now">Add DevSecOps to Your CD with CloudBees Now</h2>
+
+<p>So there is really no execuse NOT to add asynchronous container security scans to your container image CD pipelines with CloudBees Core v2, our Cross Team Collaboration feature and the Anchore <strong>inline scan</strong> - when it is as easy as this!</p>
+]]></content>
+        </item>
         
         <item>
             <title>Jenkins Plugins: The Good, the Bad and the Ugly</title>
