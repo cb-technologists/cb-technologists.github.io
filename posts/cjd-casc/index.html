@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="author"
+    content="map[name:Matt Elgin]">
+<meta name="description"
+    content="In this blog post, we&amp;rsquo;ll walk through creating a self-updating instance of the CloudBees Jenkins Distribution, with all configuration stored as code in a GitHub repository.
+We&amp;rsquo;ll deploy the CJD master as a StatefulSet in a Kubernetes cluster, configure the master using the Jenkins Configuration as Code plugin, and set up a TLS certificate through cert-manager. Finally, we&amp;rsquo;ll seed a Pipeline job that updates the master upon commit to the Git repository that contains the configuration - enabling GitOps for Jenkins itself." />
+<meta name="keywords" content="" />
+<meta name="robots" content="noodp" />
+<link rel="canonical" href="https://cb-technologists.github.io/posts/cjd-casc/" />
+
+
+<title>
+    
+    Self-Updating Jenkins: GitOps for Jenkins Configuration :: CloudBees Technologists 
+    
+</title>
+
+
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.1/css/flag-icon.min.css" rel="stylesheet"
+    type="text/css">
+
+
+
+<link rel="stylesheet" href="/main.min.690a789d9ffdc3196b3a5123f0e6c6345e93fc22854c783c245ebb1e2d7d68ee.css">
+
+
+
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#252627">
+<link rel="shortcut icon" href="/favicon.ico">
+<meta name="theme-color" content="#252627">
+<meta itemprop="name" content="Self-Updating Jenkins: GitOps for Jenkins Configuration">
+<meta itemprop="description" content="In this blog post, we&rsquo;ll walk through creating a self-updating instance of the CloudBees Jenkins Distribution, with all configuration stored as code in a GitHub repository.
+We&rsquo;ll deploy the CJD master as a StatefulSet in a Kubernetes cluster, configure the master using the Jenkins Configuration as Code plugin, and set up a TLS certificate through cert-manager. Finally, we&rsquo;ll seed a Pipeline job that updates the master upon commit to the Git repository that contains the configuration - enabling GitOps for Jenkins itself.">
+
+
+<meta itemprop="datePublished" content="2019-07-03T17:00:00-04:00" />
+<meta itemprop="dateModified" content="2019-07-03T21:03:24&#43;00:00" />
+<meta itemprop="wordCount" content="2633">
+
+
+
+<meta itemprop="keywords" content="jenkins,cloudbees jenkins distribution,gitops,kubernetes,kaniko,docker,cert-manager,google cloud platform," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Self-Updating Jenkins: GitOps for Jenkins Configuration"/>
+<meta name="twitter:description" content="In this blog post, we&rsquo;ll walk through creating a self-updating instance of the CloudBees Jenkins Distribution, with all configuration stored as code in a GitHub repository.
+We&rsquo;ll deploy the CJD master as a StatefulSet in a Kubernetes cluster, configure the master using the Jenkins Configuration as Code plugin, and set up a TLS certificate through cert-manager. Finally, we&rsquo;ll seed a Pipeline job that updates the master upon commit to the Git repository that contains the configuration - enabling GitOps for Jenkins itself."/>
+
+
+
+
+<meta property="article:published_time" content="2019-07-03 17:00:00 -0400 -0400" />
+
+
+
+
+
+
+
+    </head>
+
+    <body class="dark-theme">
+        <div class="container">
+            <header class="header">
+    <span class="header__inner">
+        <a href="https://cb-technologists.github.io/" style="text-decoration: none;">
+    <div class="logo">
+        
+            <span class="logo__mark">></span>
+            <span class="logo__text">technologists</span>
+            <span class="logo__cursor"></span>
+        
+    </div>
+</a>
+
+
+        <span class="header__right">
+            
+                <nav class="menu">
+    <ul class="menu__inner"><li><a href="https://cb-technologists.github.io/about">About</a></li><li><a href="https://cb-technologists.github.io/posts">Blog</a></li>
+    </ul>
+</nav>
+
+                <span class="menu-trigger">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+                    </svg>
+                </span>
+            
+
+            <span class="theme-toggle"><svg class="theme-toggler" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M22 41C32.4934 41 41 32.4934 41 22C41 11.5066 32.4934 3 22
+  3C11.5066 3 3 11.5066 3 22C3 32.4934 11.5066 41 22 41ZM7 22C7
+  13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22Z"/>
+</svg>
+</span>
+        </span>
+    </span>
+</header>
+
+
+            <div class="content">
+                
+    <main class="post">
+
+        <div class="post-info">
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>13 minutes
+
+            
+
+            </p>
+        </div>
+
+        <article>
+            <h1 class="post-title"><a href="https://cb-technologists.github.io/posts/cjd-casc/">Self-Updating Jenkins: GitOps for Jenkins Configuration</a></h1>
+
+            
+            
+            
+
+            <div class="post-content">
+                
+
+<p>In this blog post, we&rsquo;ll walk through creating a self-updating instance of the <a href="https://www.cloudbees.com/products/cloudbees-jenkins-distribution">CloudBees Jenkins Distribution</a>, with all configuration stored as code in a GitHub repository.</p>
+
+<p>We&rsquo;ll deploy the CJD master as a <code>StatefulSet</code> in a Kubernetes cluster, configure the master using the <a href="https://github.com/jenkinsci/configuration-as-code-plugin">Jenkins Configuration as Code plugin</a>, and set up a TLS certificate through <a href="https://github.com/jetstack/cert-manager">cert-manager</a>. Finally, we&rsquo;ll seed a Pipeline job that updates the master upon commit to the <a href="https://github.com/cb-technologists/cjd-casc">Git repository</a> that contains the configuration - enabling GitOps for Jenkins itself.</p>
+
+<h2 id="deploying-cloudbees-jenkins-distribution-in-kubernetes">Deploying CloudBees Jenkins Distribution in Kubernetes</h2>
+
+<p>First, we&rsquo;ll need to deploy a Jenkins instance into a Kubernetes cluster. In this case, we&rsquo;ll use <a href="https://cloud.google.com/kubernetes-engine/">Google Kubernetes Engine</a> to deploy a containerized version of CJD. To provision a cluster, we&rsquo;ll follow the Google Cloud documentation <a href="https://cloud.google.com/kubernetes-engine/docs/how-to/creating-a-cluster">here</a>. (<strong>Note:</strong> this blog post assumes prior installation of and basic familiarity with using <code>kubectl</code> to interact with a Kubernetes cluster.)</p>
+
+<p>Once the cluster has been provisioned and <code>kubectl</code> has been configured, we&rsquo;ll create a dedicated <code>namespace</code> for our CJD resources and update our <code>kubectl config</code> to use it by default:</p>
+
+<pre><code class="language-bash">kubectl create namespace cjd
+kubectl config set-context $(kubectl config current-context) --namespace cjd
+</code></pre>
+
+<p>We&rsquo;ll also need to ensure an ingress controller is deployed within the cluster. For this post, we&rsquo;ll assume the use of the <a href="https://kubernetes.github.io/ingress-nginx/">NGINX ingress controller</a>. Following the <a href="https://github.com/kubernetes/ingress-nginx/blob/master/docs/deploy/index.md">Installation Guide</a>, we&rsquo;ll manually deploy using a few <code>kubectl</code> commands:</p>
+
+<pre><code class="language-bash"># grant cluster-admin to user
+kubectl create clusterrolebinding cluster-admin-binding \ --clusterrole cluster-admin \ --user $(gcloud config get-value account)
+# deploy nginx ingress controller resources
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/mandatory.yaml
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/provider/cloud-generic.yaml
+</code></pre>
+
+<p>Next, let&rsquo;s look at the manifest file that will deploy the necessary resources for CJD using the <a href="https://github.com/cb-technologists/cjd-casc/blob/master/cjd.yaml">cjd.yaml</a> manifest file.</p>
+
+<p>First, we create a <code>ServiceAccount</code>, a <code>Role</code> with the necessary permissions to manage agents and perform the required update actions, and a <code>RoleBinding</code> to connect the two.</p>
+
+<pre><code class="language-yaml">apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: cjd
+
+---
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1beta1
+metadata:
+  name: cjd
+rules:
+- apiGroups: [&quot;&quot;]
+  resources: [&quot;pods&quot;,&quot;configmaps&quot;,&quot;services&quot;,&quot;serviceaccounts&quot;]
+  verbs: [&quot;create&quot;,&quot;delete&quot;,&quot;get&quot;,&quot;list&quot;,&quot;patch&quot;,&quot;update&quot;,&quot;watch&quot;]
+- apiGroups: [&quot;&quot;]
+  resources: [&quot;pods/exec&quot;]
+  verbs: [&quot;create&quot;,&quot;delete&quot;,&quot;get&quot;,&quot;list&quot;,&quot;patch&quot;,&quot;update&quot;,&quot;watch&quot;]
+- apiGroups: [&quot;&quot;]
+  resources: [&quot;pods/log&quot;]
+  verbs: [&quot;get&quot;,&quot;list&quot;,&quot;watch&quot;]
+- apiGroups: [&quot;&quot;]
+  resources: [&quot;secrets&quot;]
+  verbs: [&quot;get&quot;]
+- apiGroups: [&quot;apps&quot;]
+  resources: [&quot;statefulsets&quot;]
+  verbs: [&quot;create&quot;,&quot;delete&quot;,&quot;get&quot;,&quot;list&quot;,&quot;patch&quot;,&quot;update&quot;,&quot;watch&quot;]
+- apiGroups: [&quot;rbac.authorization.k8s.io&quot;]
+  resources: [&quot;roles&quot;,&quot;rolebindings&quot;]
+  verbs: [&quot;create&quot;,&quot;delete&quot;,&quot;get&quot;,&quot;list&quot;,&quot;patch&quot;,&quot;update&quot;,&quot;watch&quot;]
+- apiGroups: [&quot;extensions&quot;]
+  resources: [&quot;ingresses&quot;]
+  verbs: [&quot;create&quot;,&quot;delete&quot;,&quot;get&quot;,&quot;list&quot;,&quot;patch&quot;,&quot;update&quot;,&quot;watch&quot;]
+
+---
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: RoleBinding
+metadata:
+  name: cjd
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: cjd
+subjects:
+- kind: ServiceAccount
+  name: cjd
+</code></pre>
+
+<p>Next, we create a <code>Service</code> that exposes ports for access to the CJD web interface and for master-agent communication:</p>
+
+<pre><code class="language-yaml">---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cjd
+spec:
+  selector:
+    app: cjd
+  ports:
+  - name: http
+    port: 80
+    protocol: TCP
+    targetPort: 8080
+  - name: agent
+    port: 50000
+    protocol: TCP
+    targetPort: 50000
+  type: ClusterIP
+</code></pre>
+
+<p>Next, we set up an <code>Ingress</code> to allow access to our CJD instance from outside of the cluster. We&rsquo;ll examine this in more detail in a later section where we walk through the setup of <code>cert-manager</code>.</p>
+
+<pre><code class="language-yaml">---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: cjd
+  annotations:
+    kubernetes.io/ingress.class: &quot;nginx&quot;
+    nginx.ingress.kubernetes.io/ssl-redirect: &quot;true&quot;
+    certmanager.k8s.io/issuer: &quot;letsencrypt-prod&quot; # add after cert-manager deploy
+    certmanager.k8s.io/acme-challenge-type: http01 # add after cert-manager deploy
+spec:
+  tls: # cert-manager
+  - hosts: # cert-manager
+    - cjd.cloudbees.elgin.io # cert-manager
+    secretName: cjd-tls # cert-manager
+  rules:
+  - host: cjd.cloudbees.elgin.io
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: cjd
+          servicePort: 80
+</code></pre>
+
+<p>We&rsquo;ll also need to make sure that we create a DNS A Record through our hosting provider that maps our <code>host</code> URL to the <code>EXTERNAL-IP</code> of our ingress controller. We can get that IP after deploying our NGINX ingress controller by running:</p>
+
+<pre><code class="language-bash">kubectl get svc -n ingress-nginx
+</code></pre>
+
+<p>Finally, we provision the <code>StatefulSet</code> that controls the CJD Pod and <code>PersistentVolumeClaim</code>. The container image we use here is a custom image inheriting from the <a href="https://hub.docker.com/r/cloudbees/cloudbees-jenkins-distribution/">official CJD Docker image</a>. We&rsquo;ll examine the <code>Dockerfile</code> for this image in the next section, when we detail the configuration.</p>
+
+<p>Additionally, you&rsquo;ll notice the creation of a few <code>secretRef</code> environment variables, as well as the setting of the <code>CASC_JENKINS_CONFIG</code> environment variable and the mounting of a <code>jenkins-casc</code> <code>ConfigMap</code> - these again will be expanded upon in the configuration section.</p>
+
+<pre><code class="language-yaml">---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: cjd
+spec:
+  selector:
+   matchLabels:
+     app: cjd
+  serviceName: &quot;cjd&quot;
+  template:
+    metadata:
+      labels:
+        app: cjd
+    spec:
+      containers:
+      - name: cjd
+        image: gcr.io/melgin/cjd-casc:d176f38b289d0437a2503c83af473f57b25a4d26
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+        - containerPort: 50000
+        env:
+        - name: CASC_JENKINS_CONFIG
+          value: /var/jenkins_config/jenkins-casc.yaml
+        envFrom:
+          - secretRef:
+              name: github
+          - secretRef:
+              name: url
+          - secretRef:
+              name: github-oauth
+        volumeMounts:
+        - name: jenkins-home
+          mountPath: /var/jenkins_home/
+        - name: jenkins-casc
+          mountPath: /var/jenkins_config/
+      securityContext:
+        fsGroup: 1000
+      serviceAccountName: cjd
+      volumes:
+      - name: jenkins-casc
+        configMap:
+          name: jenkins-casc
+  volumeClaimTemplates:
+  - metadata:
+      name: jenkins-home
+    spec:
+      accessModes: [ &quot;ReadWriteOnce&quot; ]
+      resources:
+        requests:
+          storage: 5Gi
+</code></pre>
+
+<h2 id="configuring-with-jenkins-configuration-as-code-plugin">Configuring with Jenkins Configuration-as-Code Plugin</h2>
+
+<p>With the YAML for the required CJD Kubernetes resources laid out, we&rsquo;ll now go into the code handling the configuration of the master. While detailing the <code>StatefulSet</code> above, we mentioned that a custom Docker image is used for the CJD container. The <code>Dockerfile</code> for this image can be found below:</p>
+
+<pre><code class="language-Dockerfile">FROM cloudbees/cloudbees-jenkins-distribution:2.164.3.2
+
+LABEL maintainer &quot;melgin@cloudbees.com&quot;
+
+ENV JAVA_OPTS=&quot;-Djenkins.install.runSetupWizard=false&quot;
+
+USER root
+
+RUN echo 2.0 &gt; /usr/share/jenkins/ref/jenkins.install.UpgradeWizard.state
+
+ENV TZ=&quot;/usr/share/zoneinfo/America/New_York&quot;
+
+ENV JENKINS_UC https://jenkins-updates.cloudbees.com
+# add environment variable to point to configuration file
+ENV CASC_JENKINS_CONFIG /usr/jenkins_config/jenkins-casc.yaml
+
+# Install plugins
+ADD https://raw.githubusercontent.com/jenkinsci/docker/master/install-plugins.sh /usr/local/bin/install-plugins.sh
+RUN chmod 755 /usr/local/bin/install-plugins.sh
+ADD https://raw.githubusercontent.com/jenkinsci/docker/master/jenkins-support /usr/local/bin/jenkins-support
+RUN chmod 755 /usr/local/bin/jenkins-support
+COPY plugins.txt /usr/share/jenkins/ref/plugins.txt
+RUN bash /usr/local/bin/install-plugins.sh &lt; /usr/share/jenkins/ref/plugins.txt
+
+USER jenkins
+</code></pre>
+
+<p>In this <code>Dockerfile</code>, we add custom configuration to the official CJD Docker image. We first set the <code>JENKINS_UC</code> environment variable to use the CloudBees update center, as well as the <code>CASC_JENKINS_CONFIG</code> variable to point to the location we&rsquo;ll mount our configuration file. Finally, we leverage the <a href="https://github.com/jenkinsci/docker#preinstalling-plugins">Jenkins Docker <code>install-plugins.sh</code> script</a> to install a list of plugins from our <code>plugins.txt</code> file. These plugins include:</p>
+
+<pre><code class="language-txt">configuration-as-code:1.20
+job-dsl:1.74
+kubernetes:1.14.9
+kubernetes-credentials:0.4.0
+credentials:2.2.0
+workflow-multibranch:2.20
+github-branch-source:2.4.5
+workflow-aggregator:2.5
+blueocean:1.10.2
+github-oauth:0.32
+</code></pre>
+
+<p>This will handle the initial installation of the plugins we need, including resolving any dependencies.</p>
+
+<p>Next, we&rsquo;ll need to use the Configuration as Code plugin to handle the configuration of the master itself. To do so, we&rsquo;ll mount the configuration YAML as a <code>ConfigMap</code> that our CJD <code>StatefulSet</code> will use. Here&rsquo;s what our <code>jenkinsCasc.yaml</code> file looks like:</p>
+
+<pre><code class="language-yaml">---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: jenkins-casc
+data:
+  jenkins-casc.yaml: |
+    jenkins:
+      agentProtocols:
+      - &quot;Diagnostic-Ping&quot;
+      - &quot;JNLP4-connect&quot;
+      - &quot;Ping&quot;
+      crumbIssuer:
+        standard:
+          excludeClientIPFromCrumb: false
+      securityRealm:
+        github:
+          githubWebUri: &quot;https://github.com&quot;
+          githubApiUri: &quot;https://api.github.com&quot;
+          clientID: &quot;${CLIENT_ID}&quot;
+          clientSecret: &quot;${CLIENT_SECRET}&quot;
+          oauthScopes: &quot;read:org,user:email&quot;
+      systemMessage: &quot;CJD in Kubernetes configured as code!&quot;
+      clouds:
+      - kubernetes:
+          name: kubernetes
+          jenkinsUrl: http://cjd
+          containerCapStr: 100
+      authorizationStrategy:
+        loggedInUsersCanDoAnything:
+          allowAnonymousRead: false
+    credentials:
+      system:
+        domainCredentials:
+          - credentials:
+            - usernamePassword:
+                scope: GLOBAL
+                id: &quot;github&quot;
+                description: &quot;GitHub API token&quot;
+                username: ${username}
+                password: ${token}
+    jobs:
+    - script: &gt;
+        multibranchPipelineJob('cjd-casc') {
+          branchSources {
+            github {
+              scanCredentialsId('github')
+              repoOwner('cb-technologists')
+              repository('cjd-casc')
+            }
+          }
+          orphanedItemStrategy {
+            discardOldItems {
+              numToKeep(5)
+            }
+          }
+        }
+    security:
+      remotingCLI:
+        enabled: false
+    unclassified:
+      location:
+        adminAddress: &quot;address not configured yet &lt;nobody@nowhere&gt;&quot;
+        url: &quot;https://cjd.cloudbees.elgin.io/&quot;
+</code></pre>
+
+<p>This config file sets up a handful of basic Jenkins settings like allowed agent protocols, security settings, and an example system message.</p>
+
+<p>Three config items in particular are worth additional exploration. First, the security realm is set to use a GitHub organization for authentication (see <a href="https://wiki.jenkins.io/display/JENKINS/GitHub+OAuth+Plugin">the Jenkins GitHub OAuth Plugin page</a> for details on setting up a GitHub OAuth application). To avoid hardcoding our Client ID and Client Secret in our GitHub repository, we take advantage of Kubernetes <code>Secrets</code>.</p>
+
+<p>Recall from our <code>StatefulSet</code> above that we load a few environment variables from <code>Secrets</code>. These include our GitHub OAuth application ID &amp; secret, as well as the username and API token used by our Pipeline job to communicate with our repository.</p>
+
+<p>To create these, we use the following <code>kubectl</code> commands (replacing the placeholder variables with the actual credentials):</p>
+
+<pre><code class="language-bash">kubectl create secret generic github-oauth --from-literal=CLIENT_ID=${CLIENT_ID} --from-literal=CLIENT_SECRET=${CLIENT_SECRET}
+
+kubectl create secret generic github --from-literal=username=${USERNAME} --from-literal=token=${TOKEN}
+</code></pre>
+
+<p>The second config item to note is the creation of a simple Kubernetes cloud that our master will use for provisioning pod template agents using the <a href="https://github.com/jenkinsci/kubernetes-plugin">Jenkins Kubernetes plugin</a>.</p>
+
+<p>The third and final detail to call out is the <code>jobs</code> section, which uses the <a href="https://github.com/jenkinsci/job-dsl-plugin">Job DSL plugin</a> to seed a Multibranch Pipeline job. The Jenkinsfile for this Pipeline is stored in the same GitHub repository as the rest of our config files. We&rsquo;ll detail the contents of this Pipeline script in a later section.</p>
+
+<p>To apply this configuration, we apply the <code>ConfigMap</code> manifest file to our cluster:</p>
+
+<pre><code class="language-bash">kubectl apply -f jenkinsCasc.yaml
+</code></pre>
+
+<p>With our <code>ConfigMap</code> and related <code>Secrets</code> created, we can now apply the manifest file from the previous section to deploy the remainder of the CJD resources:</p>
+
+<pre><code class="language-bash">kubectl apply -f cjd.yaml
+</code></pre>
+
+<h2 id="securing-with-cert-manager">Securing with cert-manager</h2>
+
+<p>At this point, our CJD instance is not accessible through HTTPS. To remedy this and enhance the security of our environment, we&rsquo;ll be using <a href="https://docs.cert-manager.io/en/latest/"><code>cert-manager</code></a>, a Kubernetes tool used to automate the management of certificates within a cluster. In this case, we&rsquo;ll use it to manage our TLS certificate issuance from <a href="https://letsencrypt.org/">Let&rsquo;s Encrypt</a>.</p>
+
+<p>Our setup process for <code>cert-manager</code> loosely follows their <a href="https://github.com/jetstack/cert-manager/blob/master/docs/tutorials/acme/quick-start/index.rst">Quick-Start guide</a>. Because we&rsquo;ve already configured an ingress controller with a corresponding DNS entry along with deploying the CJD resources, we can <a href="https://github.com/jetstack/cert-manager/blob/master/docs/tutorials/acme/quick-start/index.rst#step-0---install-helm-client">ensure Helm</a> <a href="https://github.com/jetstack/cert-manager/blob/master/docs/tutorials/acme/quick-start/index.rst#step-1---installer-tiller">&amp; Tiller</a> are installed on the cluster, then skip to the <a href="https://github.com/jetstack/cert-manager/blob/master/docs/tutorials/acme/quick-start/index.rst#step-5---deploy-cert-manager">step of actually deploying <code>cert-manager</code></a>.</p>
+
+<p>Once <code>cert-manager</code> has been deployed in its new <code>namespace</code>, we&rsquo;ll next need to deploy the <code>Issuer</code> to our <code>cjd</code> <code>namespace</code>.</p>
+
+<blockquote>
+<p><strong>Note</strong>: on initial setup of <code>cert-manager</code>, it&rsquo;s probably prudent to heed the Quick-Start&rsquo;s recommendation to create a staging <code>Issuer</code> first to minimize the risk of being rate limited by Let&rsquo;s Encrypt. For brevity, we&rsquo;ll only walk through the production <code>Issuer</code> creation here.</p>
+</blockquote>
+
+<p>Using the provided <a href="https://raw.githubusercontent.com/jetstack/cert-manager/release-0.8/docs/tutorials/acme/quick-start/example/production-issuer.yaml">example <code>Issuer</code> manifest file</a>, we&rsquo;ll swap in our actual email address before creating the resource in our <code>cjd</code> <code>namespace</code>:</p>
+
+<pre><code class="language-yaml">apiVersion: certmanager.k8s.io/v1alpha1
+kind: Issuer
+metadata:
+  name: letsencrypt-prod
+spec:
+  acme:
+    # The ACME server URL
+    server: https://acme-v02.api.letsencrypt.org/directory
+    # Email address used for ACME registration
+    email: melgin@cloudbees.com
+    # Name of a secret used to store the ACME account private key
+    privateKeySecretRef:
+      name: letsencrypt-prod
+    # Enable the HTTP-01 challenge provider
+    http01: {}
+</code></pre>
+
+<pre><code class="language-bash">kubectl apply -f production-issuer.yaml
+</code></pre>
+
+<p>Once created, this <code>Issuer</code> relies on annotations on our <code>Ingress</code> to manage the TLS certificate creation. Recall that we briefly discussed the <code>Ingress</code> manifest in a previous section:</p>
+
+<pre><code class="language-yaml">---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: cjd
+  annotations:
+    kubernetes.io/ingress.class: &quot;nginx&quot;
+    nginx.ingress.kubernetes.io/ssl-redirect: &quot;true&quot;
+    certmanager.k8s.io/issuer: &quot;letsencrypt-prod&quot; # add after cert-manager deploy
+    certmanager.k8s.io/acme-challenge-type: http01 # add after cert-manager deploy
+spec:
+  tls: # cert-manager
+  - hosts: # cert-manager
+    - cjd.cloudbees.elgin.io # cert-manager
+    secretName: cjd-tls # cert-manager
+  rules:
+  - host: cjd.cloudbees.elgin.io
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: cjd
+          servicePort: 80
+</code></pre>
+
+<p>The lines with comments referencing <code>cert-manager</code> are required for the TLS certificate to be successfully issued. These include specifying the <code>Issuer</code>, the challenge type, as well as the hostname and <code>secretName</code>.</p>
+
+<p>You can confirm that the certificate has been successfully issued by running <code>kubectl get certificate</code> and verifying that <code>READY</code> is <code>True</code> for our <code>cjd-tls</code> certificate. Once this process has been completed, CJD should now be accessible via HTTPS.</p>
+
+<h2 id="writing-the-update-pipeline-job">Writing the update Pipeline job</h2>
+
+<p>With CJD now running in our cluster and accessible via HTTPS, we&rsquo;ll next take a look at the Pipeline script that will handle the update of the master. At a high-level, we need our Pipeline to accomplish two major tasks:</p>
+
+<ol>
+<li>build and push our Docker image whenever a change is pushed to the GitHub repository, and</li>
+<li>update our Kubernetes resources with the newly built Docker image and any additional changes.</li>
+</ol>
+
+<p>We represent these two procedures as stages within our Pipeline script.</p>
+
+<p>For the first stage, we will use <a href="https://github.com/GoogleContainerTools/kaniko">kaniko</a> to build and push our Docker image to <a href="https://cloud.google.com/container-registry/">Google Container Registry</a>. Because we&rsquo;ll be using different agents for each stage, we&rsquo;ll start the Pipeline with <code>agent none</code>. Within the first stage, we define our agent using YAML, which specifies the <a href="https://gcr.io/kaniko-project/executor:debug">Google-provided kaniko image</a> as the container we will use.</p>
+
+<p>To use kaniko, we&rsquo;ll first need to <a href="https://github.com/GoogleContainerTools/kaniko#kubernetes-secret">follow this kaniko documentation</a> to create a Google Cloud service account with appropriate permissions and download the related JSON key. Assuming we&rsquo;ve renamed the key <code>kaniko-secret.json</code>, we can <a href="http://docs.heptio.com/content/private-registries/pr-gcr.html">follow this procedure from Heptio</a> to create another Kubernetes <code>Secret</code> to allow for authentication to Google Container Registry (again replacing the placeholder email with the real service account email address):</p>
+
+<pre><code class="language-bash">kubectl create secret docker-registry gcr-secret \
+    --docker-server=https://gcr.io \
+    --docker-username=_json_key \
+    --docker-email=${SERVICE_ACCOUNT@PROJECT.iam.gserviceaccount.com} \
+    --docker-password=&quot;$(cat kaniko-secret.json)&quot;
+</code></pre>
+
+<p>Within the <code>step</code> block, we are accomplishing two main things:
+1. In the default <code>jnlp</code> container, we store the specific Git commit ID that triggered the build as an environment variable
+2. In the <code>kaniko</code> container, we build and push our latest Docker image, tagging it with the commit ID we just stored.</p>
+
+<pre><code class="language-groovy">pipeline {
+  agent none
+  stages {
+    stage('Build and push with kaniko') {
+      agent {
+        kubernetes {
+          label &quot;kaniko-${UUID.randomUUID().toString()}&quot;
+          yaml &quot;&quot;&quot;
+kind: Pod
+metadata:
+  name: kaniko
+spec:
+  serviceAccountName: cjd
+  containers:
+  - name: kaniko
+    image: gcr.io/kaniko-project/executor:debug-v0.10.0
+    imagePullPolicy: Always
+    command:
+    - /busybox/cat
+    tty: true
+    volumeMounts:
+      - name: jenkins-docker-cfg
+        mountPath: /kaniko/.docker
+  volumes:
+  - name: jenkins-docker-cfg
+    projected:
+      sources:
+      - secret:
+          name: gcr-secret
+          items:
+            - key: .dockerconfigjson
+              path: config.json
+&quot;&quot;&quot;
+        }
+      }
+      environment {
+        PATH = &quot;/busybox:/kaniko:$PATH&quot;
+      }
+      steps {
+        container('jnlp') {
+          script {
+              env.COMMIT_ID = sh(returnStdout: true, script: 'git rev-parse HEAD').trim()
+          }
+        }
+        container(name: 'kaniko', shell: '/busybox/sh') {
+          sh &quot;&quot;&quot;#!/busybox/sh
+                /kaniko/executor --context `pwd` --destination gcr.io/melgin/cjd-casc:${env.COMMIT_ID} --cache=true
+          &quot;&quot;&quot;
+        }
+      }
+    }
+</code></pre>
+
+<p>In the subsequent stage, we now apply changes to our CJD configuration to the resources running in our Kubernetes cluster.</p>
+
+<p>First, we use a <code>when</code> directive to ensure we only run this stage when the Pipeline is running off of the <em>master</em> branch. We then use the <a href="https://gcr.io/cloud-builders/kubectl">Google-provided kubectl image</a> for our stage agent pod template. Within this container, we apply changes to our <code>jenkins-casc</code> <code>ConfigMap</code>, the resources specified in <code>cjd.yaml</code>, and finally set the image for our CJD <code>StatefulSet</code> to the latest one we&rsquo;ve just pushed to Google Container Registry:</p>
+
+<pre><code class="language-groovy">    stage('Update CJD') {
+      when {
+        beforeAgent true
+        branch 'master'
+      }
+      agent {
+        kubernetes {
+          label &quot;kubectl-${UUID.randomUUID().toString()}&quot;
+          yaml &quot;&quot;&quot;
+kind: Pod
+metadata:
+  name: kubectl
+spec:
+  serviceAccountName: cjd
+  containers:
+  - name: kubectl
+    image: gcr.io/cloud-builders/kubectl@sha256:50de93675e6a9e121aad953658b537d01464cba0e4a3c648dbfc89241bb2085e
+    imagePullPolicy: Always
+    command:
+    - cat
+    tty: true
+&quot;&quot;&quot;
+        }
+      }
+      steps {
+        container('kubectl') {
+          sh &quot;&quot;&quot;
+            kubectl apply -f jenkinsCasc.yaml
+            kubectl apply -f cjd.yaml
+            kubectl set image statefulset cjd cjd=gcr.io/melgin/cjd-casc:${env.COMMIT_ID}
+          &quot;&quot;&quot;
+        }
+      }
+    }
+  }
+}
+</code></pre>
+
+<p>To ensure the <code>cjd-casc</code> Pipeline job is triggered automatically upon each commit or pull request, we need to ensure a webhook is setup within the GitHub repository following <a href="https://support.cloudbees.com/hc/en-us/articles/224543927-GitHub-Integration-Webhooks">this process</a>.</p>
+
+<p>With this in place, we now have all of our Jenkins configuration stored as code in our GitHub repository, including the process for updating the configuration. Whenever a change is pushed to the repository, those changes will automatically be applied to our Jenkins master.</p>
+
+<p><img src="/img/cjd-casc/cjd-casc-pipeline.png" alt="successful run of cjd-casc Pipeline" /></p>
+
+<h2 id="further-enhancements">Further enhancements</h2>
+
+<p>This approach moves us much closer to the practice of GitOps for our Jenkins configuration. However, there are certainly areas for enhancement going forward. A few immediate examples that come to mind include:</p>
+
+<ul>
+<li>Non-master branch Pipeline runs could deploy the CJD resources &amp; config to a staging <code>namespace</code>. This would allow for the vetting of changes in a non-production environment before merging to master - a workflow critical for use in any scenario supporting mission-critical workloads.</li>
+<li>Some level of smoke testing should be introduced for either/both of the non-prod/prod <code>namespaces</code> as a third Pipeline stage. This could range from a simple <code>curl</code> command to check the Jenkins system message in order to verify Jenkins is up and running, all the way to more complex cases that verify the latest configuration has been appropriately applied.</li>
+<li><code>post</code> blocks could be introduced for notification to the appropriate Slack channel, email list, etc., that a Jenkins update has commenced/succeeded/failed.</li>
+<li>Right now, the Docker image is rebuilt on every Pipeline run - even if no changes have been committed to the <code>Dockerfile</code> or related files. While caching is in place, it would be even more efficient to check for changes to those specific files, then selectively skip or run the <code>Build and push with kaniko</code> stage (though this does somewhat complicate the tagging of the Docker image each time a commit triggers a build).</li>
+</ul>
+
+            </div>
+        </article>
+
+        <hr />
+
+        <div class="post-info">
+            
+                <p><svg
+                    width="24"
+                    height="24"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="feather feather-pen-tool"
+                  >
+                    <path d="M12 19l7-7 3 3-7 7-3-3z" />
+                    <path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z" />
+                    <path d="M2 2l7.586 7.586" />
+                    <circle cx="11" cy="11" r="2" />
+                  </svg> Matt Elgin</p>
+                <p>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="https://cb-technologists.github.io/tags/jenkins">jenkins</a></span><span class="tag"><a href="https://cb-technologists.github.io/tags/cloudbees-jenkins-distribution">cloudbees jenkins distribution</a></span><span class="tag"><a href="https://cb-technologists.github.io/tags/gitops">gitops</a></span><span class="tag"><a href="https://cb-technologists.github.io/tags/kubernetes">kubernetes</a></span><span class="tag"><a href="https://cb-technologists.github.io/tags/kaniko">kaniko</a></span><span class="tag"><a href="https://cb-technologists.github.io/tags/docker">docker</a></span><span class="tag"><a href="https://cb-technologists.github.io/tags/cert-manager">cert-manager</a></span><span class="tag"><a href="https://cb-technologists.github.io/tags/google-cloud-platform">google cloud platform</a></span>
+                </p>
+
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>2633 Words</p>
+
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2019-07-03 21:00 &#43;0000</p>
+                <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-git-commit"><circle cx="12" cy="12" r="4"></circle><line x1="1.05" y1="12" x2="7" y2="12"></line><line x1="17.01" y1="12" x2="22.96" y2="12"></line></svg><a href="https://github.com/cb-technologists/blog/commit/2826b9ffc74b1fb244d1ca2cee2a58bddcaeda5e" target="_blank" rel="noopener">2826b9f</a> @ 2019-07-03</p>
+        </div>
+
+        
+            <div class="pagination">
+                <div class="pagination__title">
+                    <span class="pagination__title-h"></span>
+                    <hr />
+                </div>
+
+                <div class="pagination__buttons">
+                    
+
+                    
+                        <span class="button next">
+                            <a href="https://cb-technologists.github.io/posts/cloudbees-cross-team-and-dev-sec-ops/">
+                                <span class="button__text">CloudBees&#39; Cross Team Collaboration for Asynchronous DevSecOps</span>
+                                <span class="button__icon">→</span>
+                            </a>
+                        </span>
+                    
+                </div>
+            </div>
+        
+
+        
+    </main>
+
+            </div>
+
+            
+                <footer class="footer">
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span>&copy; 2019</span>
+            
+            <span></span>
+            <span> <a href="https://cb-technologists.github.io/posts/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a></span>
+        </div>
+    </div>
+    <div class="footer__inner">
+        <div class="footer__content">
+
+        </div>
+    </div>
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span>Powered by <a href="http://gohugo.io">Hugo</a></span>
+            <span>Made with &#10084; by <a href="https://github.com/rhazdon">rhazdon</a></span>
+        </div>
+    </div>
+</footer>
+
+            
+        </div>
+
+        
+
+
+
+
+<script type="text/javascript" src="/bundle.min.cf7871ed49474a80ed457154d24e61f7881adbe0f9384951a74ac46b688a39a4dbfa68bc6d37baeb058186de354ead3487d4ee7f083ea4cba860c48600b694f3.js" integrity="sha512-z3hx7UlHSoDtRXFU0k5h94ga2&#43;D5OElRp0rEa2iKOaTb&#43;mi8bTe66wWBht41Tq00h9Tufwg&#43;pMuoYMSGALaU8w=="></script>
+
+
+        <script>
+            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+            })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+            ga('create', 'UA-141077309-1', 'auto');
+            ga('set', 'dimension1', 'map[name:Matt Elgin]');
+            ga('send', 'pageview');
+        </script>
+
+
+
+
+    </body>
+</html>
