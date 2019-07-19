@@ -6,7 +6,7 @@
     <description>Recent content in Tags on CloudBees Technologists</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 03 Jul 2019 17:00:00 -0400</lastBuildDate>
+    <lastBuildDate>Tue, 16 Jul 2019 15:00:00 -0400</lastBuildDate>
     
 	<atom:link href="https://cb-technologists.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
@@ -14,9 +14,45 @@
     <item>
       <title>cert-manager</title>
       <link>https://cb-technologists.github.io/tags/cert-manager/</link>
-      <pubDate>Wed, 03 Jul 2019 17:00:00 -0400</pubDate>
+      <pubDate>Tue, 16 Jul 2019 15:00:00 -0400</pubDate>
       
       <guid>https://cb-technologists.github.io/tags/cert-manager/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>gitops</title>
+      <link>https://cb-technologists.github.io/tags/gitops/</link>
+      <pubDate>Tue, 16 Jul 2019 15:00:00 -0400</pubDate>
+      
+      <guid>https://cb-technologists.github.io/tags/gitops/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>google cloud platform</title>
+      <link>https://cb-technologists.github.io/tags/google-cloud-platform/</link>
+      <pubDate>Tue, 16 Jul 2019 15:00:00 -0400</pubDate>
+      
+      <guid>https://cb-technologists.github.io/tags/google-cloud-platform/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>jenkins</title>
+      <link>https://cb-technologists.github.io/tags/jenkins/</link>
+      <pubDate>Tue, 16 Jul 2019 15:00:00 -0400</pubDate>
+      
+      <guid>https://cb-technologists.github.io/tags/jenkins/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>kubernetes</title>
+      <link>https://cb-technologists.github.io/tags/kubernetes/</link>
+      <pubDate>Tue, 16 Jul 2019 15:00:00 -0400</pubDate>
+      
+      <guid>https://cb-technologists.github.io/tags/kubernetes/</guid>
       <description></description>
     </item>
     
@@ -39,47 +75,11 @@
     </item>
     
     <item>
-      <title>gitops</title>
-      <link>https://cb-technologists.github.io/tags/gitops/</link>
-      <pubDate>Wed, 03 Jul 2019 17:00:00 -0400</pubDate>
-      
-      <guid>https://cb-technologists.github.io/tags/gitops/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>google cloud platform</title>
-      <link>https://cb-technologists.github.io/tags/google-cloud-platform/</link>
-      <pubDate>Wed, 03 Jul 2019 17:00:00 -0400</pubDate>
-      
-      <guid>https://cb-technologists.github.io/tags/google-cloud-platform/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>jenkins</title>
-      <link>https://cb-technologists.github.io/tags/jenkins/</link>
-      <pubDate>Wed, 03 Jul 2019 17:00:00 -0400</pubDate>
-      
-      <guid>https://cb-technologists.github.io/tags/jenkins/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>kaniko</title>
       <link>https://cb-technologists.github.io/tags/kaniko/</link>
       <pubDate>Wed, 03 Jul 2019 17:00:00 -0400</pubDate>
       
       <guid>https://cb-technologists.github.io/tags/kaniko/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>kubernetes</title>
-      <link>https://cb-technologists.github.io/tags/kubernetes/</link>
-      <pubDate>Wed, 03 Jul 2019 17:00:00 -0400</pubDate>
-      
-      <guid>https://cb-technologists.github.io/tags/kubernetes/</guid>
       <description></description>
     </item>
     

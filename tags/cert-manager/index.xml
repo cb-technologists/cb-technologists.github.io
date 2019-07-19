@@ -6,10 +6,20 @@
     <description>Recent content in cert-manager on CloudBees Technologists</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 03 Jul 2019 17:00:00 -0400</lastBuildDate>
+    <lastBuildDate>Tue, 16 Jul 2019 15:00:00 -0400</lastBuildDate>
     
 	<atom:link href="https://cb-technologists.github.io/tags/cert-manager/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Introduction to GitOps - Part 1</title>
+      <link>https://cb-technologists.github.io/posts/gitops-series-part-1/</link>
+      <pubDate>Tue, 16 Jul 2019 15:00:00 -0400</pubDate>
+      
+      <guid>https://cb-technologists.github.io/posts/gitops-series-part-1/</guid>
+      <description>GitOps is a concept that was first coined by Weaveworks in their GitOps - Operations by Pull Request post. The idea itself wasn&amp;rsquo;t anything particularly new, people had been doing automated operations with infrastructure-as-code for years. But now that there was a descriptive new name for this concept, the DevOps community has really started to embrace it. Especially with the ever growing prevalence of Kubernetes.
+If you haven&amp;rsquo;t already done so, I&amp;rsquo;d recommend reading that Weaveworks post since it is always good to understand the origination of a concept.</description>
+    </item>
     
     <item>
       <title>Self-Updating Jenkins: GitOps for Jenkins Configuration</title>
