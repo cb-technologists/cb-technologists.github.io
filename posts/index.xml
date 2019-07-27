@@ -5,8 +5,72 @@
         <description>Recent content in Posts on CloudBees Technologists</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>en-us</language>
-        <lastBuildDate>Tue, 16 Jul 2019 15:00:00 -0400</lastBuildDate>
+        <lastBuildDate>Sat, 27 Jul 2019 10:50:46 -0400</lastBuildDate>
         <atom:link href="https://cb-technologists.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+        
+        <item>
+            <title>Technologists Lightning Talks for DevOps World | Jenkins World 2019 San Francisco</title>
+            <link>https://cb-technologists.github.io/posts/lightning-talks-dw-jw-2019/</link>
+            <pubDate>Sat, 27 Jul 2019 10:50:46 -0400</pubDate>
+            
+            <guid>https://cb-technologists.github.io/posts/lightning-talks-dw-jw-2019/</guid>
+            <description>The Technologists will be giving a bunch of lightning talks in the DevOps Theater at this years DevOps World | Jenkins World in San Francisco. Some of the topics we will be covering include (many of which we have already blogged about):
+ Self-Updating Jenkins: GitOps for Jenkins Configuration  This Lightning Talk will explore using GitOps to automate config updates for the CloudBees Jenkins Distribution.  Jenkins Plugin Management as Code  Let’s admit it, Jenkins Plugin management can be a pain.</description>
+            <content type="html"><![CDATA[<p>The Technologists will be giving a bunch of lightning talks in the DevOps Theater at this years <a href="https://www.cloudbees.com/devops-world/san-francisco/">DevOps World | Jenkins World in San Francisco</a>. Some of the topics we will be covering include (many of which we have <a href="https://cb-technologists.github.io/posts/">already blogged about</a>):</p>
+
+<ul>
+<li><a href="https://cb-technologists.github.io/posts/cjd-casc/"><strong>Self-Updating Jenkins: GitOps for Jenkins Configuration</strong></a>
+
+<ul>
+<li>This Lightning Talk will explore using GitOps to automate config updates for the CloudBees Jenkins Distribution.</li>
+</ul></li>
+<li><a href="https://cb-technologists.github.io/posts/jenkins-plugins-good-bad-ugly/"><strong>Jenkins Plugin Management as Code</strong></a>
+
+<ul>
+<li>Let’s admit it, Jenkins Plugin management can be a pain. In this talk we will explore using CasC for Jenkins Plugin management. We will also get a preview of some exciting improvements around Plugin Management being built by CloudBees.</li>
+</ul></li>
+<li><strong>Multi-Cluster/Multi-Cloud/Hybrid Cloud</strong>
+
+<ul>
+<li>A brief overview and demonstration of up and coming Kubernetes multi-cluster capabilities in CloudBees Core.</li>
+</ul></li>
+<li><a href="https://cb-technologists.github.io/posts/jenkins-x-flow-integration/"><strong>Traditional Deployments with Jenkins X</strong></a>
+
+<ul>
+<li>Jenkins X isn’t just for Kubernetes deployments. In this talk, we’ll discuss how traditional deployments to non Kubernetes environments can be accomplished using Jenkins X and the power of CloudBees Flow.</li>
+</ul></li>
+<li><strong>CloudBees Jenkins X Distribution Means Stability for Native Kubernetes CD</strong>
+
+<ul>
+<li>Stability has been an issue for Jenkins X as it evolves quickly. This talk will provide an overview of how the CloudBees Jenkins X Distribution provides the stability that companies expect for their CD solution.</li>
+</ul></li>
+<li><a href="https://cb-technologists.github.io/posts/gitops-series-part-1/"><strong>GitOps for Jenkins Infrastructure</strong></a>
+
+<ul>
+<li>Overview of using GitOps to manage your Jenkins infrastructure as code. Using some popular open source tools, we can create a process for provisioning and managing the underlying infrastructure for running Jenkins on Kubernetes.</li>
+</ul></li>
+<li><strong>Multi Cluster Deployments with Jenkins X</strong>
+
+<ul>
+<li>When building and deploying applications in a Kubernetes based environment, a common requirement is the ability to isolate Development, Staging, and Production clusters which may have different security policies configured.  Jenkins X now has the ability to build in your development cluster but deploy your application to a separate cluster.</li>
+</ul></li>
+<li><strong>Safety First with Snyk and Jenkins</strong>
+
+<ul>
+<li>Take advantage of Synk’s dependency and docker vulnerability scanning in your pipelines. Fail builds for critical vulnerabilities. Go from insecure to informed in 15 minutes.</li>
+</ul></li>
+<li><strong>GitOps for Blogging, Why Not?</strong>
+
+<ul>
+<li>Jenkins X isn’t just for deploying micro-services to Kubernetes. The Technologists leverage Jenkins X to provide a GitOps approach to reviewing and deploying their Hugo based blog site.</li>
+</ul></li>
+</ul>
+
+<p>The Technologists will also always be available in the CloudBees booth. If you are headed to DevOps World | Jenkins World in San Francisco, and we hope you are, we would love to discuss any of these topics, any thing that we have blogged about on this site or any emerging technologies related to continuous delivery with you. Just stop by the CloudBees booth and ask for a CloudBees Technologist.</p>
+
+<p>We are looking forward to talking with you in San Francisco!</p>
+]]></content>
+        </item>
         
         <item>
             <title>Introduction to GitOps - Part 1</title>

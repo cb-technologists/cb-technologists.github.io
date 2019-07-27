@@ -6,10 +6,100 @@
     <description>Recent content in Tags on CloudBees Technologists</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 16 Jul 2019 15:00:00 -0400</lastBuildDate>
+    <lastBuildDate>Sat, 27 Jul 2019 10:50:46 -0400</lastBuildDate>
     
 	<atom:link href="https://cb-technologists.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>CasC</title>
+      <link>https://cb-technologists.github.io/tags/casc/</link>
+      <pubDate>Sat, 27 Jul 2019 10:50:46 -0400</pubDate>
+      
+      <guid>https://cb-technologists.github.io/tags/casc/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>containers</title>
+      <link>https://cb-technologists.github.io/tags/containers/</link>
+      <pubDate>Sat, 27 Jul 2019 10:50:46 -0400</pubDate>
+      
+      <guid>https://cb-technologists.github.io/tags/containers/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>gitops</title>
+      <link>https://cb-technologists.github.io/tags/gitops/</link>
+      <pubDate>Sat, 27 Jul 2019 10:50:46 -0400</pubDate>
+      
+      <guid>https://cb-technologists.github.io/tags/gitops/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>jenkins</title>
+      <link>https://cb-technologists.github.io/tags/jenkins/</link>
+      <pubDate>Sat, 27 Jul 2019 10:50:46 -0400</pubDate>
+      
+      <guid>https://cb-technologists.github.io/tags/jenkins/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>jenkins-x</title>
+      <link>https://cb-technologists.github.io/tags/jenkins-x/</link>
+      <pubDate>Sat, 27 Jul 2019 10:50:46 -0400</pubDate>
+      
+      <guid>https://cb-technologists.github.io/tags/jenkins-x/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>kubernetes</title>
+      <link>https://cb-technologists.github.io/tags/kubernetes/</link>
+      <pubDate>Sat, 27 Jul 2019 10:50:46 -0400</pubDate>
+      
+      <guid>https://cb-technologists.github.io/tags/kubernetes/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>multi-cluster</title>
+      <link>https://cb-technologists.github.io/tags/multi-cluster/</link>
+      <pubDate>Sat, 27 Jul 2019 10:50:46 -0400</pubDate>
+      
+      <guid>https://cb-technologists.github.io/tags/multi-cluster/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>plugins</title>
+      <link>https://cb-technologists.github.io/tags/plugins/</link>
+      <pubDate>Sat, 27 Jul 2019 10:50:46 -0400</pubDate>
+      
+      <guid>https://cb-technologists.github.io/tags/plugins/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>security</title>
+      <link>https://cb-technologists.github.io/tags/security/</link>
+      <pubDate>Sat, 27 Jul 2019 10:50:46 -0400</pubDate>
+      
+      <guid>https://cb-technologists.github.io/tags/security/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>synk</title>
+      <link>https://cb-technologists.github.io/tags/synk/</link>
+      <pubDate>Sat, 27 Jul 2019 10:50:46 -0400</pubDate>
+      
+      <guid>https://cb-technologists.github.io/tags/synk/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>cert-manager</title>
@@ -21,38 +111,11 @@
     </item>
     
     <item>
-      <title>gitops</title>
-      <link>https://cb-technologists.github.io/tags/gitops/</link>
-      <pubDate>Tue, 16 Jul 2019 15:00:00 -0400</pubDate>
-      
-      <guid>https://cb-technologists.github.io/tags/gitops/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>google cloud platform</title>
       <link>https://cb-technologists.github.io/tags/google-cloud-platform/</link>
       <pubDate>Tue, 16 Jul 2019 15:00:00 -0400</pubDate>
       
       <guid>https://cb-technologists.github.io/tags/google-cloud-platform/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>jenkins</title>
-      <link>https://cb-technologists.github.io/tags/jenkins/</link>
-      <pubDate>Tue, 16 Jul 2019 15:00:00 -0400</pubDate>
-      
-      <guid>https://cb-technologists.github.io/tags/jenkins/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>kubernetes</title>
-      <link>https://cb-technologists.github.io/tags/kubernetes/</link>
-      <pubDate>Tue, 16 Jul 2019 15:00:00 -0400</pubDate>
-      
-      <guid>https://cb-technologists.github.io/tags/kubernetes/</guid>
       <description></description>
     </item>
     
@@ -84,15 +147,6 @@
     </item>
     
     <item>
-      <title>CasC</title>
-      <link>https://cb-technologists.github.io/tags/casc/</link>
-      <pubDate>Mon, 10 Jun 2019 07:50:46 -0400</pubDate>
-      
-      <guid>https://cb-technologists.github.io/tags/casc/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>DevSecOps</title>
       <link>https://cb-technologists.github.io/tags/devsecops/</link>
       <pubDate>Mon, 10 Jun 2019 07:50:46 -0400</pubDate>
@@ -120,33 +174,6 @@
     </item>
     
     <item>
-      <title>containers</title>
-      <link>https://cb-technologists.github.io/tags/containers/</link>
-      <pubDate>Mon, 10 Jun 2019 07:50:46 -0400</pubDate>
-      
-      <guid>https://cb-technologists.github.io/tags/containers/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>plugins</title>
-      <link>https://cb-technologists.github.io/tags/plugins/</link>
-      <pubDate>Mon, 10 Jun 2019 07:50:46 -0400</pubDate>
-      
-      <guid>https://cb-technologists.github.io/tags/plugins/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>security</title>
-      <link>https://cb-technologists.github.io/tags/security/</link>
-      <pubDate>Mon, 10 Jun 2019 07:50:46 -0400</pubDate>
-      
-      <guid>https://cb-technologists.github.io/tags/security/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>cloudbees flow</title>
       <link>https://cb-technologists.github.io/tags/cloudbees-flow/</link>
       <pubDate>Wed, 29 May 2019 12:47:46 -0400</pubDate>
@@ -161,15 +188,6 @@
       <pubDate>Wed, 29 May 2019 12:47:46 -0400</pubDate>
       
       <guid>https://cb-technologists.github.io/tags/extending-jenkins-x/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>jenkins x</title>
-      <link>https://cb-technologists.github.io/tags/jenkins-x/</link>
-      <pubDate>Wed, 29 May 2019 12:47:46 -0400</pubDate>
-      
-      <guid>https://cb-technologists.github.io/tags/jenkins-x/</guid>
       <description></description>
     </item>
     
