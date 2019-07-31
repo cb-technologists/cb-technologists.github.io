@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>gitops on CloudBees Technologists</title>
+    <title>GitOps on CloudBees Technologists</title>
     <link>https://cb-technologists.github.io/tags/gitops/</link>
-    <description>Recent content in gitops on CloudBees Technologists</description>
+    <description>Recent content in GitOps on CloudBees Technologists</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Sat, 27 Jul 2019 10:50:46 -0400</lastBuildDate>

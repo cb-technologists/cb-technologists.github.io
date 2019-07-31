@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>snyk on CloudBees Technologists</title>
+    <link>https://cb-technologists.github.io/tags/snyk/</link>
+    <description>Recent content in snyk on CloudBees Technologists</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 31 Jul 2019 07:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://cb-technologists.github.io/tags/snyk/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Safety First with Jenkins and Snyk</title>
+      <link>https://cb-technologists.github.io/posts/jenkins-snyk/</link>
+      <pubDate>Wed, 31 Jul 2019 07:00:00 +0000</pubDate>
+      
+      <guid>https://cb-technologists.github.io/posts/jenkins-snyk/</guid>
+      <description>Implementing security scanning as a preventative measure in your CI pipeline. Overview Today’s developers are being empowered to expeditiously innovate, creating new software capabilities and building continuous customer value. At CloudBees, we commonly tell our customers:
+ &amp;ldquo;Every business is a software business and is under pressure to innovate constantly. This increased velocity introduces new business risks. CloudBees is building the world&amp;rsquo;s first end-to-end automated software delivery system (SDM), enabling companies to balance governance and developer freedom.</description>
+    </item>
+    
+  </channel>
+</rss>
