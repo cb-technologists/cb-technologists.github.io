@@ -6,10 +6,37 @@
     <description>Recent content in Tags on CloudBees Technologists</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 27 Jul 2019 10:50:46 -0400</lastBuildDate>
+    <lastBuildDate>Sun, 28 Jul 2019 23:44:10 +0100</lastBuildDate>
     
 	<atom:link href="https://cb-technologists.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>CI/CD pipelines</title>
+      <link>https://cb-technologists.github.io/tags/ci/cd-pipelines/</link>
+      <pubDate>Sun, 28 Jul 2019 23:44:10 +0100</pubDate>
+      
+      <guid>https://cb-technologists.github.io/tags/ci/cd-pipelines/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>jenkins-x</title>
+      <link>https://cb-technologists.github.io/tags/jenkins-x/</link>
+      <pubDate>Sun, 28 Jul 2019 23:44:10 +0100</pubDate>
+      
+      <guid>https://cb-technologists.github.io/tags/jenkins-x/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>tekton</title>
+      <link>https://cb-technologists.github.io/tags/tekton/</link>
+      <pubDate>Sun, 28 Jul 2019 23:44:10 +0100</pubDate>
+      
+      <guid>https://cb-technologists.github.io/tags/tekton/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>CasC</title>
@@ -17,15 +44,6 @@
       <pubDate>Sat, 27 Jul 2019 10:50:46 -0400</pubDate>
       
       <guid>https://cb-technologists.github.io/tags/casc/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>GitOps</title>
-      <link>https://cb-technologists.github.io/tags/gitops/</link>
-      <pubDate>Sat, 27 Jul 2019 10:50:46 -0400</pubDate>
-      
-      <guid>https://cb-technologists.github.io/tags/gitops/</guid>
       <description></description>
     </item>
     
@@ -39,20 +57,20 @@
     </item>
     
     <item>
+      <title>gitops</title>
+      <link>https://cb-technologists.github.io/tags/gitops/</link>
+      <pubDate>Sat, 27 Jul 2019 10:50:46 -0400</pubDate>
+      
+      <guid>https://cb-technologists.github.io/tags/gitops/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>jenkins</title>
       <link>https://cb-technologists.github.io/tags/jenkins/</link>
       <pubDate>Sat, 27 Jul 2019 10:50:46 -0400</pubDate>
       
       <guid>https://cb-technologists.github.io/tags/jenkins/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>jenkins x</title>
-      <link>https://cb-technologists.github.io/tags/jenkins-x/</link>
-      <pubDate>Sat, 27 Jul 2019 10:50:46 -0400</pubDate>
-      
-      <guid>https://cb-technologists.github.io/tags/jenkins-x/</guid>
       <description></description>
     </item>
     
