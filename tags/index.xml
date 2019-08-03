@@ -6,10 +6,82 @@
     <description>Recent content in Tags on CloudBees Technologists</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 31 Jul 2019 07:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 03 Aug 2019 10:05:15 -0400</lastBuildDate>
     
 	<atom:link href="https://cb-technologists.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>CD</title>
+      <link>https://cb-technologists.github.io/tags/cd/</link>
+      <pubDate>Sat, 03 Aug 2019 10:05:15 -0400</pubDate>
+      
+      <guid>https://cb-technologists.github.io/tags/cd/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>CI</title>
+      <link>https://cb-technologists.github.io/tags/ci/</link>
+      <pubDate>Sat, 03 Aug 2019 10:05:15 -0400</pubDate>
+      
+      <guid>https://cb-technologists.github.io/tags/ci/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>DinD</title>
+      <link>https://cb-technologists.github.io/tags/dind/</link>
+      <pubDate>Sat, 03 Aug 2019 10:05:15 -0400</pubDate>
+      
+      <guid>https://cb-technologists.github.io/tags/dind/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>containers</title>
+      <link>https://cb-technologists.github.io/tags/containers/</link>
+      <pubDate>Sat, 03 Aug 2019 10:05:15 -0400</pubDate>
+      
+      <guid>https://cb-technologists.github.io/tags/containers/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>kaniko</title>
+      <link>https://cb-technologists.github.io/tags/kaniko/</link>
+      <pubDate>Sat, 03 Aug 2019 10:05:15 -0400</pubDate>
+      
+      <guid>https://cb-technologists.github.io/tags/kaniko/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>kubernetes</title>
+      <link>https://cb-technologists.github.io/tags/kubernetes/</link>
+      <pubDate>Sat, 03 Aug 2019 10:05:15 -0400</pubDate>
+      
+      <guid>https://cb-technologists.github.io/tags/kubernetes/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>security</title>
+      <link>https://cb-technologists.github.io/tags/security/</link>
+      <pubDate>Sat, 03 Aug 2019 10:05:15 -0400</pubDate>
+      
+      <guid>https://cb-technologists.github.io/tags/security/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>DevSecOps</title>
+      <link>https://cb-technologists.github.io/tags/devsecops/</link>
+      <pubDate>Wed, 31 Jul 2019 07:00:00 +0000</pubDate>
+      
+      <guid>https://cb-technologists.github.io/tags/devsecops/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>cloudbees</title>
@@ -17,15 +89,6 @@
       <pubDate>Wed, 31 Jul 2019 07:00:00 +0000</pubDate>
       
       <guid>https://cb-technologists.github.io/tags/cloudbees/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>devsecops</title>
-      <link>https://cb-technologists.github.io/tags/devsecops/</link>
-      <pubDate>Wed, 31 Jul 2019 07:00:00 +0000</pubDate>
-      
-      <guid>https://cb-technologists.github.io/tags/devsecops/</guid>
       <description></description>
     </item>
     
@@ -44,15 +107,6 @@
       <pubDate>Wed, 31 Jul 2019 07:00:00 +0000</pubDate>
       
       <guid>https://cb-technologists.github.io/tags/jenkins/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>security</title>
-      <link>https://cb-technologists.github.io/tags/security/</link>
-      <pubDate>Wed, 31 Jul 2019 07:00:00 +0000</pubDate>
-      
-      <guid>https://cb-technologists.github.io/tags/security/</guid>
       <description></description>
     </item>
     
@@ -84,7 +138,7 @@
     </item>
     
     <item>
-      <title>jenkins-x</title>
+      <title>jenkins x</title>
       <link>https://cb-technologists.github.io/tags/jenkins-x/</link>
       <pubDate>Sun, 28 Jul 2019 23:44:10 +0100</pubDate>
       
@@ -111,29 +165,11 @@
     </item>
     
     <item>
-      <title>containers</title>
-      <link>https://cb-technologists.github.io/tags/containers/</link>
-      <pubDate>Sat, 27 Jul 2019 10:50:46 -0400</pubDate>
-      
-      <guid>https://cb-technologists.github.io/tags/containers/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>gitops</title>
       <link>https://cb-technologists.github.io/tags/gitops/</link>
       <pubDate>Sat, 27 Jul 2019 10:50:46 -0400</pubDate>
       
       <guid>https://cb-technologists.github.io/tags/gitops/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>kubernetes</title>
-      <link>https://cb-technologists.github.io/tags/kubernetes/</link>
-      <pubDate>Sat, 27 Jul 2019 10:50:46 -0400</pubDate>
-      
-      <guid>https://cb-technologists.github.io/tags/kubernetes/</guid>
       <description></description>
     </item>
     
@@ -197,15 +233,6 @@
       <pubDate>Wed, 03 Jul 2019 17:00:00 -0400</pubDate>
       
       <guid>https://cb-technologists.github.io/tags/docker/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>kaniko</title>
-      <link>https://cb-technologists.github.io/tags/kaniko/</link>
-      <pubDate>Wed, 03 Jul 2019 17:00:00 -0400</pubDate>
-      
-      <guid>https://cb-technologists.github.io/tags/kaniko/</guid>
       <description></description>
     </item>
     

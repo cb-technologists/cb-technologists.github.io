@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>kaniko on CloudBees Technologists</title>
-    <link>https://cb-technologists.github.io/tags/kaniko/</link>
-    <description>Recent content in kaniko on CloudBees Technologists</description>
+    <title>CD on CloudBees Technologists</title>
+    <link>https://cb-technologists.github.io/tags/cd/</link>
+    <description>Recent content in CD on CloudBees Technologists</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Sat, 03 Aug 2019 10:05:15 -0400</lastBuildDate>
     
-	<atom:link href="https://cb-technologists.github.io/tags/kaniko/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://cb-technologists.github.io/tags/cd/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -19,16 +19,6 @@
       <guid>https://cb-technologists.github.io/posts/build-continaer-images/</guid>
       <description>Originally published on kurtmadel.com
 Back in 2013, before Kubernetes was a thing, Docker was making Linux containers (LXC) much more accessible and use of Docker based containers took off (and Docker quickly dropped LXC as the default execution engine for their own container runtime). At the same time continuous integration (CI) was rapidly maturing as a best practice and a necessity for efficient software delivery. The use of Docker containers with CI was quickly adopted as the best way to manage CI tools - compilers, testing tools, security scans, etc.</description>
-    </item>
-    
-    <item>
-      <title>Self-Updating Jenkins: GitOps for Jenkins Configuration</title>
-      <link>https://cb-technologists.github.io/posts/cjd-casc/</link>
-      <pubDate>Wed, 03 Jul 2019 17:00:00 -0400</pubDate>
-      
-      <guid>https://cb-technologists.github.io/posts/cjd-casc/</guid>
-      <description>In this blog post, we&amp;rsquo;ll walk through creating a self-updating instance of the CloudBees Jenkins Distribution, with all configuration stored as code in a GitHub repository.
-We&amp;rsquo;ll deploy the CJD master as a StatefulSet in a Kubernetes cluster, configure the master using the Jenkins Configuration as Code plugin, and set up a TLS certificate through cert-manager. Finally, we&amp;rsquo;ll seed a Pipeline job that updates the master upon commit to the Git repository that contains the configuration - enabling GitOps for Jenkins itself.</description>
     </item>
     
   </channel>

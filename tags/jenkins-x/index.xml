@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>jenkins-x on CloudBees Technologists</title>
+    <title>jenkins x on CloudBees Technologists</title>
     <link>https://cb-technologists.github.io/tags/jenkins-x/</link>
-    <description>Recent content in jenkins-x on CloudBees Technologists</description>
+    <description>Recent content in jenkins x on CloudBees Technologists</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Sun, 28 Jul 2019 23:44:10 +0100</lastBuildDate>
