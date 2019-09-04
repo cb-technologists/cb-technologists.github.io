@@ -6,7 +6,7 @@
     <description>Recent content in Tags on CloudBees Technologists</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 03 Aug 2019 10:05:15 -0400</lastBuildDate>
+    <lastBuildDate>Wed, 04 Sep 2019 05:05:15 -0400</lastBuildDate>
     
 	<atom:link href="https://cb-technologists.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
@@ -14,7 +14,7 @@
     <item>
       <title>CD</title>
       <link>https://cb-technologists.github.io/tags/cd/</link>
-      <pubDate>Sat, 03 Aug 2019 10:05:15 -0400</pubDate>
+      <pubDate>Wed, 04 Sep 2019 05:05:15 -0400</pubDate>
       
       <guid>https://cb-technologists.github.io/tags/cd/</guid>
       <description></description>
@@ -23,9 +23,45 @@
     <item>
       <title>CI</title>
       <link>https://cb-technologists.github.io/tags/ci/</link>
-      <pubDate>Sat, 03 Aug 2019 10:05:15 -0400</pubDate>
+      <pubDate>Wed, 04 Sep 2019 05:05:15 -0400</pubDate>
       
       <guid>https://cb-technologists.github.io/tags/ci/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Core v2</title>
+      <link>https://cb-technologists.github.io/tags/core-v2/</link>
+      <pubDate>Wed, 04 Sep 2019 05:05:15 -0400</pubDate>
+      
+      <guid>https://cb-technologists.github.io/tags/core-v2/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Pod Security Policies</title>
+      <link>https://cb-technologists.github.io/tags/pod-security-policies/</link>
+      <pubDate>Wed, 04 Sep 2019 05:05:15 -0400</pubDate>
+      
+      <guid>https://cb-technologists.github.io/tags/pod-security-policies/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>kubernetes</title>
+      <link>https://cb-technologists.github.io/tags/kubernetes/</link>
+      <pubDate>Wed, 04 Sep 2019 05:05:15 -0400</pubDate>
+      
+      <guid>https://cb-technologists.github.io/tags/kubernetes/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>security</title>
+      <link>https://cb-technologists.github.io/tags/security/</link>
+      <pubDate>Wed, 04 Sep 2019 05:05:15 -0400</pubDate>
+      
+      <guid>https://cb-technologists.github.io/tags/security/</guid>
       <description></description>
     </item>
     
@@ -53,24 +89,6 @@
       <pubDate>Sat, 03 Aug 2019 10:05:15 -0400</pubDate>
       
       <guid>https://cb-technologists.github.io/tags/kaniko/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>kubernetes</title>
-      <link>https://cb-technologists.github.io/tags/kubernetes/</link>
-      <pubDate>Sat, 03 Aug 2019 10:05:15 -0400</pubDate>
-      
-      <guid>https://cb-technologists.github.io/tags/kubernetes/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>security</title>
-      <link>https://cb-technologists.github.io/tags/security/</link>
-      <pubDate>Sat, 03 Aug 2019 10:05:15 -0400</pubDate>
-      
-      <guid>https://cb-technologists.github.io/tags/security/</guid>
       <description></description>
     </item>
     
