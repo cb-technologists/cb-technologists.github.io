@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Authors on CloudBees Technologists</title>
+    <link>https://cb-technologists.github.io/authors/</link>
+    <description>Recent content in Authors on CloudBees Technologists</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 04 Sep 2019 05:05:15 -0400</lastBuildDate>
+    
+	<atom:link href="https://cb-technologists.github.io/authors/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title></title>
+      <link>https://cb-technologists.github.io/authors/david-ca%C3%B1adillas/</link>
+      <pubDate>Sun, 28 Jul 2019 23:44:10 +0100</pubDate>
+      
+      <guid>https://cb-technologists.github.io/authors/david-ca%C3%B1adillas/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://cb-technologists.github.io/authors/casey-vega/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://cb-technologists.github.io/authors/casey-vega/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://cb-technologists.github.io/authors/josh-hendrick/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://cb-technologists.github.io/authors/josh-hendrick/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://cb-technologists.github.io/authors/kurt-madel/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://cb-technologists.github.io/authors/kurt-madel/</guid>
+      <description>Kurt Madel is Director, Global Solution Architecture for CloudBees and works out of their office in Richmond, VA. He has over 20 years of software engineering and architecture experience, including DevOps in real world scenarios. He and his team work with CloudBees customers, and internally with CloudBees product, sales, and engineering teams, to help customers learn and use the CloudBees continuous delivery platform architected for the enterprise. Prior to joining CloudBees he was a software engineer at Capital One where he developed APIs for Apple Pay and helped lead their REST API initiative to include leading the development of a micro-service framework used by thousands of developers and streamlining of CI / CD processes.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://cb-technologists.github.io/authors/logan-donley/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://cb-technologists.github.io/authors/logan-donley/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://cb-technologists.github.io/authors/matt-elgin/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://cb-technologists.github.io/authors/matt-elgin/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="author"
+    content="">
+<meta name="description"
+    content="What are Pod Security Policies? Although Kubernetes Pod Security Policies are still a beta feature of Kubernetes they are an important security feature that should not be overlooked. Pod Security Policies (PSPs) are built-in Kubernetes resources that allow you to enforce security related properties of every container in your cluster. If a container in a pod does not meet the criteria for an applicable PSP then it will not be scheduled to run." />
+<meta name="keywords" content="" />
+<meta name="robots" content="noodp" />
+
+
+    
+<link rel="canonical" href="https://cb-technologists.github.io/posts/best-practices-for-cloudbees-core-jenkins-on-kubernetes/core-psp/" />
+    
+
+
+
+<title>
+    
+    Using Kubernetes Pod Security Policies with CloudBees Core - Jenkins :: CloudBees Technologists 
+    
+</title>
+
+
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.1/css/flag-icon.min.css" rel="stylesheet"
+    type="text/css">
+
+
+
+<link rel="stylesheet" href="/main.min.74cef043b0b79fbf97964f6868e32a91ec85c4cbabfb73696b8ad790697150cd.css">
+
+
+
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#252627">
+<link rel="shortcut icon" href="/favicon.ico">
+<meta name="theme-color" content="#252627">
+<meta itemprop="name" content="Using Kubernetes Pod Security Policies with CloudBees Core - Jenkins">
+<meta itemprop="description" content="What are Pod Security Policies? Although Kubernetes Pod Security Policies are still a beta feature of Kubernetes they are an important security feature that should not be overlooked. Pod Security Policies (PSPs) are built-in Kubernetes resources that allow you to enforce security related properties of every container in your cluster. If a container in a pod does not meet the criteria for an applicable PSP then it will not be scheduled to run.">
+
+
+<meta itemprop="datePublished" content="2019-09-04T05:05:15-04:00" />
+<meta itemprop="dateModified" content="2019-09-10T13:41:48&#43;00:00" />
+<meta itemprop="wordCount" content="1701">
+
+
+
+<meta itemprop="keywords" content="Kubernetes,CI,CD,Core v2,security,Pod Security Policies,Jenkins," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Using Kubernetes Pod Security Policies with CloudBees Core - Jenkins"/>
+<meta name="twitter:description" content="What are Pod Security Policies? Although Kubernetes Pod Security Policies are still a beta feature of Kubernetes they are an important security feature that should not be overlooked. Pod Security Policies (PSPs) are built-in Kubernetes resources that allow you to enforce security related properties of every container in your cluster. If a container in a pod does not meet the criteria for an applicable PSP then it will not be scheduled to run."/>
+
+
+
+
+<meta property="article:published_time" content="2019-09-04 05:05:15 -0400 -0400" />
+
+
+
+
+
+
+
+    </head>
+
+    <body class="dark-theme">
+        <div class="container">
+            <header class="header">
+    <span class="header__inner">
+        <a href="https://cb-technologists.github.io/" style="text-decoration: none;">
+    <div class="logo">
+        
+            <span class="logo__mark">></span>
+            <span class="logo__text">technologists</span>
+            <span class="logo__cursor"></span>
+        
+    </div>
+</a>
+
+
+        <span class="header__right">
+            
+                <nav class="menu">
+    <ul class="menu__inner">
+            
+            
+            
+            
+            <li class='menu-item-active'><a href="https://cb-technologists.github.io/posts">Blog</a></li>
+            
+            
+            
+            
+            <li class='menu-item'><a href="https://cb-technologists.github.io/series">Series</a></li>
+            
+            
+            
+            
+            <li class='menu-item'><a href="https://cb-technologists.github.io/authors">Authors</a></li>
+            
+            
+            
+            
+            <li class='menu-item'><a href="https://cb-technologists.github.io/about">About</a></li>
+    </ul>
+</nav>
+
+                <span class="menu-trigger">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+                    </svg>
+                </span>
+            
+
+            <span class="theme-toggle"><svg class="theme-toggler" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M22 41C32.4934 41 41 32.4934 41 22C41 11.5066 32.4934 3 22
+  3C11.5066 3 3 11.5066 3 22C3 32.4934 11.5066 41 22 41ZM7 22C7
+  13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22Z"/>
+</svg>
+</span>
+        </span>
+    </span>
+</header>
+
+
+            <div class="content">
+                
+    <main class="post">
+
+        <div class="post-info">
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>8 minutes
+
+            
+
+            </p>
+        </div>
+
+        <article>
+            <h3 class="subtitle series"><a href="/series/best-practices-for-cloudbees-core-jenkins-on-kubernetes">Best Practices for CloudBees Core (Jenkins) on Kubernetes</a> Part 1</h3>
+            <h1 class="post-title"><a href="https://cb-technologists.github.io/posts/best-practices-for-cloudbees-core-jenkins-on-kubernetes/core-psp/">Using Kubernetes Pod Security Policies with CloudBees Core - Jenkins</a></h1>
+            
+            <p><span>by</span> 
+  
+  <a href="/authors/kurt-madel">Kurt Madel</a>
+</p>
+
+            
+            
+            
+            <div class="box">
+              <figure class="series-photo" itemprop="associatedMedia" itemscope="" itemtype="http://schema.org/ImageObject">
+                <div class="img">
+                  <img itemprop="thumbnail" src="/posts/best-practices-for-cloudbees-core-jenkins-on-kubernetes/bank.jpg" alt="SONY RX-100 ISO 125 10.4mm ƒ/2.2 1/100">
+                </div>
+                <a href="/posts/best-practices-for-cloudbees-core-jenkins-on-kubernetes/bank.jpg" itemprop="contentUrl"></a>
+                <figcaption>Wells Fargo Bank, Market Street, San Francisco, CA<br>Photograph by Kurt Madel ©2019</figcaption>
+              </figure>
+            </div>
+            
+
+            <div class="post-content">
+                
+
+<h2 id="what-are-pod-security-policies">What are Pod Security Policies?</h2>
+
+<p>Although <a href="https://kubernetes.io/docs/concepts/policy/pod-security-policy/">Kubernetes Pod Security Policies</a> are still a <strong>beta</strong> feature of Kubernetes they are an important security feature that should not be overlooked. Pod Security Policies (PSPs) are built-in Kubernetes resources that allow you to enforce security related properties of every container in your cluster. If a container in a pod does not meet the criteria for an applicable PSP then it will not be scheduled to run.</p>
+
+<h2 id="best-practices-for-cloudbees-core-v2-on-kubernetes">Best Practices for CloudBees Core v2 on Kubernetes</h2>
+
+<p>There are <a href="https://rancher.com/blog/2019/2019-01-17-101-more-kubernetes-security-best-practices/">numerous articles</a> <a href="https://www.twistlock.com/2019/06/06/5-kubernetes-security-best-practices/">on security best practices</a> for Kubernetes (to include <a href="https://www.cncf.io/blog/2019/01/14/9-kubernetes-security-best-practices-everyone-must-follow/">this one published on the CNCF blog site</a>). Many of these articles include similar best practices and most, if not all, apply to running Core v2 on Kubernetes. Some of these best practices are inherent in CloudBees&rsquo; documented install of Core v2 on Kubernetes, while others are documented best practices and are recommended next steps after your initial Core v2 installation.</p>
+
+<p>Before we take a look at the best practices that aren&rsquo;t necessarily covered by the CloudBees reference architectures and best practice documentation, I will provide a quick overview of what is already available with an OOTB Core v2 install and highlight some CloudBees documentation that speaks to other best practices for running Core v2 on Kubernetes more securely.</p>
+
+<h3 id="enable-role-based-access-control-rbac">Enable Role-Based Access Control (RBAC)</h3>
+
+<p>Although you can certainly install Core v2 on Kubernetes without RBAC enabled - the CloudBees install for Core v2 comes with RBAC pre-configured. Running Kubernetes with RBAC enabled is typically the default (it is for all the major cloud providers) and is always a recommended security setting.</p>
+
+<h3 id="use-namespaces-to-establish-security-boundaries-separate-sensitive-workloads">Use Namespaces to Establish Security Boundaries &amp; Separate Sensitive Workloads</h3>
+
+<p>CloudBees recommends that you create a <code>namespace</code> specifically for Core v2 as part of the install. CloudBees also recommends establishing boundaries between your CloudBees Jenkins masters and agent workloads by <a href="https://go.cloudbees.com/docs/cloudbees-core/cloud-install-guide/gke-install/#_distinct_node_pools">setting up distinct node pools</a> using <a href="https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/">taints and tolerations</a> and <a href="https://kubernetes.io/docs/concepts/configuration/assign-pod-node/">assigning pods to specific node pools with node selectors</a>.</p>
+
+<h3 id="create-and-define-cluster-network-policies">Create and Define Cluster Network Policies</h3>
+
+<p>Although CloudBees doesn&rsquo;t provide specific Kubernetes Network Policies, CloudBees does recommend using them and <a href="https://go.cloudbees.com/docs/cloudbees-core/cloud-reference-architecture/ra-for-eks/#_setting_up_a_private_and_encrypted_network">provides documentation for setting up a private and encrypted network for AWS EKS</a>.</p>
+
+<h3 id="run-a-cluster-wide-pod-security-policy">Run a Cluster-wide Pod Security Policy</h3>
+
+<p>At the time of this post, this is one component that is not documented as part of the CloudBees installation guides for Core v2 on Kubernetes and will be the focus of the rest of this post.</p>
+
+<h2 id="why-should-you-use-pod-security-policies-posts-build-continaer-images"><a href="/posts/build-continaer-images/">Why should you use Pod Security Policies?</a></h2>
+
+<p>From the Kubernetes documentation on Pod Security Policies (PSPs): &ldquo;Pod security policy control is implemented as an optional (<strong>but recommended</strong>) <a href="https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/#podsecuritypolicy">admission controller</a>.&rdquo; If you read any number of posts on security best practices for Kubernetes, pretty much all of them will mentions PSPs.</p>
+
+<p>A CD platform, like CloudBees Core v2 on Kubernetes, is typically a multi-tenant service where security is of the utmost importance. In addition to multi-tenancy, when running CD workloads on a platform like Kubernetes there are typically other workloads deployed and if any workload does not have proper security configured it can impact all of the workloads running on the cluster.</p>
+
+<p>The combination of PSPs with Kubernetes RBAC, namespaces and workload specific node pools allows for the granular security you need to ensure there are adequate safeguards in place to greatly reduce the risk of unintentional (and intentional) actions that breaks your cluster. PSPs provide additional safeguards along with targeted node pools, namespaces and service accounts. This allows for the flexibility needed by CI/CD users while providing adequate guard rails so they don&rsquo;t negatively impact CD workloads or other important Kubernetes workloads by doing something stupid - accidental or otherwise.</p>
+
+<h2 id="using-pod-security-policies-with-cloudbees-core-v2">Using Pod Security Policies with CloudBees Core v2</h2>
+
+<p>As mentioned above, Pod Security Polices are an optional Kubernetes feature (and still beta) so they are not enabled by default on most Kubernetes distributions - to include GCP GKE, and Azure AKS. PSPs can be created and applied to a <code>ClusterRole</code> or a <code>Role</code> resource definition without enabling the PodSecurityPolicy admission controller. This is very important, because <strong>once you enable the PodSecurityPolicy admission controller any <code>pod</code> that does not have a PSP applied to it will not get scheduled</strong>.</p>
+
+<blockquote>
+<p>NOTE: PSPs are enabled by default on AWS EKS 1.13 and above, but with a very permissive PSP that is the same as running EKS without PSPs.</p>
+</blockquote>
+
+<p>We will define two PSPs for our Core v2 cluster:</p>
+
+<ul>
+<li>A very restrictive PSP used for all CloudBees components, additional Kubernetes services being leveraged with Core v2 and the <em>majority</em> of dynamic ephemeral Kubernetes based agents used by our Core v2 cluster:</li>
+</ul>
+
+<pre><code class="language-yaml">apiVersion: policy/v1beta1
+kind: PodSecurityPolicy
+metadata:
+  name: cb-restricted
+  annotations:
+    seccomp.security.alpha.kubernetes.io/allowedProfileNames: 'docker/default'
+    apparmor.security.beta.kubernetes.io/allowedProfileNames: 'runtime/default'
+    seccomp.security.alpha.kubernetes.io/defaultProfileName:  'docker/default'
+    apparmor.security.beta.kubernetes.io/defaultProfileName:  'runtime/default'
+spec:
+  # prevents container from manipulating the network stack, accessing devices on the host and prevents ability to run DinD
+  privileged: false
+  fsGroup:
+    rule: 'MustRunAs'
+    ranges:
+      # Forbid adding the root group.
+      - min: 1
+        max: 65535
+  runAsUser:
+    rule: 'MustRunAs'
+    ranges:
+      # Don't allow containers to run as ROOT
+      - min: 1
+        max: 65535
+  seLinux:
+    rule: RunAsAny
+  supplementalGroups:
+    rule: RunAsAny
+  # Allow core volume types. But more specifically, don't allow mounting host volumes to include the Docker socket - '/var/run/docker.sock'
+  volumes:
+  - 'emptyDir'
+  - 'secret'
+  - 'downwardAPI'
+  - 'configMap'
+  # persistentVolumes are required for CJOC and Managed Master StatefulSets
+  - 'persistentVolumeClaim'
+  - 'projected'
+  hostPID: false
+  hostIPC: false
+  hostNetwork: false
+  # Ensures that no child process of a container can gain more privileges than its parent
+  allowPrivilegeEscalation: false
+</code></pre>
+
+<p>Once the primary Core v2 PSP (<code>cb-restricted</code> in this case) has been created you must update the <code>Roles</code> to use it. CloudBees defines two Kubernetes <code>Roles</code> for the Core v2 install on Kubernetes, <code>cjoc-master-management</code> bound to the <code>cjoc</code> <code>ServiceAccount</code> for <a href="https://go.cloudbees.com/docs/cloudbees-core/cloud-reference-architecture/ra-for-gke/#_master_provisioning">provisioning Managed/Team Masters <code>StatefulSets</code> from CJOC</a>, and <code>cjoc-agents</code> bound to the <code>jenkins</code> <code>ServiceAccount</code> for scheduling dynamic ephemeral agent pods from Managed/Team Masters. The following Kubernetes configuration snippets show how this is configured:</p>
+
+<pre><code class="language-yaml">---
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1beta1
+metadata:
+  name: cjoc-master-management
+rules:
+- apiGroups: ['extensions']
+  resources: ['podsecuritypolicies']
+  verbs:     ['use']
+  resourceNames:
+  - cb-restricted
+...
+---
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1beta1
+metadata:
+  name: cjoc-agents
+rules:
+- apiGroups: ['extensions']
+  resources: ['podsecuritypolicies']
+  verbs:     ['use']
+  resourceNames:
+  - cb-restricted
+...
+</code></pre>
+
+<ul>
+<li><p>The second PSP will be almost identical except for <code>RunAsUser</code> will be set to <code>RunAsAny</code> to allow running as <code>root</code> - this is specifically to run Kaniko containers (<a href="https://kurtmadel.com/posts/native-kubernetes-continuous-delivery/building-container-images-with-kubernetes/">read more about building containers as securely as possible with Kaniko</a>), but there may be some other uses cases that require containers to run as <code>root</code>:</p>
+
+<pre><code>runAsUser:
+rule: 'RunAsAny'
+</code></pre></li>
+</ul>
+
+<p>The cluster used as an example for this post relies on two Kubernetes services for running Core v2: <strong>cert-manager</strong> for TLS and <strong>ingress-nginx</strong> for, well, ingress. If these are installed before you enable PSPs on your cluster then the <code>pods</code> associated with them will be stopped if the associated <code>Roles</code>/<code>ClusterRoles</code> don&rsquo;t have PSPs applied to them. Both services are deployed to their own namespaces so an easy way to ensure that all <code>ServiceAccounts</code> associated with those services have a PSP applied is to create a <code>ClusterRole</code> with the PSP  and then bind that <code>ClusterRole</code> to all <code>ServiceAccounts</code> in the applicable <code>namespace</code>:</p>
+
+<p><em><code>ClusterRole</code> with the cb-restricted PSP applied</em></p>
+
+<pre><code class="language-yaml">apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: psp-restricted-clusterrole
+rules:
+- apiGroups:
+  - extensions
+  resources:
+  - podsecuritypolicies
+  resourceNames:
+  - cb-restricted
+  verbs:
+  - use
+</code></pre>
+
+<p><em><code>RoleBindings</code> for cert-manager and ingress-nginx <code>ServiceAccounts</code></em></p>
+
+<pre><code class="language-yaml">apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: cert-manager-psp-restricted
+  namespace: cert-manager
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: psp-restricted-clusterrole
+subjects:
+- apiGroup: rbac.authorization.k8s.io
+  kind: Group
+  name: system:serviceaccounts
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: ingress-nginx-psp-restricted
+  namespace: ingress-nginx
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: psp-restricted-clusterrole
+subjects:
+- apiGroup: rbac.authorization.k8s.io
+  kind: Group
+  name: system:serviceaccounts
+</code></pre>
+
+<blockquote>
+<p>NOTE: You can use this command <code>kubectl get role,clusterrole --all-namespaces</code> to check your cluster for any other <code>Roles</code> or <code>ClusterRoles</code> that need to have a PSP applied to them. Remember, any <code>pod</code> that is running under a <code>ServiceAccount</code> that doesn&rsquo;t have a PSP will be shut down as soon as you enable the Pod Security Policy Admission Controller. For GKE you don&rsquo;t need to apply PSPs to any <code>Roles</code> in the <code>kube-system</code> <code>namespace</code> or any <strong>gce</strong> or <strong>system</strong> <code>ClusterRoles</code> as GKE will automatically apply the necessary PSPs.</p>
+</blockquote>
+
+<p>Now that PSPs are applied to all the necessary <code>Roles</code> and <code>ClusterRoles</code> you can enable the Pod Security Policy Admission Controller for your GKE cluster:</p>
+
+<pre><code class="language-shell">gcloud beta container clusters update [CLUSTER_NAME] --zone [CLUSTER_ZONE] --enable-pod-security-policy
+</code></pre>
+
+<p>Next, you should ensure that all <code>pods</code> are still running:</p>
+
+<pre><code class="language-shell">kubectl get pods --all-namespaces
+</code></pre>
+
+<p>If a <code>pod</code> that you expect to be running is not, you need to find the <code>Role</code>/<code>ClusterRole</code> that is used for the <code>pod</code>/<code>deployment</code>/<code>service</code> and apply a PSP to it.</p>
+
+<p>Default Pod Security Policies created when enabling the <code>pod-security-policy</code> feature on a GKE cluster:</p>
+
+<pre><code class="language-shell">NAME                           PRIV    CAPS   SELINUX    RUNASUSER   FSGROUP    SUPGROUP   READONLYROOTFS   VOLUMES
+gce.event-exporter             false          RunAsAny   RunAsAny    RunAsAny   RunAsAny   false            hostPath,secret
+gce.fluentd-gcp                false          RunAsAny   RunAsAny    RunAsAny   RunAsAny   false            configMap,hostPath,secret
+gce.persistent-volume-binder   false          RunAsAny   RunAsAny    RunAsAny   RunAsAny   false            nfs,secret
+gce.privileged                 true    *      RunAsAny   RunAsAny    RunAsAny   RunAsAny   false            *
+gce.unprivileged-addon         false          RunAsAny   RunAsAny    RunAsAny   RunAsAny   false            emptyDir,configMap,secret
+</code></pre>
+
+<blockquote>
+<p>NOTE: The default Pod Security Policies created automatically cannot be modified - Google will automatically change them back to those above.</p>
+</blockquote>
+
+<p><a href="https://docs.aws.amazon.com/eks/latest/userguide/pod-security-policy.html">AWS EKS</a> and <a href="https://docs.microsoft.com/en-us/azure/aks/use-pod-security-policies">Azure AKS - Preview</a> also support Pod Security Policies.</p>
+
+<h2 id="oh-no-my-jenkins-agents-won-t-start">Oh no, My Jenkins Agents Won&rsquo;t Start!</h2>
+
+<p>The <a href="https://github.com/jenkinsci/kubernetes-plugin">Jenkins Kubernetes plugin</a> (for ephemeral K8s agents) defaults to using a K8s <a href="https://kubernetes.io/docs/concepts/storage/volumes/#emptydir"><code>emptyDir</code> volume</a> type for the Jenkins agent workspace. This causes issues when using a restrictive PSP such at the <strong>cb-restricted</strong> PSP above. Kubernetes defaults to mounting <code>emptyDir</code> volumes as <code>root:root</code> with permissions set to <code>750</code> - as <a href="https://github.com/kubernetes/kubernetes/issues/2630">detailed by this GitHub issue</a> opened way back in 2014. When using a PSP, with Jenkins K8s agent pods, that doesn&rsquo;t allow containers to run as <code>root</code> the containers will not be able to access the default K8s plugin workspace directory. One approach for dealing with this is to set the K8s <code>securityContext</code> for <code>containers</code> in the <code>pod</code> spec. You can do this in the K8s plugin UI via the <strong>Raw yaml for the Pod</strong> field:</p>
+
+<p><img src="/posts/cloudbees-core-on-kubernetes-best-practices/raw-yaml-for-the-pod.png" alt="Raw yaml for the Pod" /></p>
+
+<p>This can also be set in the raw yaml of a <code>pod</code> spec that you <a href="https://github.com/cloudbees-days/pipeline-template-catalog/blob/master/templates/nodejs-app/Jenkinsfile#L2">load into your Jenkins job from a file</a>:</p>
+
+<p><em><code>pod</code> spec with the <code>securityContext</code></em></p>
+
+<pre><code class="language-yaml">kind: Pod
+metadata:
+  name: nodejs-app
+spec:
+  containers:
+  - name: nodejs
+    image: node:10.10.0-alpine
+    command:
+    - cat
+    tty: true
+  - name: testcafe
+    image: gcr.io/technologists/testcafe:0.0.2
+    command:
+    - cat
+    tty: true
+  securityContext:
+    runAsUser: 1000
+</code></pre>
+
+            </div>
+        </article>
+
+        <hr />
+
+        <div class="post-info">
+            
+                <p><svg
+                    width="24"
+                    height="24"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="feather feather-pen-tool"
+                  >
+                    <path d="M12 19l7-7 3 3-7 7-3-3z" />
+                    <path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z" />
+                    <path d="M2 2l7.586 7.586" />
+                    <circle cx="11" cy="11" r="2" />
+                  </svg><a href="/authors/kurt-madel">Kurt Madel</a></p>
+                  
+                <p>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="https://cb-technologists.github.io/tags/kubernetes">Kubernetes</a></span><span class="tag"><a href="https://cb-technologists.github.io/tags/ci">CI</a></span><span class="tag"><a href="https://cb-technologists.github.io/tags/cd">CD</a></span><span class="tag"><a href="https://cb-technologists.github.io/tags/core-v2">Core v2</a></span><span class="tag"><a href="https://cb-technologists.github.io/tags/security">security</a></span><span class="tag"><a href="https://cb-technologists.github.io/tags/pod-security-policies">Pod Security Policies</a></span><span class="tag"><a href="https://cb-technologists.github.io/tags/jenkins">Jenkins</a></span>
+                </p>
+
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>1701 Words</p>
+
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2019-09-04 09:05 &#43;0000</p>
+                <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-git-commit"><circle cx="12" cy="12" r="4"></circle><line x1="1.05" y1="12" x2="7" y2="12"></line><line x1="17.01" y1="12" x2="22.96" y2="12"></line></svg><a href="https://github.com/cb-technologists/blog/commit/037a849456117f2d2f59c7a33e1e1473fa4dfcf0" target="_blank" rel="noopener">037a849</a> @ 2019-09-10</p>
+        </div>
+
+        
+            <div class="pagination">
+                <div class="pagination__title">
+                    <span class="pagination__title-h"></span>
+                    <hr />
+                </div>
+
+                <div class="pagination__buttons">
+                    
+
+                    
+                        <span class="button next">
+                            <a href="https://cb-technologists.github.io/posts/build-continaer-images/">
+                                <span class="button__text">Securely Building Container Images on Kubernetes</span>
+                                <span class="button__icon">→</span>
+                            </a>
+                        </span>
+                    
+                </div>
+            </div>
+        
+
+        
+    </main>
+
+            </div>
+
+            
+                <footer class="footer">
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span>&copy; 2019</span>
+            
+            <span></span>
+            <span> <a href="https://cb-technologists.github.io/posts/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a></span>
+        </div>
+    </div>
+    <div class="footer__inner">
+        <div class="footer__content">
+
+        </div>
+    </div>
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span>Powered by <a href="http://gohugo.io">Hugo</a></span>
+            <span>Made with &#10084; by <a href="https://github.com/rhazdon">rhazdon</a></span>
+        </div>
+    </div>
+</footer>
+
+            
+        </div>
+
+        
+
+
+
+
+<script type="text/javascript" src="/bundle.min.cf7871ed49474a80ed457154d24e61f7881adbe0f9384951a74ac46b688a39a4dbfa68bc6d37baeb058186de354ead3487d4ee7f083ea4cba860c48600b694f3.js" integrity="sha512-z3hx7UlHSoDtRXFU0k5h94ga2&#43;D5OElRp0rEa2iKOaTb&#43;mi8bTe66wWBht41Tq00h9Tufwg&#43;pMuoYMSGALaU8w=="></script>
+
+
+        <script>
+            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+            })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+            ga('create', 'UA-141077309-1', 'auto');
+            
+            ga('set', 'dimension2', '2019-09-04 09:05 \x2b0000');
+            ga('send', 'pageview');
+        </script>
+
+
+
+
+    </body>
+</html>
