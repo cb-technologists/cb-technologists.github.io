@@ -2521,6 +2521,17 @@ We&amp;rsquo;ll deploy the CJD master as a StatefulSet in a Kubernetes cluster, 
 
 <p>We&rsquo;ll deploy the CJD master as a <code>StatefulSet</code> in a Kubernetes cluster, configure the master using the <a href="https://github.com/jenkinsci/configuration-as-code-plugin">Jenkins Configuration as Code plugin</a>, and set up a TLS certificate through <a href="https://github.com/jetstack/cert-manager">cert-manager</a>. Finally, we&rsquo;ll seed a Pipeline job that updates the master upon commit to the <a href="https://github.com/cb-technologists/cjd-casc">Git repository</a> that contains the configuration - enabling GitOps for Jenkins itself.</p>
 
+<table>
+<thead>
+<tr>
+<th>UPD (Sep 12, 2019): Jenkins Configuration as Code plugin is now supported in <a href="https://www.cloudbees.com/products/cloudbees-jenkins-distribution">CloudBees Jenkins Distribution</a> and <a href="https://www.cloudbees.com/products/cloudbees-jenkins-support">CloudBees Jenkins Support</a>. See <a href="https://go.cloudbees.com/docs/cloudbees-jenkins-distribution/distro-admin-guide/configuration-as-code/">Administering CJD: Configuration as Code</a> for usage guidelines and quick start. You can also find an official demo <a href="https://github.com/cloudbees-oss/cjd-jcasc-demo">here</a>. For information about other CloudBees products, please see <a href="https://support.cloudbees.com/hc/en-us/articles/360031191471-State-of-Jenkins-Configuration-as-Code-JCasC-support-in-CloudBees-products">this page</a>.</th>
+</tr>
+</thead>
+
+<tbody>
+</tbody>
+</table>
+
 <h2 id="deploying-cloudbees-jenkins-distribution-in-kubernetes">Deploying CloudBees Jenkins Distribution in Kubernetes</h2>
 
 <p>First, we&rsquo;ll need to deploy a Jenkins instance into a Kubernetes cluster. In this case, we&rsquo;ll use <a href="https://cloud.google.com/kubernetes-engine/">Google Kubernetes Engine</a> to deploy a containerized version of CJD. To provision a cluster, we&rsquo;ll follow the Google Cloud documentation <a href="https://cloud.google.com/kubernetes-engine/docs/how-to/creating-a-cluster">here</a>. (<strong>Note:</strong> this blog post assumes prior installation of and basic familiarity with using <code>kubectl</code> to interact with a Kubernetes cluster.)</p>
@@ -3335,7 +3346,18 @@ Router r = new OperationsCenterRouter();
         config.onLoaded();
 </code></pre>
 
-<p>I&rsquo;m also a big fan of the Jenkins Config-as-Code plugin. However, currently, the CloudBees&rsquo; plugins for Cross Team Collaboration do not yet support <a href="https://github.com/jenkinsci/configuration-as-code-plugin">JCasC</a> (but support for JCasC is coming soon).</p>
+<p>I&rsquo;m also a big fan of the Jenkins Config-as-Code plugin. However, currently, the CloudBees&rsquo; plugins for Cross Team Collaboration do not yet support <a href="https://github.com/jenkinsci/configuration-as-code-plugin">JCasC</a>.</p>
+
+<table>
+<thead>
+<tr>
+<th>UPD (Sep 12, 2019): Jenkins Configuration as Code plugin is now supported in <a href="https://www.cloudbees.com/products/cloudbees-jenkins-distribution">CloudBees Jenkins Distribution</a> and <a href="https://www.cloudbees.com/products/cloudbees-jenkins-support">CloudBees Jenkins Support</a>. Support for CloudBees Core and Cross Team Collaboration is coming soon. For information about the current support status, please see <a href="https://support.cloudbees.com/hc/en-us/articles/360031191471-State-of-Jenkins-Configuration-as-Code-JCasC-support-in-CloudBees-products">this page</a>.</th>
+</tr>
+</thead>
+
+<tbody>
+</tbody>
+</table>
 
 <h2 id="add-devsecops-to-your-cd-with-cloudbees-now">Add DevSecOps to Your CD with CloudBees Now</h2>
 
@@ -3427,6 +3449,17 @@ credentials:2.2.0
 <p>Yes, only two plugins. The reason why we only need these two plugins is because the <a href="https://www.cloudbees.com/blog/cloudbees-jenkins-distribution-adds-stability-and-security-your-jenkins-environment">CloudBees Jenkins Distribution</a> already contains a curated set of plugins for Jenkins Pipeline, Blue Ocean, source control management and everything else we need - all well tested for us already.</p>
 
 <p>This version of the Credentials plugin is an exception, because the recent version of the plugin with JCasC support has not been integrated into CAP yet (coming soon!).</p>
+
+<table>
+<thead>
+<tr>
+<th>UPD (Sep 12, 2019): Jenkins Configuration as Code plugin is now supported in <a href="https://www.cloudbees.com/products/cloudbees-jenkins-distribution">CloudBees Jenkins Distribution</a> and <a href="https://www.cloudbees.com/products/cloudbees-jenkins-support">CloudBees Jenkins Support</a>. See the <a href="https://go.cloudbees.com/docs/cloudbees-jenkins-distribution/distro-admin-guide/configuration-as-code/">Administering CJD: Configuration as Code</a> for usage guidelines and quick start. You can also find an official demo <a href="https://github.com/cloudbees-oss/cjd-jcasc-demo">here</a>. For information about other CloudBees products, please see <a href="https://support.cloudbees.com/hc/en-us/articles/360031191471-State-of-Jenkins-Configuration-as-Code-JCasC-support-in-CloudBees-products">this page</a>.</th>
+</tr>
+</thead>
+
+<tbody>
+</tbody>
+</table>
 
 <p><em>Extending the CloudBees Jenkins Distribution container image with plugins and JCasC</em></p>
 

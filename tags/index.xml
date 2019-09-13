@@ -39,6 +39,15 @@
     </item>
     
     <item>
+      <title>Kubernetes</title>
+      <link>https://cb-technologists.github.io/tags/kubernetes/</link>
+      <pubDate>Wed, 04 Sep 2019 05:05:15 -0400</pubDate>
+      
+      <guid>https://cb-technologists.github.io/tags/kubernetes/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Pod Security Policies</title>
       <link>https://cb-technologists.github.io/tags/pod-security-policies/</link>
       <pubDate>Wed, 04 Sep 2019 05:05:15 -0400</pubDate>
@@ -53,15 +62,6 @@
       <pubDate>Wed, 04 Sep 2019 05:05:15 -0400</pubDate>
       
       <guid>https://cb-technologists.github.io/tags/jenkins/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>kubernetes</title>
-      <link>https://cb-technologists.github.io/tags/kubernetes/</link>
-      <pubDate>Wed, 04 Sep 2019 05:05:15 -0400</pubDate>
-      
-      <guid>https://cb-technologists.github.io/tags/kubernetes/</guid>
       <description></description>
     </item>
     
@@ -102,20 +102,20 @@
     </item>
     
     <item>
+      <title>DevSecOps</title>
+      <link>https://cb-technologists.github.io/tags/devsecops/</link>
+      <pubDate>Wed, 31 Jul 2019 07:00:00 +0000</pubDate>
+      
+      <guid>https://cb-technologists.github.io/tags/devsecops/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>cloudbees</title>
       <link>https://cb-technologists.github.io/tags/cloudbees/</link>
       <pubDate>Wed, 31 Jul 2019 07:00:00 +0000</pubDate>
       
       <guid>https://cb-technologists.github.io/tags/cloudbees/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>devsecops</title>
-      <link>https://cb-technologists.github.io/tags/devsecops/</link>
-      <pubDate>Wed, 31 Jul 2019 07:00:00 +0000</pubDate>
-      
-      <guid>https://cb-technologists.github.io/tags/devsecops/</guid>
       <description></description>
     </item>
     
