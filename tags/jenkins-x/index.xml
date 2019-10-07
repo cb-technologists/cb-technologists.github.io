@@ -2,41 +2,41 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>jenkins x on CloudBees Technologists</title>
-    <link>https://cb-technologists.github.io/tags/jenkins-x/</link>
+    <link>https://technologists.dev/tags/jenkins-x/</link>
     <description>Recent content in jenkins x on CloudBees Technologists</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Sun, 28 Jul 2019 23:44:10 +0100</lastBuildDate>
     
-	<atom:link href="https://cb-technologists.github.io/tags/jenkins-x/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://technologists.dev/tags/jenkins-x/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Jenkins X Orchestration: More than Tekton on Steroids</title>
-      <link>https://cb-technologists.github.io/posts/tekton-jx-pipelines/</link>
+      <link>https://technologists.dev/posts/tekton-jx-pipelines/</link>
       <pubDate>Sun, 28 Jul 2019 23:44:10 +0100</pubDate>
       
-      <guid>https://cb-technologists.github.io/posts/tekton-jx-pipelines/</guid>
+      <guid>https://technologists.dev/posts/tekton-jx-pipelines/</guid>
       <description>We may know Jenkins X as a new pure CI/CD cloud native implementation different than Jenkins. It is based on the use of Kubernetes Custom Resource Definitions (CRD&amp;rsquo;s) to experience a seamless execution of CI/CD pipelines. This happens by leveraging the power of Kubernetes in terms of scalability, infrastructure abstraction and velocity.
 The new main approach of Jenkins X is about a serverless experience, because there is no more traditional Jenkins engine running.</description>
     </item>
     
     <item>
       <title>Technologists Lightning Talks for DevOps World | Jenkins World 2019 San Francisco</title>
-      <link>https://cb-technologists.github.io/posts/lightning-talks-dw-jw-2019/</link>
+      <link>https://technologists.dev/posts/lightning-talks-dw-jw-2019/</link>
       <pubDate>Sat, 27 Jul 2019 10:50:46 -0400</pubDate>
       
-      <guid>https://cb-technologists.github.io/posts/lightning-talks-dw-jw-2019/</guid>
+      <guid>https://technologists.dev/posts/lightning-talks-dw-jw-2019/</guid>
       <description>The Technologists will be giving a bunch of lightning talks in the DevOps Theater at this years DevOps World | Jenkins World in San Francisco. Some of the topics we will be covering include (many of which we have already blogged about):
  Self-Updating Jenkins: GitOps for Jenkins Configuration  This Lightning Talk will explore using GitOps to automate config updates for the CloudBees Jenkins Distribution.  Jenkins Plugin Management as Code  Let’s admit it, Jenkins Plugin management can be a pain.</description>
     </item>
     
     <item>
       <title>Extending Jenkins X for Traditional Deployments with CloudBees Flow</title>
-      <link>https://cb-technologists.github.io/posts/jenkins-x-flow-integration/</link>
+      <link>https://technologists.dev/posts/jenkins-x-flow-integration/</link>
       <pubDate>Wed, 29 May 2019 12:47:46 -0400</pubDate>
       
-      <guid>https://cb-technologists.github.io/posts/jenkins-x-flow-integration/</guid>
+      <guid>https://technologists.dev/posts/jenkins-x-flow-integration/</guid>
       <description>Jenkins X is quickly becoming the de facto standard for high performing teams wanting to do CI/CD in a highly scalable and fault tolerant environment. For those who haven’t gotten the opportunity to try out Jenkins X, it allows teams to run CI/CD workloads natively in a Kubernetes environment while taking advantage of modern operating patterns like GitOps and serverless architectures. For teams wanting to modernize their continuous integration and continuous deployment capabilities, Jenkins X is the go to solution.</description>
     </item>
     

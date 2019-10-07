@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>tekton on CloudBees Technologists</title>
-    <link>https://cb-technologists.github.io/tags/tekton/</link>
+    <link>https://technologists.dev/tags/tekton/</link>
     <description>Recent content in tekton on CloudBees Technologists</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Sun, 28 Jul 2019 23:44:10 +0100</lastBuildDate>
     
-	<atom:link href="https://cb-technologists.github.io/tags/tekton/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://technologists.dev/tags/tekton/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Jenkins X Orchestration: More than Tekton on Steroids</title>
-      <link>https://cb-technologists.github.io/posts/tekton-jx-pipelines/</link>
+      <link>https://technologists.dev/posts/tekton-jx-pipelines/</link>
       <pubDate>Sun, 28 Jul 2019 23:44:10 +0100</pubDate>
       
-      <guid>https://cb-technologists.github.io/posts/tekton-jx-pipelines/</guid>
+      <guid>https://technologists.dev/posts/tekton-jx-pipelines/</guid>
       <description>We may know Jenkins X as a new pure CI/CD cloud native implementation different than Jenkins. It is based on the use of Kubernetes Custom Resource Definitions (CRD&amp;rsquo;s) to experience a seamless execution of CI/CD pipelines. This happens by leveraging the power of Kubernetes in terms of scalability, infrastructure abstraction and velocity.
 The new main approach of Jenkins X is about a serverless experience, because there is no more traditional Jenkins engine running.</description>
     </item>

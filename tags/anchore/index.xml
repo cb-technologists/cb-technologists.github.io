@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>anchore on CloudBees Technologists</title>
-    <link>https://cb-technologists.github.io/tags/anchore/</link>
+    <link>https://technologists.dev/tags/anchore/</link>
     <description>Recent content in anchore on CloudBees Technologists</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Mon, 10 Jun 2019 07:50:46 -0400</lastBuildDate>
     
-	<atom:link href="https://cb-technologists.github.io/tags/anchore/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://technologists.dev/tags/anchore/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>CloudBees&#39; Cross Team Collaboration for Asynchronous DevSecOps</title>
-      <link>https://cb-technologists.github.io/posts/cloudbees-cross-team-and-dev-sec-ops/</link>
+      <link>https://technologists.dev/posts/cloudbees-cross-team-and-dev-sec-ops/</link>
       <pubDate>Mon, 10 Jun 2019 07:50:46 -0400</pubDate>
       
-      <guid>https://cb-technologists.github.io/posts/cloudbees-cross-team-and-dev-sec-ops/</guid>
+      <guid>https://technologists.dev/posts/cloudbees-cross-team-and-dev-sec-ops/</guid>
       <description>What is Cross Team Collaboration? CloudBees&amp;rsquo; Cross Team Collaboration provides the ability to publish an event from a Jenkins job that triggers any other Jenkins job on the same master or different masters that are listening for that event. It is basically a light-weight PubSub for CloudBees Core Masters connected to CloudBees Operations Center. Jenkins has had the ability to trigger other jobs for quite a while now (and with CloudBees this is even easy to do across Masters), but it always required that the upstream job be aware of the downstream job(s) to be triggered.</description>
     </item>
     
