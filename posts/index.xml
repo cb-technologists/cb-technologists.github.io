@@ -5,8 +5,305 @@
         <description>Recent content in Posts on CloudBees Technologists</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>en-us</language>
-        <lastBuildDate>Wed, 04 Sep 2019 05:05:15 -0400</lastBuildDate>
+        <lastBuildDate>Sun, 20 Oct 2019 09:05:15 -0400</lastBuildDate>
         <atom:link href="https://technologists.dev/posts/index.xml" rel="self" type="application/rss+xml" />
+        
+        <item>
+            <title>Securely Using Cloud Services from Jenkins Kubernetes Agents</title>
+            <link>https://technologists.dev/posts/best-practices-for-cloudbees-core-jenkins-on-kubernetes/securely-using-cloud-services-from-jenkins-kubernetes-agents/</link>
+            <pubDate>Sun, 20 Oct 2019 09:05:15 -0400</pubDate>
+            
+            <guid>https://technologists.dev/posts/best-practices-for-cloudbees-core-jenkins-on-kubernetes/securely-using-cloud-services-from-jenkins-kubernetes-agents/</guid>
+            <description>In the second part of this series on best practices for Jenkins (and CloudBees Core) on Kubernetes we will continue to look at security. In this post we will look at how to reduce security risk of using cloud services from Jenkins Kubernetes agents, similar to how the previous post in this series showed how Kubernetes Pod Security Policies can be used with Jenkins Kubernetes agents to limit the security risk of Jenkins agent containers.</description>
+            <content type="html"><![CDATA[
+
+<p>In the second part of this series on <a href="/series/best-practices-for-cloudbees-core-jenkins-on-kubernetes/">best practices for Jenkins (and CloudBees Core) on Kubernetes</a> we will continue to look at security. In this post we will look at how to reduce security risk of using cloud services from Jenkins Kubernetes agents, similar to how <a href="/posts/best-practices-for-cloudbees-core-jenkins-on-kubernetes/core-psp/">the previous post in this series</a> showed how Kubernetes Pod Security Policies can be used with Jenkins Kubernetes agents to limit the security risk of Jenkins agent containers.</p>
+
+<h2 id="the-problem">The Problem</h2>
+
+<p>I have already established in several other posts <a href="https://kurtmadel.com/posts/native-kubernetes-continuous-delivery/native-k8s-cd/">why Kubernetes is an excellent platform for CD</a>. However, accessing cloud services from Kubernetes CD jobs that require Identity Access Management (IAM) permissions for AWS, Azure and Google Cloud Platform (GCP), a typical step in many CD pipelines, presents a number of security challenges and usually falls short of <a href="https://en.wikipedia.org/wiki/Principle_of_least_privilege">the principle of least privilege</a>. Existing approaches for accessing cloud services requiring IAM permissions from Kubernetes based Jenkins agents have numerous security implications and complexities. Furthermore, the most commonly proposed solutions do not meet many organizations&rsquo; security requirements. In addition to the security implications, some of these approaches aren&rsquo;t native cloud provider solutions and have to be self managed, and also have performance and reliability issues.</p>
+
+<p>There is a better way for providing <strong>least privilege</strong> IAM permissions to Jenkins Kubernetes agents - at least for the Amazon Elastic Kubernetes Service (EKS) and Google Kubernetes Engine (GKE). But before we look at a <em>better way</em>, I am going to review the security implications for some of the other most commonly used solutions.</p>
+
+<h2 id="the-old-way">The Old Way</h2>
+
+<h4 id="create-cloud-iam-credentials-and-store-them-as-jenkins-credentials-or-kubernetes-secrets">Create Cloud IAM credentials and store them as Jenkins Credentials or Kubernetes Secrets</h4>
+
+<p>First, lets walk through the steps for setting up a GCP IAM Service Account Key (<a href="https://cloud.google.com/kubernetes-engine/docs/tutorials/authenticating-to-cloud-platform">a previously recommended approach for GKE</a>) to use from a Jenkins Pipeline running on a <a href="https://github.com/jenkinsci/kubernetes-plugin#pipeline-support">Kubernetes agent</a>. For this example we are going to deploy a container image (from a public Google Container Registry (GCR)) to <a href="https://cloud.google.com/run/">Google Cloud Run</a>. The IAM Service Account will be created in the same GCP project where CloudBees Core (Jenkins) is running on the Google Kubernetes Engine (GKE).</p>
+
+<ol>
+<li>Create an IAM Service Account with the <strong>Cloud Run Admin</strong> permissions to use the gcloud SDK to execute the <code>gcloud run deploy</code> command.</li>
+<li>Export a JSON key file for that IAM Service Account.</li>
+<li>Create a Kubernetes <strong>Secret</strong> with the contents of that key file in the same Kubernetes Namespace where the Jenkins Kubernetes agent will run.</li>
+<li>Configure the Jenkins Kubernetes Pod template for the agent to mount the Kubernetes <strong>Secret</strong> for the IAM Service Account key file.</li>
+<li>Inside the Jenkins Pipeline, use the gcloud SDK to authenticate using the key file from the Kubernetes Secret.</li>
+<li>Execute the gcloud command for deploying to Cloud Run.</li>
+</ol>
+
+<p><em>The Jenkins Kubernetes Pod template:</em></p>
+
+<pre><code class="language-yaml">kind: Pod
+metadata:
+  name: cloud-run
+spec:
+  - name: gcloud
+    image: google/cloud-sdk:252.0.0-slim
+    command:
+    - cat
+    tty: true
+    volumeMounts:
+      - name: gcp-credential
+        mountPath: /home/
+    env:
+      - name: GOOGLE_CLOUD_KEYFILE_JSON
+        value: &quot;/home/gcp-service.json&quot;
+  volumes:
+    - name: gcp-credential
+      secret:
+        secretName: gcp-credential
+</code></pre>
+
+<p><em>The Jenkins Pipeline:</em></p>
+
+<pre><code class="language-groovy">pipeline {
+  agent {
+    kubernetes {
+      label 'cloud-run'
+      yamlFile 'pod.yml'
+    }
+  }
+  stages {
+    stage('Cloud Run Deploy') {
+      steps {
+        container('gcloud'){
+          sh '''
+            gcloud auth activate-service-account --key-file=$GOOGLE_CLOUD_KEYFILE_JSON
+            gcloud beta run deploy bee-cd --image gcr.io/core-workshop/bee-cd:65 --allow-unauthenticated --platform managed --region us-east1
+            echo &quot;$(cat $GOOGLE_CLOUD_KEYFILE_JSON)&quot; //Don't do this!
+          '''
+        }
+      }
+    }
+  }
+}
+</code></pre>
+
+<p>Some of the issues with this approach include:</p>
+
+<ol>
+<li>These type of credentials are long-lived.
+
+<ul>
+<li>GCP IAM Service Account keys are valid for 10 years</li>
+<li>AWS credentials (Access Key ID and Secret Access Key) - require custom rotation policies, but that is typically set to 90 days</li>
+</ul></li>
+<li>These types of credentials are valid no matter where they are used, whether it is from a Jenkins agent running in EKS or GKE, or from the shell of a personal computer.</li>
+<li>Storing these credentials as Jenkins Credentials or Kubernetes Secrets is inherently insecure.
+
+<ul>
+<li>It is relatively straightforward to print out Jenkins Credentials or Kubernetes Secrets to Jenkins build logs in plain text.</li>
+<li>Unless extra security precautions are taken, Kubernetes Secrets are typically stored as base64 encoded strings accessible by all Pods that run in that Namespace.</li>
+</ul></li>
+<li>Many organizations won’t allow the use of these type of credentials in Jenkins, and for good reason.</li>
+<li>The management overhead of inventory and rotation makes this a less than ideal method for authenticating.</li>
+</ol>
+
+<h3 id="associate-an-iam-object-with-a-cloud-instance-and-or-instance-group-node-pool">Associate an IAM object with a cloud instance and/or instance group (node pool)</h3>
+
+<ol>
+<li>All Kubernetes Pods created on the node/node pool with an instance profile will have access to the same set of cloud IAM permissions - regardless of the Kubernetes Namespace these Pods run in.</li>
+<li>The principle of least privilege makes this method of authenticating less than ideal.</li>
+</ol>
+
+<h3 id="third-party-solutions">Third-party solutions</h3>
+
+<p>For EKS: <a href="https://github.com/jtblin/kube2iam">kube2iam</a> and <a href="https://github.com/uswitch/kiam">kiam</a></p>
+
+<ol>
+<li>It isn&rsquo;t a cloud provider solution so good luck with support.</li>
+<li>You have to install and manage it.</li>
+<li>Performance issues. Kiam was specifically <a href="https://www.bluematador.com/blog/iam-access-in-kubernetes-kube2iam-vs-kiam">created because of critical security and performance issues with kube2iam</a>.</li>
+<li>Require running a Kubernetes services that has the ability to provide all permissions you need across all Jenkins Pipeline jobs.</li>
+</ol>
+
+<p>For GKE: <a href="https://github.com/imduffy15/k8s-gke-service-account-assigner">k8s-gke-service-account-assigner</a></p>
+
+<ol>
+<li>Basically a rewrite of kube2iam for GKE with all the same issues listed above.</li>
+</ol>
+
+<h2 id="a-better-way">A Better Way</h2>
+
+<p>Kubernetes v1.11 introduced <a href="https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/#service-account-token-volume-projection">Service Account Token Volume Projection</a> and that feature became beta in v1.12. This allows projecting a temporary Kubernetes Service Account Token into a Pod and allows specifying the audience and validity duration. Furthermore, this projected Service Account token becomes invalid once the pod is deleted.</p>
+
+<p>AWS and GCP both created new offerings around this Kubernetes feature for their respective managed Kubernetes platforms. AWS created <a href="https://docs.aws.amazon.com/en_pv/eks/latest/userguide/iam-roles-for-service-accounts-technical-overview.html">IAM roles for service accounts</a> for EKS and Google Cloud created <a href="https://cloud.google.com/blog/products/containers-kubernetes/introducing-workload-identity-better-authentication-for-your-gke-applications">Workload Identity</a> for GKE. Both offerings have a similar architecture that allow binding native cloud IAM permissions (via AWS IAM Roles and GCP IAM Service Accounts) to a specific Kubernetes Service Account in a specific Namespace.</p>
+
+<p>These <strong>bound</strong> permissions have several advantages over the approaches mentioned above:</p>
+
+<ol>
+<li>No file or passwords to store anywhere - no Jenkins Credentials, no Kubernetes Secrets.</li>
+<li>Kubernetes Pods in a given Namespace and created with a specific Kubernetes ServiceAccount only have the cloud IAM permissions you want them to have and come closer than any other solution to achieving the principle of least privilege.</li>
+<li>They are token based and the generated tokens can only be used from the Kubernetes Namespace and Service Account they are bound.</li>
+<li>The tokens are short-lived and are destroyed when the Pod using it is destroyed.</li>
+<li>The tokens are never actually exposed to the Jenkins Pipeline as they are integrated with the cloud provider SDKs for automatic authentication and authorization. No extra authentication step is necessary in your Jenkins Pipeline.</li>
+</ol>
+
+<h3 id="using-with-oss-jenkins-and-cloudbees-core-enterprise-jenkins">Using with OSS Jenkins and CloudBees Core (Enterprise Jenkins)</h3>
+
+<p>These IAM to Kubernetes Service Account binding solutions can be used with OSS Jenkins, but they are even more effective when combined with CloudBees Core on Kubernetes. That is because <a href="https://docs.cloudbees.com/docs/cloudbees-core/latest/cloud-admin-guide/managing-masters">CloudBees Core provides dynamic provisioning and easy management of many team specific Jenkins Masters that we refer to as Managed Masters</a> and <a href="https://docs.cloudbees.com/docs/cloudbees-core/latest/cloud-admin-guide/managing">each Managed Master can be easily provisioned into its own Kubernetes Namespace</a>. This allows you to utilize a default standard Kubernetes Cloud across all Masters that should have the same Kubernetes and IAM permissions, but also to easily manage Jenkins Master specific Kubernetes Cloud configurations for individual teams that need additional IAM permissions that you don&rsquo;t want all teams to have.</p>
+
+<blockquote>
+<p>NOTE: If you do want to have multiple teams on one Jenkins Master you can create multiple Jenkins Kubernetes Cloud configurations - each in its own Kubernetes Namespace - and then leverage the Kubernetes plugin capability to <a href="https://github.com/jenkinsci/kubernetes-plugin#restricting-what-jobs-can-use-your-configured-cloud">restrict pipeline support to authorized folders</a>. You will then have to apply proper RBAC configuration so that only the users you want have access to configure folders to use one or more protected Jenkins Kubernetes clouds, and you will have to create the jobs that need to use the more permissive Kubernetes cloud configuration in those folders.</p>
+</blockquote>
+
+<p>The default configuration for the <a href="https://github.com/jenkinsci/kubernetes-plugin">Jenkins Kubernetes Cloud plugin</a> uses the same Namespace and Kubernetes Service Account as the Jenkins Master it is configured for - when the Jenkins Master is also running on Kubernetes. This is typically the case with Core on Kubernetes and also for OSS Jenkins. To fully leverage binding IAM permissions to Kubernetes Service Accounts we must revisit how we set-up and use the Jenkins Kubernetes Clouds for agents.</p>
+
+<h4 id="create-a-unique-kubernetes-namespace-and-serviceaccount-for-each-managed-master-and-kubernetes-cloud">Create a unique Kubernetes Namespace and ServiceAccount for each Managed Master and Kubernetes Cloud</h4>
+
+<p>Placing each of your Jenkins Masters into their own Kubernetes Namespace provides and extra layer of security that isn&rsquo;t just limited to binding IAM credentials - it also protects Kubernetes Secrets from other Jenkins Masters and this will provide a more secure integration for managing Jenkins credentials with JCasC and Kubernetes Secrets. Creating a unique Kubernetes Cloud per Jenkins Master can be <a href="https://github.com/kypseli/workshop-mm-jcasc/blob/ops/jcasc.yml">managed more easily with JCasC</a>, as we will manage the Kubernetes cloud configuration and the Jenkins credential used to connect to Kubernetes for the Master specific cloud. The Jenkins credential used for the Kubernetes Cloud configuration will be the Kubernetes Service Account token stored in Jenkins as a Secret Text credential - stored at the Master level (not CloudBees Core Operations Center), so only that Jenkins Master has access to it. The Kubernetes Service Account token should be managed as a Kubernetes Secret in the same Namespace as the Managed Master is created so it can be dynamically injected into the JCasC configuration for that Master. No other Core Managed Masters will have access to this Kubernetes Secret.</p>
+
+<blockquote>
+<p>NOTE: This approach depends on managing what Kubernetes Namespaces are used by Managed Masters. You must not allow untrusted users to have access to configure Managed Masters on your Core Operations Center, otherwise they could use a Namespace they shouldn&rsquo;t have access to - that is why <a href="https://github.com/kypseli/demo-mm-jcasc/blob/cloud-run/groovy/createManagedMaster.groovy">I prefer to do it as code</a>.</p>
+</blockquote>
+
+<h4 id="example-using-workload-identity-with-a-core-managed-master-to-deploy-a-container-image-to-google-cloud-run">Example: Using Workload Identity with a Core Managed Master to Deploy a Container Image to Google Cloud Run</h4>
+
+<ol>
+<li><a href="https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity#enable_workload_identity_on_an_existing_cluster">Enable Workload Identity for your GKE cluster</a> - this only has to be done once per cluster. You also have to enable each pre-existing node pool where you want to use Workload Identity.</li>
+<li>Create an IAM Service Account with the <strong>Cloud Run Admin</strong> permissions that will allow us to use the <a href="https://cloud.google.com/sdk/">gcloud SDK</a> to execute the <code>gcloud run deploy</code> command.</li>
+
+<li><p>Create a new Kubernetes Namespace and Service Account that will be unique to the Core Managed Master. Note the <a href="https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/#use-the-default-service-account-to-access-the-api-server"><code>automountServiceAccountToken</code></a> is set to <code>false</code> - this will require that you configure the Jenkins Kubernetes cloud with a <strong>credential</strong> for the same Kubernetes Service Account that is used to create the Managed Master as it will no longer have the Service Account token automatically mounted to its Pod.</p>
+
+<pre><code class="language-yaml">  apiVersion: v1
+  kind: Namespace
+  metadata:
+    name: cloud-run
+  ---
+  apiVersion: v1
+  kind: ServiceAccount
+  metadata:
+    name: cloud-run-sa
+    namespace: cloud-run
+  automountServiceAccountToken: false
+</code></pre>
+
+<ol>
+<li>Bind the GCP IAM Service Account (<code>core-cloud-run@core-workshop.iam.gserviceaccount.com</code> in the example below) to the GKE Namespace and Service Account (<code>cloud-run</code> and <code>cloud-run-sa</code> in the example below):</li>
+</ol>
+
+<pre><code class="language-shell">  gcloud iam service-accounts add-iam-policy-binding \
+    --role roles/iam.workloadIdentityUser \
+    --member &quot;serviceAccount:core-workshop.svc.id.goog[cloud-run/cloud-run-sa]&quot; \
+    core-cloud-run@core-workshop.iam.gserviceaccount.com
+</code></pre></li>
+
+<li><p><a href="https://docs.cloudbees.com/docs/cloudbees-core/latest/cloud-admin-guide/managing">Create a Managed Master in the Master specific Kubernetes Namespace</a> - here is <a href="https://github.com/kypseli/demo-mm-jcasc/tree/cloud-run">an example of automating this with code</a>. Here is an example of a Managed Master Kubernetes yaml configuration that specifies a unique Kubernetes Service Account - note the <code>serviceAccount</code> value matches the Kubernetes Service Account we created above:</p>
+
+<pre><code class="language-yaml">  ---
+  kind: StatefulSet
+  spec:
+    template:
+      metadata:
+        annotations:
+            cluster-autoscaler.kubernetes.io/safe-to-evict: &quot;false&quot;
+      spec:
+        containers:
+        - name: jenkins
+          env:
+            # With the help of SECRETS environment variable
+            # we point Jenkins Configuration as Code plugin the location of the secrets
+            - name: SECRETS
+              value: /var/jenkins_home/mm-secrets
+            - name: CASC_JENKINS_CONFIG
+              value: https://raw.githubusercontent.com/kypseli/demo-mm-jcasc/cloud-run/jcasc.yml
+          volumeMounts:
+          - name: mm-secrets
+            mountPath: /var/jenkins_home/mm-secrets
+            readOnly: true
+        volumes:
+        - name: mm-secrets
+          secret:
+            secretName: mm-secrets
+        nodeSelector:
+          type: master
+        serviceAccount: cloud-run-sa
+        serviceAccountName: cloud-run-sa
+        securityContext:
+          runAsUser: 1000
+          fsGroup: 1000 
+</code></pre>
+
+<ol>
+<li>Create <a href="https://github.com/kypseli/demo-mm-jcasc/blob/cloud-run/jcasc.yml#L8">a Master specific Jenkins Kubernetes cloud configuration</a> that uses the Master specific Namespace and Kubernetes Service Account. To ensure that we are using the <code>cloud-run-sa</code> Kubernetes Service Account for all Pod based agents we <a href="https://github.com/kypseli/demo-mm-jcasc/blob/cloud-run/jcasc.yml#L36">explicitly set this on a Kubernetes cloud Pod template</a> that is <a href="https://github.com/kypseli/demo-mm-jcasc/blob/cloud-run/jcasc.yml#L12">configured as the <code>defaultsProviderTemplate</code></a>.</li>
+<li>Update the <code>cloud-run-sa</code> Kubernetes Service Account with the <code>iam.gke.io/gcp-service-account</code> annotation:</li>
+</ol>
+
+<pre><code class="language-shell">  kubectl annotate serviceaccount \
+    --namespace cloud-run \
+    cloud-run-sa \
+    iam.gke.io/gcp-service-account=core-cloud-run@core-workshop.iam.gserviceaccount.com
+</code></pre></li>
+
+<li><p>Create a yaml file based Pod template for the GCP gcloud SDK (<a href="https://github.com/kypseli/core-cloud-run-example/blob/master/pod.yml">source on GitHub</a>):</p>
+
+<pre><code class="language-yaml">  kind: Pod
+  metadata:
+    name: cloud-run-pod
+    namespace: cloud-run
+  spec:
+    serviceAccountName: cloud-run-sa
+    containers:
+    - name: gcp-sdk
+      image: google/cloud-sdk:252.0.0-slim
+      command:
+      - cat
+      tty: true
+</code></pre>
+
+<blockquote>
+<p>NOTE: If you look at the example on GitHub you will notice that it also specifies the <code>runAsUser</code> and mounts an <code>emptyDir</code> volume at the path <code>/.config/gcloud/logs</code> - this is because we have enabled Pod Security Policies on the GKE cluster we are using for this example and we don&rsquo;t allow Pods to run as the <code>root</code> (0) user. You can read more about <a href="/posts/best-practices-for-cloudbees-core-jenkins-on-kubernetes/core-psp/">using Pod Security Policies with CloudBees Core Jenkins in the previous post of this series</a>.</p>
+</blockquote>
+
+<ol>
+<li>Create a Jenkins Declarative Pipeline that uses the above Pod template and executes the gcloud Cloud Run deploy command:</li>
+</ol>
+
+<pre><code class="language-groovy">  pipeline {
+    agent {
+      kubernetes {
+        label 'cloud-run'
+        yamlFile 'pod.yml'
+      }
+    }
+    stages {
+      stage('Cloud Run Deploy') {
+        steps {
+          container('gcp-sdk'){
+            sh 'gcloud beta run deploy bee-cd --image gcr.io/core-workshop/bee-cd:65 --allow-unauthenticated --platform managed --region us-east1'
+          }
+        }
+      }
+    }
+  }
+</code></pre></li>
+</ol>
+
+<blockquote>
+<p>NOTE: There is no authentication step needed as the glcoud SDK automatically authenticates with the token provided by  Workload Identity. The AWS SDK also doesn&rsquo;t require an explicit assume role step or authentication step.</p>
+</blockquote>
+
+<p>One security limitation of the Jenkins Kubernetes plugin is that you can define Pod templates as standalone yaml files to include specifying whatever Kubernetes Namespace and Service Account that you want (this is also a very nice feature for managing your agent Pod template configuration as code). But if we were to create a Pod template specifying the <code>cloud-run</code> Namespace and <code>cloud-run-sa</code> Service Account it will only work from a Master with a Jenkins Kubernetes cloud that is configured with the Namespace and Service Account token that has permissions to create Pods in the <code>cloud-run</code> Namespace. Running it from unauthorized Jenkins Kubernetes clouds will result in the following error:</p>
+
+<pre><code class="language-shell">io.fabric8.kubernetes.client.KubernetesClientException: 
+Failure executing: POST at: https://10.11.240.1/api/v1/namespaces/cloud-run/pods. 
+Message: pods is forbidden: User &quot;system:serviceaccount:core-demo:jenkins&quot; cannot create resource &quot;pods&quot; in API group &quot;&quot; in the namespace &quot;cloud-run&quot;.
+</code></pre>
+
+<h2 id="a-better-way-but-not-perfect">A Better Way, But Not Perfect</h2>
+
+<p>I know this seems like a lot of steps, but once you have IAM permissions bound to a Kubernetes Service Account set up you can easily update the GCP IAM Service Account with additional permissions, and all the Pods launched with the Master specific Namespace/Service Account will instantly have access to those permissions. And for all of the different solutions for providing cloud IAM permissions to Jenkins Kubernetes based agents - these new IAM binding solutions from AWS and GCP come closest to achieving the principle of least privilege.</p>
+]]></content>
+        </item>
         
         <item>
             <title>Using Kubernetes Pod Security Policies with CloudBees Core - Jenkins</title>

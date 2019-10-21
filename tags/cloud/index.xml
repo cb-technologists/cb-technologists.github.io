@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Cloud on CloudBees Technologists</title>
+    <link>https://technologists.dev/tags/cloud/</link>
+    <description>Recent content in Cloud on CloudBees Technologists</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 20 Oct 2019 09:05:15 -0400</lastBuildDate>
+    
+	<atom:link href="https://technologists.dev/tags/cloud/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Securely Using Cloud Services from Jenkins Kubernetes Agents</title>
+      <link>https://technologists.dev/posts/best-practices-for-cloudbees-core-jenkins-on-kubernetes/securely-using-cloud-services-from-jenkins-kubernetes-agents/</link>
+      <pubDate>Sun, 20 Oct 2019 09:05:15 -0400</pubDate>
+      
+      <guid>https://technologists.dev/posts/best-practices-for-cloudbees-core-jenkins-on-kubernetes/securely-using-cloud-services-from-jenkins-kubernetes-agents/</guid>
+      <description>In the second part of this series on best practices for Jenkins (and CloudBees Core) on Kubernetes we will continue to look at security. In this post we will look at how to reduce security risk of using cloud services from Jenkins Kubernetes agents, similar to how the previous post in this series showed how Kubernetes Pod Security Policies can be used with Jenkins Kubernetes agents to limit the security risk of Jenkins agent containers.</description>
+    </item>
+    
+  </channel>
+</rss>
