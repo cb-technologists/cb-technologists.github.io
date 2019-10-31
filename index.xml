@@ -6,10 +6,19 @@
     <description>Recent content on CloudBees Technologists</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 20 Oct 2019 09:05:15 -0400</lastBuildDate>
+    <lastBuildDate>Thu, 31 Oct 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://technologists.dev/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Unprivileged Container Image Builds with img and Jenkins on Kubernetes</title>
+      <link>https://technologists.dev/posts/building-images-with-img/</link>
+      <pubDate>Thu, 31 Oct 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://technologists.dev/posts/building-images-with-img/</guid>
+      <description>Why use img for container builds? As more organizations turn to containers and Kubernetes to manage their CI/CD workloads, numerous strategies have emerged to handle the actual building of container images within these containerized environments. However, each of these approaches have not been without their security drawbacks (see Kurt Madel&amp;rsquo;s recent post on &amp;ldquo;Securely Building Container Images on Kubernetes&amp;rdquo; for a rundown of these approaches and their security implications.)</description>
+    </item>
     
     <item>
       <title>Securely Using Cloud Services from Jenkins Kubernetes Agents</title>

@@ -5,8 +5,283 @@
         <description>Recent content in Posts on CloudBees Technologists</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>en-us</language>
-        <lastBuildDate>Sun, 20 Oct 2019 09:05:15 -0400</lastBuildDate>
+        <lastBuildDate>Thu, 31 Oct 2019 00:00:00 +0000</lastBuildDate>
         <atom:link href="https://technologists.dev/posts/index.xml" rel="self" type="application/rss+xml" />
+        
+        <item>
+            <title>Unprivileged Container Image Builds with img and Jenkins on Kubernetes</title>
+            <link>https://technologists.dev/posts/building-images-with-img/</link>
+            <pubDate>Thu, 31 Oct 2019 00:00:00 +0000</pubDate>
+            
+            <guid>https://technologists.dev/posts/building-images-with-img/</guid>
+            <description>Why use img for container builds? As more organizations turn to containers and Kubernetes to manage their CI/CD workloads, numerous strategies have emerged to handle the actual building of container images within these containerized environments. However, each of these approaches have not been without their security drawbacks (see Kurt Madel&amp;rsquo;s recent post on &amp;ldquo;Securely Building Container Images on Kubernetes&amp;rdquo; for a rundown of these approaches and their security implications.)</description>
+            <content type="html"><![CDATA[
+
+<h2 id="why-use-img-for-container-builds">Why use <code>img</code> for container builds?</h2>
+
+<p>As more organizations turn to containers and Kubernetes to manage their CI/CD workloads, numerous strategies have emerged to handle the actual building of container images within these containerized environments. However, each of these approaches have not been without their security drawbacks (see <a href="/authors/kurt-madel/">Kurt Madel</a>&rsquo;s recent post on <a href="/posts/build-continaer-images/">&ldquo;Securely Building Container Images on Kubernetes&rdquo;</a> for a rundown of these approaches and their security implications.)</p>
+
+<p>The current choice for many teams is Google&rsquo;s <a href="https://github.com/GoogleContainerTools/kaniko">kaniko</a> project. This is a good option for many organizations (especially when combined with Kurt&rsquo;s recommendations for <code>PodSecurityPolicies</code>). However, it&rsquo;s worth noting that while <code>kaniko</code> itself does not require running as root, it will <a href="https://github.com/GoogleContainerTools/kaniko#security">require that privilege for most significant container building</a>. While this is an acceptable caveat for some organizations, it can be a deal-breaker for others.</p>
+
+<p>Fortunately, efforts have been underway to create an unprivileged, non-root container builder. Jessie Frazelle introduced <a href="https://github.com/genuinetools/img"><code>img</code></a>, one such tool, in her blog post <a href="https://blog.jessfraz.com/post/building-container-images-securely-on-kubernetes/">&ldquo;Building Container Images Securely on Kubernetes&rdquo;</a>. I&rsquo;ll leave the details of design approach and usage to her post and the GitHub project page, but there are a few points I&rsquo;ll highlight here:</p>
+
+<ol>
+<li><code>img</code> is intended to run as a non-root user such as UID 1000.</li>
+<li><code>img</code> can be run without requiring the <code>--privileged</code> Docker flag or the equivalent <code>privileged: true</code> security context in Kubernetes.</li>
+<li>Syntax for building, pushing, and pulling images, among other actions, largely mirror Docker&rsquo;s - for example, <code>img build -t hello-world .</code> and <code>img push hello-world</code> are the commands to build and push an image called <code>hello-world</code>.</li>
+</ol>
+
+<p>In this post, we&rsquo;ll dive into using <code>img</code> within a Google Kubernetes Engine (GKE) cluster, integrating it with Google Cloud services, and running it from a Jenkins Pipeline to automate our build and push workflow. We&rsquo;ll also discuss some of the security implications of <code>img</code> as they relate to running in Kubernetes.</p>
+
+<h2 id="running-img-in-kubernetes">Running <code>img</code> in Kubernetes</h2>
+
+<p>Jessie&rsquo;s blog post includes a sample YAML manifest file (with a related <a href="https://r.j3ss.co/repo/img/tags">Docker container</a>) for deploying <code>img</code> as a Kubernetes <code>Pod</code>, which we&rsquo;ll use as a starting point. However, we also want to leverage <a href="https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity">Google Cloud&rsquo;s Workload Identity</a> to seamlessly integrate with Google Container Registry, so we&rsquo;ll create a custom Docker image that includes both <code>img</code> and <code>gcloud</code>. (For a deeper dive into using Workload Identity to securely tie Kubernetes Service Accounts to cloud IAM permissions, see <a href="/posts/best-practices-for-cloudbees-core-jenkins-on-kubernetes/securely-using-cloud-services-from-jenkins-kubernetes-agents/">part 2 of Kurt&rsquo;s series on best practices for Jenkins in Kubernetes</a>.)</p>
+
+<p>Here&rsquo;s our <code>Dockerfile</code> for this combined image:</p>
+
+<pre><code class="language-Dockerfile">FROM gcr.io/cloud-builders/gcloud-slim:latest AS gcloud
+
+FROM r.j3ss.co/img:v0.5.7 AS img
+USER root
+# install Python - gcloud dependency
+RUN apk add python
+# copy google-cloud-sdk to img image
+COPY --from=gcloud /builder/google-cloud-sdk /home/user/google-cloud-sdk
+
+USER user
+
+ENV PATH &quot;$PATH:/home/user/google-cloud-sdk/bin/&quot;
+</code></pre>
+
+<p>This image will allow us to access both <code>img</code> and <code>gcloud</code> commands from the same container, which will allow us to securely authenticate to our registry.</p>
+
+<p>Next, before creating our <code>Pod</code>, we need to set up our Google Service Account to support Workload Identity. We&rsquo;ll create the Google Service Account (<code>img-gcr</code>, in this example), add the Storage Admin role (to allow pushing &amp; pulling to our GCR repository), and bind that Google Service Account to the corresponding Kubernetes <code>ServiceAccount</code>.</p>
+
+<pre><code class="language-bash"># create GSA (if not already created)
+gcloud iam service-accounts create img-gcr
+
+# grant Storage Admin permissions to GSA
+gcloud projects add-iam-policy-binding melgin \
+  --member serviceAccount:img-gcr@melgin.iam.gserviceaccount.com \
+  --role roles/storage.admin
+
+# create namespace
+kubectl create namespace img
+
+# create KSA and annotate
+kubectl create serviceaccount --namespace img img
+
+kubectl annotate serviceaccount --namespace img img \
+  iam.gke.io/gcp-service-account=img-gcr@melgin.iam.gserviceaccount.com
+
+# bind GSA to KSA
+gcloud iam service-accounts add-iam-policy-binding \
+  --role roles/iam.workloadIdentityUser \
+  --member &quot;serviceAccount:melgin.svc.id.goog[img/img]&quot; \
+  img-gcr@melgin.iam.gserviceaccount.com
+</code></pre>
+
+<p>With our service accounts configured both in Google Cloud and our Kubernetes cluster, we can now create our <code>PodSecurityPolicy</code>:</p>
+
+<pre><code class="language-yaml"># based on https://github.com/kypseli/cb-core-oc-workshop/blob/master/k8s/cb-core-psp.yml
+apiVersion: policy/v1beta1
+kind: PodSecurityPolicy
+metadata:
+  name: img
+  namespace: img
+  annotations:
+    seccomp.security.alpha.kubernetes.io/allowedProfileNames: 'unconfined,runtime/default'
+    apparmor.security.beta.kubernetes.io/allowedProfileNames: 'unconfined,runtime/default'
+    seccomp.security.alpha.kubernetes.io/defaultProfileName:  'runtime/default'
+    apparmor.security.beta.kubernetes.io/defaultProfileName:  'runtime/default'
+spec:
+  allowPrivilegeEscalation: true
+  allowedProcMountTypes:
+  - Unmasked
+  - Default
+  fsGroup:
+    rule: 'MustRunAs'
+    ranges:
+      - min: 1
+        max: 65535
+  hostPID: false
+  hostIPC: false
+  hostNetwork: false
+  privileged: false
+  runAsUser:
+    rule: 'MustRunAs'
+    ranges:
+      - min: 1
+        max: 65535
+  seLinux:
+    rule: RunAsAny
+  supplementalGroups:
+    rule: RunAsAny
+  volumes:
+  - 'emptyDir'
+  - 'secret'
+  - 'downwardAPI'
+  - 'configMap'
+  - 'persistentVolumeClaim'
+  - 'projected'
+</code></pre>
+
+<p>There are a few details worth calling out in this policy:</p>
+
+<ol>
+<li>We use the <code>runAsUser</code> specification to ensure our <code>img</code> <code>Pod</code> runs as a non-zero/non-root user.</li>
+<li><code>privileged</code> is set to <code>false</code>. However, it&rsquo;s worth noting that <code>allowPrivilegeEscalation</code> must be set to true for <code>img</code> to execute commands properly.</li>
+<li>For <code>img</code> to run properly, both <code>seccomp</code> and <code>AppArmor</code> profiles must be set to <code>unconfined</code>, which is <a href="https://github.com/genuinetools/img#running-with-docker">required by <code>runc</code></a>.</li>
+<li>We include <code>allowedProcMountTypes</code> with both <code>Unmasked</code> and <code>Default</code> as accepted values - more on this in a minute.</li>
+</ol>
+
+<p>Next, we&rsquo;re going to attach our <code>img</code> <code>ServiceAccount</code> to a corresponding <code>Role</code> with a <code>RoleBinding</code>. This will allow our <code>img</code> <code>Pod</code> to use the custom <code>PodSecurityPolicy</code> we just created.</p>
+
+<pre><code class="language-yaml">kind: Role
+apiVersion: rbac.authorization.k8s.io/v1beta1
+metadata:
+  name: img
+rules:
+- apiGroups: ['extensions']
+  resources: ['podsecuritypolicies']
+  verbs:     ['use']
+  resourceNames:
+  - img
+- apiGroups: [&quot;&quot;]
+  resources: [&quot;pods&quot;]
+  verbs: [&quot;create&quot;,&quot;delete&quot;,&quot;get&quot;,&quot;list&quot;,&quot;patch&quot;,&quot;update&quot;,&quot;watch&quot;]
+
+---
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: RoleBinding
+metadata:
+  name: img
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: img
+subjects:
+- kind: ServiceAccount
+  name: img
+</code></pre>
+
+<p>Finally, here is our <code>Pod</code> definition (which we will use as a <a href="https://github.com/jenkinsci/kubernetes-plugin#pod-and-container-template-configuration"><code>podTemplate</code></a> for our Jenkins agent):</p>
+
+<pre><code class="language-yaml"># based on https://blog.jessfraz.com/post/building-container-images-securely-on-kubernetes/
+apiVersion: v1
+kind: Pod
+metadata:
+  name: img
+  labels:
+    run: img
+  annotations:
+    container.apparmor.security.beta.kubernetes.io/img: unconfined
+    container.seccomp.security.alpha.kubernetes.io/img: unconfined
+spec:
+  securityContext:
+    runAsUser: 1000
+  serviceAccountName: img
+  containers:
+  - name: img
+    image: gcr.io/melgin/gcloud-img:0.1.1
+    imagePullPolicy: Always
+    command:
+    - cat
+    tty: true
+    # securityContext:
+    #   procMount: Unmasked
+    volumeMounts:
+    - name: docker-config
+      mountPath: /.docker/
+    - name: gcloud-config
+      mountPath: /.config/gcloud
+    - name: cache-volume
+      mountPath: /tmp/
+  volumes:
+  - name: docker-config
+    emptyDir: {}
+  - name: gcloud-config
+    emptyDir: {}
+  - name: cache-volume
+    emptyDir: {}
+  restartPolicy: Never
+  
+</code></pre>
+
+<p>Again, a few items to focus on here:</p>
+
+<ol>
+<li>As noted above, we include annotations that set our <code>seccomp</code> and <code>AppArmor</code> to <code>unconfined</code>.</li>
+<li>Our <code>Pod</code> <code>securityContext</code> specifies running as user 1000.</li>
+<li>On the container level, we include a <code>securityContext</code> that sets <code>procMount: Unmasked</code>. However, you&rsquo;ll notice that we currently have these two lines commented out.</li>
+</ol>
+
+<h3 id="what-s-going-on-with-procmount-unmasked">What&rsquo;s going on with <code>procMount: Unmasked</code>?</h3>
+
+<p>As mentioned in the <a href="https://github.com/genuinetools/img#running-with-kubernetes"><code>img</code> GitHub README</a>, setting <code>securityContext.procMount</code> to <code>Unmasked</code> is no longer required to run <code>img</code>, but it does enable PID namespace isolation. Essentially, this prevents child processes from executing <code>kill -2</code> against the parent <code>img</code> process. This <code>procMount</code> option was introduced by a series of patches (ex. <a href="https://github.com/kubernetes/kubernetes/pull/64283">this pull request</a>) against Kubernetes and other projects.</p>
+
+<p>So why is that option commented out in our <code>Pod</code> above? The answer lies in current Kubernetes support, both for the <code>securityContext.procMount</code> option and the <code>allowedProcMountTypes</code> specification in our <code>PodSecurityPolicy</code>. While <code>procMount</code> has been <a href="https://github.com/genuinetools/img#running-with-kubernetes">enabled by default since Kubernetes 1.12</a>, <code>allowedProcMountTypes</code> is <a href="https://kubernetes.io/docs/reference/command-line-tools-reference/feature-gates/#feature-gates-for-alpha-or-beta-features">still an Alpha feature</a>.</p>
+
+<p>This leaves us with a few options to handle the <code>procMount</code> specification, depending on the nature of our Kubernetes cluster:</p>
+
+<ol>
+<li>If running a cluster that allows admin access to the Kubernetes master, we can selectively enable the Feature Gate for <code>allowedProcMountTypes</code> in our <code>PodSecurityPolicy</code>. Because GKE doesn&rsquo;t allow this access, this isn&rsquo;t an option in this example.</li>
+<li>We can <a href="https://cloud.google.com/kubernetes-engine/docs/concepts/alpha-clusters">create an Alpha GKE cluster</a> which will enable the field in question, among many others. Because of the  functional limitations of Alpha clusters, this is only an option for sandbox workloads.</li>
+<li>Because the required field is <code>PodSecurityPolicy</code>-specific, we could disable these policies across the entire cluster. However, this goes against security best practices.</li>
+<li>Finally, we could simply omit the <code>securityContext.procMount: Unmasked</code> option in our <code>Pod</code> definition, which disables PID namespace isolation. We&rsquo;ll use this option for the remainder of the blog post.</li>
+</ol>
+
+<h2 id="using-img-in-a-jenkins-pipeline">Using <code>img</code> in a Jenkins Pipeline</h2>
+
+<p>With our Kubernetes and Google Cloud resources now configured, we&rsquo;ll now look at running our <code>img</code> <code>Pod</code> from a Jenkins Pipeline.</p>
+
+<p>To execute this Jenkins job, we&rsquo;ll set up a <a href="https://jenkins.io/doc/book/pipeline/multibranch/">Multibranch Pipeline job</a> that pulls from our <a href="https://github.com/mdelgin/img-pipeline"><code>img-pipeline</code> GitHub repository</a>. Here is the <code>Jenkinsfile</code> we&rsquo;ll use:</p>
+
+<pre><code class="language-groovy">pipeline {
+  agent {
+    kubernetes {
+      label &quot;img&quot;
+      yamlFile 'img-resources/imgPod.yaml'
+    }
+  }
+  stages {
+    stage('Build and Push') {
+      steps {
+        container('img') {
+          sh &quot;&quot;&quot;
+            img build -t gcr.io/melgin/img-hello-world ./hello-world
+            gcloud auth configure-docker --quiet
+            img push gcr.io/melgin/img-hello-world
+          &quot;&quot;&quot;
+        }
+      }
+    }
+  }
+}
+</code></pre>
+
+<p>In this Pipeline script, we load our agent <code>Pod</code> definition from <code>imgPod.yaml</code>, described above. Our actual steps are fairly straightforward and consist of three main actions within our <code>sh</code> step:</p>
+
+<ol>
+<li>We use <code>img build</code> to build our <code>Dockerfile</code> located in the <code>hello-world</code> subdirectory. This is a simple example that copies a &ldquo;Hello World&rdquo; script into the <a href="https://hub.docker.com/_/scratch">Docker scratch image</a>.</li>
+<li>We use <code>gcloud auth configure-docker</code> to <a href="https://cloud.google.com/container-registry/docs/advanced-authentication#gcloud_as_a_docker_credential_helper">set up <code>gcloud</code> as a Docker credential helper</a>, allowing us to authenticate to GCR through Workload Identity.</li>
+<li>Finally, we use <code>img push</code> to push our newly built image to our GCR repository.</li>
+</ol>
+
+<h2 id="final-thoughts">Final Thoughts</h2>
+
+<p>We&rsquo;ve now successfully used <code>img</code> as a non-privileged, non-root Kubernetes <code>Pod</code> agent to build and push a container image from a Jenkins Pipeline. Before wrapping up, let&rsquo;s summarize some of the security implications of running <code>img</code> in this manner.</p>
+
+<p>First, <code>img</code> is running as a non-root user 1000 within a non-privileged container. This is an improvement from container building approaches that require root access (like <code>kaniko</code>) or using the <code>--privileged</code> flag (like Docker-in-Docker).</p>
+
+<p>However, there are security settings at the <code>PodSecurityPolicy</code>-level that require consideration, like setting <code>AppArmor</code> &amp; <code>seccomp</code> policies to <code>unconfined</code> and allowing privilege escalation. While the default behavior in Kubernetes is to <a href="https://kubernetes.io/docs/concepts/policy/pod-security-policy/#seccomp">set <code>seccomp</code> to <code>unconfined</code></a> and to <a href="https://kubernetes.io/docs/concepts/policy/pod-security-policy/#privilege-escalation">allow privilege escalation</a>, more security-conscious organizations might disallow these settings by default in their <code>PodSecurityPolicies</code>.</p>
+
+<p>Finally, without <code>procMount</code> set to <code>Unmasked</code>, the risk of child processes killing the parent <code>img</code> process remains. However, this risk is somewhat contained when <code>img</code> is run in an ephemeral container like it is as a Jenkins pod agent.
+&gt; <em>Note</em>: this concern will be effectively resolved if or when <code>allowedProcMountTypes</code> is promoted from its current Alpha status.</p>
+
+<p>For organizations particularly sensitive to avoiding running root or privileged container workloads, <code>img</code> is a great candidate for building containers in Kubernetes.</p>
+]]></content>
+        </item>
         
         <item>
             <title>Securely Using Cloud Services from Jenkins Kubernetes Agents</title>
