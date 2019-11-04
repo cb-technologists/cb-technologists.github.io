@@ -75,6 +75,33 @@
     </item>
     
     <item>
+      <title>CI/CD pipelines</title>
+      <link>https://technologists.dev/tags/ci/cd-pipelines/</link>
+      <pubDate>Mon, 28 Oct 2019 01:51:10 +0100</pubDate>
+      
+      <guid>https://technologists.dev/tags/ci/cd-pipelines/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>High Availability</title>
+      <link>https://technologists.dev/tags/high-availability/</link>
+      <pubDate>Mon, 28 Oct 2019 01:51:10 +0100</pubDate>
+      
+      <guid>https://technologists.dev/tags/high-availability/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>jenkins x</title>
+      <link>https://technologists.dev/tags/jenkins-x/</link>
+      <pubDate>Mon, 28 Oct 2019 01:51:10 +0100</pubDate>
+      
+      <guid>https://technologists.dev/tags/jenkins-x/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>AWS</title>
       <link>https://technologists.dev/tags/aws/</link>
       <pubDate>Sun, 20 Oct 2019 09:05:15 -0400</pubDate>
@@ -210,20 +237,20 @@
     </item>
     
     <item>
+      <title>DevSecOps</title>
+      <link>https://technologists.dev/tags/devsecops/</link>
+      <pubDate>Wed, 31 Jul 2019 07:00:00 +0000</pubDate>
+      
+      <guid>https://technologists.dev/tags/devsecops/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>cloudbees</title>
       <link>https://technologists.dev/tags/cloudbees/</link>
       <pubDate>Wed, 31 Jul 2019 07:00:00 +0000</pubDate>
       
       <guid>https://technologists.dev/tags/cloudbees/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>devsecops</title>
-      <link>https://technologists.dev/tags/devsecops/</link>
-      <pubDate>Wed, 31 Jul 2019 07:00:00 +0000</pubDate>
-      
-      <guid>https://technologists.dev/tags/devsecops/</guid>
       <description></description>
     </item>
     
@@ -251,24 +278,6 @@
       <pubDate>Wed, 31 Jul 2019 07:00:00 +0000</pubDate>
       
       <guid>https://technologists.dev/tags/vulnerability/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>CI/CD pipelines</title>
-      <link>https://technologists.dev/tags/ci/cd-pipelines/</link>
-      <pubDate>Sun, 28 Jul 2019 23:44:10 +0100</pubDate>
-      
-      <guid>https://technologists.dev/tags/ci/cd-pipelines/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>jenkins-x</title>
-      <link>https://technologists.dev/tags/jenkins-x/</link>
-      <pubDate>Sun, 28 Jul 2019 23:44:10 +0100</pubDate>
-      
-      <guid>https://technologists.dev/tags/jenkins-x/</guid>
       <description></description>
     </item>
     

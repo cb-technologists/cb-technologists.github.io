@@ -21,6 +21,16 @@
     </item>
     
     <item>
+      <title>CI/CD High Availability: The Real Thing</title>
+      <link>https://technologists.dev/posts/cicd_ha/</link>
+      <pubDate>Mon, 28 Oct 2019 01:51:10 +0100</pubDate>
+      
+      <guid>https://technologists.dev/posts/cicd_ha/</guid>
+      <description>High availability scenarios are key configurations for all mission critical software platforms and solutions at every company.
+But in my experience from every technology conversation, I&amp;rsquo;ve found out that High Availability (HA from now on) is one of those terms that is usually misunderstood when talking about CI/CD. The reason? Because HA can be a subjective topic depending on who you are talking to (IT, Development, Operations, end users, etc.</description>
+    </item>
+    
+    <item>
       <title>Securely Using Cloud Services from Jenkins Kubernetes Agents</title>
       <link>https://technologists.dev/posts/best-practices-for-cloudbees-core-jenkins-on-kubernetes/securely-using-cloud-services-from-jenkins-kubernetes-agents/</link>
       <pubDate>Sun, 20 Oct 2019 09:05:15 -0400</pubDate>

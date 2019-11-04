@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="author"
+    content="">
+<meta name="description"
+    content="High availability scenarios are key configurations for all mission critical software platforms and solutions at every company.
+But in my experience from every technology conversation, I&amp;rsquo;ve found out that High Availability (HA from now on) is one of those terms that is usually misunderstood when talking about CI/CD. The reason? Because HA can be a subjective topic depending on who you are talking to (IT, Development, Operations, end users, etc." />
+<meta name="keywords" content="" />
+<meta name="robots" content="noodp" />
+
+
+    
+<link rel="canonical" href="https://technologists.dev/posts/cicd_ha/" />
+    
+
+
+
+<title>
+    
+    CI/CD High Availability: The Real Thing :: CloudBees Technologists 
+    
+</title>
+
+
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.1/css/flag-icon.min.css" rel="stylesheet"
+    type="text/css">
+
+
+
+<link rel="stylesheet" href="/main.min.395ecbf6e8ef0edf502e990c8e3a72272f3140a88bcc503883e0c6f25c938dfc.css">
+
+
+
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#252627">
+<link rel="shortcut icon" href="/favicon.ico">
+<meta name="theme-color" content="#252627">
+<meta itemprop="name" content="CI/CD High Availability: The Real Thing">
+<meta itemprop="description" content="High availability scenarios are key configurations for all mission critical software platforms and solutions at every company.
+But in my experience from every technology conversation, I&rsquo;ve found out that High Availability (HA from now on) is one of those terms that is usually misunderstood when talking about CI/CD. The reason? Because HA can be a subjective topic depending on who you are talking to (IT, Development, Operations, end users, etc.">
+
+
+<meta itemprop="datePublished" content="2019-10-28T01:51:10&#43;01:00" />
+<meta itemprop="dateModified" content="2019-11-04T10:18:09&#43;00:00" />
+<meta itemprop="wordCount" content="2436">
+
+
+
+<meta itemprop="keywords" content="jenkins,jenkins x,CI/CD pipelines,High Availability," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="CI/CD High Availability: The Real Thing"/>
+<meta name="twitter:description" content="High availability scenarios are key configurations for all mission critical software platforms and solutions at every company.
+But in my experience from every technology conversation, I&rsquo;ve found out that High Availability (HA from now on) is one of those terms that is usually misunderstood when talking about CI/CD. The reason? Because HA can be a subjective topic depending on who you are talking to (IT, Development, Operations, end users, etc."/>
+
+
+
+
+<meta property="article:published_time" content="2019-10-28 01:51:10 &#43;0100 &#43;0100" />
+
+
+
+
+
+
+
+    </head>
+
+    <body class="dark-theme">
+        <div class="container">
+            <header class="header">
+    <span class="header__inner">
+        <a href="https://technologists.dev/" style="text-decoration: none;">
+    <div class="logo">
+        
+            <span class="logo__mark">></span>
+            <span class="logo__text">technologists</span>
+            <span class="logo__cursor"></span>
+        
+    </div>
+</a>
+
+
+        <span class="header__right">
+            
+                <nav class="menu">
+    <ul class="menu__inner">
+            
+            
+            
+            
+            <li class='menu-item-active'><a href="https://technologists.dev/posts">Blog</a></li>
+            
+            
+            
+            
+            <li class='menu-item'><a href="https://technologists.dev/series">Series</a></li>
+            
+            
+            
+            
+            <li class='menu-item'><a href="https://technologists.dev/authors">Authors</a></li>
+            
+            
+            
+            
+            <li class='menu-item'><a href="https://technologists.dev/about">About</a></li>
+    </ul>
+</nav>
+
+                <span class="menu-trigger">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+                    </svg>
+                </span>
+            
+
+            <span class="theme-toggle"><svg class="theme-toggler" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M22 41C32.4934 41 41 32.4934 41 22C41 11.5066 32.4934 3 22
+  3C11.5066 3 3 11.5066 3 22C3 32.4934 11.5066 41 22 41ZM7 22C7
+  13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22Z"/>
+</svg>
+</span>
+        </span>
+    </span>
+</header>
+
+
+            <div class="content">
+                
+    <main class="post">
+
+        <div class="post-info">
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>12 minutes
+
+            
+
+            </p>
+        </div>
+
+        <article>
+            
+            <h1 class="post-title"><a href="https://technologists.dev/posts/cicd_ha/">CI/CD High Availability: The Real Thing</a></h1>
+            
+            <p><span>by</span> 
+  
+  <a href="/authors/david-ca%C3%B1adillas">David Cañadillas</a>
+</p>
+
+            
+            
+            
+
+            <div class="post-content">
+                
+
+<p>High availability scenarios are key configurations for all mission critical software platforms and solutions at every company.</p>
+
+<p>But in my experience from every technology conversation, I&rsquo;ve found out that High Availability (HA from now on) is one of those terms that is usually misunderstood when talking about CI/CD. The reason? Because HA can be a subjective topic depending on who you are talking to (IT, Development, Operations, end users, etc.).</p>
+
+<p>I am writing this post to clear things out about the &ldquo;myth&rdquo; of HA in CI/CD and what it means from a solution architecture point of view. So, don&rsquo;t expect a post with a lot of code or configuration examples. It is about architecture concepts, business needs and its technical alignment to help finding out the best practices for <em>&ldquo;highly available&rdquo;</em> CI/CD pipelines.</p>
+
+<h2 id="what-is-ha-and-why-is-it-relative">What is HA and why is it relative?</h2>
+
+<p>Even though <a href="https://en.wikipedia.org/wiki/High_availability">the definition at Wikipedia</a> is not a true &ldquo;official&rdquo; source, I like how it defines HA:</p>
+
+<blockquote>
+<p><em>High availability (HA) is a characteristic of a system, which aims to ensure an agreed level of operational performance, usually uptime, for a higher than normal period.</em></p>
+</blockquote>
+
+<p>The words <em>agreed level of operational performance</em> show some very important topics to clarify:</p>
+
+<ul>
+<li><em>Operational performance</em> is defined by the use case and the business. Not from the technical components or the software being used.</li>
+<li>The software architecture and its technical definition depends on the <em>agreed level</em> of that operational performance.</li>
+</ul>
+
+<p>Let&rsquo;s use an example. If we think about the service that <a href="https://amazon.com">Amazon retail</a> users are expecting, any purchase transaction using the web portal cannot be interrupted for even a few seconds. So, web services, front end applications, databases, middleware, payment channels  and other services or microservices, etc. cannot interrupt or block that user transaction. That means that every server needs to be up and running all the time, or at least to recover at the same point in a sub-second basis.</p>
+
+<p>This is just because the business requires that any user transaction and interaction with the application cannot be interrupted at all, considering that an interruption is something blocked for 3 seconds or more (users don&rsquo;t like to wait more than 3 seconds to refresh a web page to the next step). And if that doesn&rsquo;t happen, I - as a user - will be doing the transaction from a different web retailer or competitor. The business then requires a very restrictive HA scenario.</p>
+
+<p>I am not going to enter in the differences of <em>&ldquo;Active-Active&rdquo;</em> or <em>&ldquo;Active-Passive&rdquo;</em> HA scenarios. But in the previous example, a software architecture candidate usually needs to be based on an &ldquo;Active-Active&rdquo; replication method. So every software transaction is supported or backed-up automatically from an already running service that can immediately resume the current step in the transaction, with no data-loss, or acting as a performant load balancer solution.</p>
+
+<p>But not every use case or business requires the same level of HA. In other terms, the word <em>High</em> in the <em>HA</em> term is relative. A critical service interruption can be seconds, minutes or even hours depending on the context, use case or business.</p>
+
+<h2 id="what-about-ha-and-ci-cd">What about HA and CI/CD?</h2>
+
+<p>Continuous Integration and Continuous Delivery (CI/CD) is based on the concept of continuously developing, building, integrating, testing, delivering and releasing the software, with the end goal of producing high quality applications for demanding users. So, how should we define a highly available platform or solution to be able to do that with no <em>&ldquo;service interruption&rdquo;</em>?</p>
+
+<p>Let&rsquo;s see what a <em>service interruption</em> means in this case.</p>
+
+<h3 id="industrial-manufacturing-the-example-to-look-at">Industrial manufacturing, the example to look at</h3>
+
+<p>I think that software development automation is taking all the learnings from the industrial manufacturing processes and its <em>Continuous Delivery</em> systems where final products tend to be manufactured on demand, saving a lot of unnecessary costs and making production lines a lot more agile with very high quality end user products (concepts like <a href="https://en.wikipedia.org/wiki/Just-in-time_manufacturing">JIT</a>, <a href="https://en.wikipedia.org/wiki/Kanban">Kanban</a>, <a href="https://en.wikipedia.org/wiki/CONWIP">ConWIP</a>, <a href="https://www.sciencedirect.com/science/article/pii/S1877705814034092">Lean</a>&hellip; that are usually known for software development were born at the Industrial Manufacturing evolution during the 20th Century).</p>
+
+<p>This is exactly what CI/CD is doing for software development. An <a href="https://en.wikipedia.org/wiki/Assembly_line">assembly line</a> is the exact same concept for industrial manufacturing as it is for a <a href="https://dzone.com/articles/learn-how-to-setup-a-cicd-pipeline-from-scratch">CI/CD pipeline</a> for software development. Just an automated sequence of stages (can be parallel or not) that execute different steps to deliver high quality products in a frequent manner.</p>
+
+<p>So, what about HA in manufacturing assembly pipelines? The first approach in the 1940&rsquo;s was to reduce the service interruption in a production line just by converting internal machine components to external (we could compare this as a decoupling method for manufacturing, similar to decoupling monoliths to distributed components), so to repair a machine in the <em>pipeline</em> would result in much less loss of service for the entire assembly line. (<a href="http://artoflean.com/index.php/2010/02/15/set-up-reduction-in-toyota/">Toyota started to apply this</a> in the 1950&rsquo;s for machine setup, reducing times from hours to minutes, with a huge impact in the case or restarting any <em>pipeline</em> stage in a loss of service).</p>
+
+<p>But let&rsquo;s focus on how the industry faces this nowadays. Any manufacturing industry is able to assure production of hundreds or thousands of components every day from automated assembly lines just by applying different design methods in the <em>pipeline</em>. So, regarding this highly available processes, they apply things like:</p>
+
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/Cellular_manufacturing"><strong>Cellular manufacturing</strong></a>. Just by a right decoupled architecture design of the pipeline and its flexibility, we can improve the flow of the execution and a fast recovery from a loss of service.</li>
+<li><a href="https://www.manufacturing.net/operations/article/13195207/buffers-and-merging-assembly-lines-balanced-or-unbalanced"><strong>Line buffers</strong></a>. By applying buffers in the assembly or production line, the cadence of production is not interrupted by a temporary loss of a workstation in the line. They also can improve the performance of the <em>pipeline execution</em></li>
+</ul>
+
+<p><img src="/img/cicd-ha/buffered_line.png" alt="buffered_lines" /></p>
+
+<ul>
+<li><a href="http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.87.2382&amp;rep=rep1&amp;type=pdf"><strong>Assembly line balancing</strong></a>. Decoupling, replicating and parallelizing steps executions for assembly lines can reduce the recovery of the entire line for a highly available service.</li>
+</ul>
+
+<p>Regarding the <em>&ldquo;agreed level of operational performance&rdquo;</em> from our previous HA definition, in manufacturing production lines there is no need to replicate the entire manufacturing platform or production lines to have a highly available service. This means that the lines can afford a stoppage of a couple of minutes with no impact on the cadence of production. From a business and production perspective this is a <strong><em>highly available service</em></strong>.</p>
+
+<p>One of the reasons of not working with replicated <em>active-active</em> running production lines as HA strategy is because is not cost effective for the service interruption recovery requirements. In other words, we get the same final results using easy scalable production lines that can recover fast from a failure, without the need of expensive <em>active-active</em> infrastructures.</p>
+
+<h3 id="resilient-vs-highly-available">Resilient vs Highly Available</h3>
+
+<p>One of the most important features about a <em>Continuous Delivery</em> system (note that I am talking in general, not only software) to be highly available is <strong>resilience</strong>. Understood as the capacity of our system components to recover on time, producing a complete stable, durable and efficient execution that doesn&rsquo;t impact the overall service (e.g. my deployment or release frequency and quality of final artifacts are the same, with or without short downtimes. Just because my platform and systems are <em>resilient</em> to failures).</p>
+
+<p>Back to the question:</p>
+
+<blockquote>
+<p><strong><em>What platform configuration do I need for a highly available service?</em></strong></p>
+</blockquote>
+
+<p>To answer this question, it&rsquo;s very important to think about <strong>resilience first</strong>, because having a resilient platform and architecture is usually enough to deliver a highly available service, being able to recover on time to not impact the final service. But in some scenarios where a couple of minutes of service blockage means loss of millions of dollars (like Amazon retail previous example), resilient solutions are not enough. In this case then you probably need to work on very restrictive HA replication infrastructures. The cost of replication complexity needs to be worth it.</p>
+
+<h2 id="so-ci-cd-ha-is-just-resilience">So CI/CD HA is just Resilience</h2>
+
+<p>Coming back to the main topic&hellip; <strong>YES</strong>, it is about resilient solutions. HA in CI/CD is not about looking for an <em>active-active</em> load balancing platform that is able to orchestrate CI/CD pipelines. It is about assuring enough <em>availability</em> of my pipelines executions to deliver my software on time and covering all expectations (deployment frequency, failure recovery, lead time, quality standards, etc.).</p>
+
+<p>What does resilient architecture mean in CI/CD pipeline orchestration? I think that the following solution architecture concepts are a must in order to offer a resilient <em>highly available</em> solution:</p>
+
+<ul>
+<li>Orchestration layer does not have the same needs as the execution layer. Pipeline orchestrators and pipeline executors have different scalability  requirements, and because of that <strong>decoupling execution from orchestration is a must</strong>.</li>
+<li><strong>Pipeline execution downtime recovery needs to be fast</strong> and from the same execution point. Executors infrastructure can fail, even if they are replicated, so it is more important to recover from the last successful stage or status than moving the execution to another live agent executor that could restart the execution from the beginning.</li>
+<li><strong>Decouple the orchestration layer</strong>. Smaller and more masters (orchestrators) are going to be more scalable and resilient to any overall failure. If one master fails it is not impacting any other orchestrator and its pipelines. So platform availability improves with scalability.</li>
+<li>Rely on a <strong>native self-healing, resilient and scalable infrastructure</strong>. Even though replication is not needed, we need to recover fast from any hardware or service downtime.</li>
+<li><strong>Decouple pipeline execution</strong>. Using different agent executors during pipeline execution improves availability, just the same way that <em>assembly lines</em> in the industry do.</li>
+</ul>
+
+<p>It can be pretty cool if I can access my jobs or builds all the time because my masters are all the time up and running, but it is not that cool if they are not producing the same results in terms of building and delivering software because my pipelines are not executing and recovering on time. Again&hellip; resilience first.</p>
+
+<h2 id="scalability-and-kubernetes-as-ha-best-practice">Scalability and Kubernetes as HA best practice</h2>
+
+<p>If we are looking for HA in any CI/CD solution architecture we should then think about a <strong>scalable, decoupled and flexible solution</strong> that runs on a <strong>resilient platform</strong>. Today, these terms require us to think about containerized solutions orchestrated by <a href="https://kubernetes.io/">Kubernetes</a>.</p>
+
+<h3 id="a-traditional-jenkins-example">A traditional Jenkins example</h3>
+
+<p><a href="https://jenkins.io">Jenkins</a> is one of the most used solutions to orchestrate CI/CD pipelines. Its internal architecture is more than 10 years old, so we might think it not to be the most advanced solution. But, the truth is that it has been evolving with these resilient best practices in mind (master-agent layers, pipeline decoupling and flexibility, containerized deployment, etc.), so if you deploy and design your platform and pipelines nicely you can get a true resilient CI/CD experience, meaning a CI/CD HA platform.</p>
+
+<p>But let&rsquo;s see the following picture:</p>
+
+<p><img src="/img/cicd-ha/CICD_HA_Archs.png" alt="Jenkins HA" /></p>
+
+<p>In a traditional deployment - like the diagram on the left - with Jenkins masters (orchestrators) and Jenkins agents (executors), we should at least work on an <em>Active-Passive</em> replication on masters to recover on time to provide a resilient platform with HA capabilities. But, if we also decouple the masters with smaller ones and deploy them natively in Kubernetes - diagram on the right -, the experience can be much more resilient without any replication method. A small master that is running in a pod can automatically be recovered by Kubernetes if it fails, restarting its service in a couple of minutes in the worse case. The pipeline could still be running by the way. Also, the rest of the masters are not impacted and agents are just ephemeral, only running and restarted when needed. So, service loss is not perceived.</p>
+
+<p>In a <em>Jenkins enterprise experience</em> this is a must, and that is why for example, <a href="https://docs.cloudbees.com/docs/cloudbees-core/latest/">CloudBees Core</a> (usually known as <em>Jenkins Enterprise</em>) provides out of the box these capabilities with master management features and Kubernetes scalability.</p>
+
+<h3 id="the-cloud-native-evolution-a-k-a-jenkins-x">The Cloud Native evolution (a.k.a. Jenkins X)</h3>
+
+<p>But if we go purely Kubernetes native, and we provide an architecture where every piece of the pipeline orchestration and execution is just a state declaration object that can be recovered automatically when something goes down, then the HA and resilient experience is event better.</p>
+
+<p><a href="https://jenkins-x.io">Jenkins X</a> takes these concepts and all the previous mentioned best practices of scalability and resilience. Everything is about Kubernetes native objects definitions (based on <a href="https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/">CRDs</a>), which are resilient by nature from Kubernetes. No need to think about decoupled pipelines, infrastructure replication, or recovering scenarios. It is already out of the box from its solution architecture design. If you deploy your Kubernetes platform with some <a href="https://en.wikipedia.org/wiki/Disaster_recovery">Disaster Recovery</a> configurations like Cloud cross-region availability, autoscaling pools and backup features (I think <a href="https://velero.io/">Velero</a> is an interesting solution for K8s backup), it is practically impossible to completely lose the service for your CI/CD pipelines (except the case the World is ending&hellip;).</p>
+
+<p>As an example, in the image below we can see that a pipeline execution on a default Jenkins X deployment recovered just in 30 seconds to continue running after a <a href="https://kubernetes.io/docs/concepts/workloads/pods/pod/">Pod</a> failure simulation. Nothing needed to be done in terms of deployment or pipeline definition. It is just its native behavior.</p>
+
+<p><img src="/img/cicd-ha/jenkins-x_podrestart.png" alt="Jenkins X pod recovery" /></p>
+
+<h2 id="the-message-and-conclusion">The message and conclusion</h2>
+
+<p>I&rsquo;ve received in the past several redundant requests from organizations like the following ones:</p>
+
+<ul>
+<li><em>&ldquo;We need to replicate and load balance our masters to have HA&rdquo;</em></li>
+<li><em>&ldquo;My masters need to be up and running all the time as Active-Active to have a continuously running CI/CD service&rdquo;</em></li>
+<li><em>&ldquo;How can I write to my shared storage at the same time with replicated masters?&rdquo;</em> (another active-active HA conversation)</li>
+</ul>
+
+<p>And many more similar.</p>
+
+<p>The funny thing is that lots of cases were not prioritizing scalability, pipeline and master decoupling, or containerized orchestrated deployments. And then you realize that most of these requests come from IT requirements definitions in terms of HA general software architectures, no matter the nature of the service.</p>
+
+<p>Most of the people asking about HA is always referring to an <em>Active-Active</em> replication scenario and usually thinking of infrastructure, not the real business issue when comes to CI/CD.</p>
+
+<p>So it is very important to clarify that HA for CI/CD is not a matter of infrastructure replication. It is just a matter of resilient automated pipelines execution where usually just a couple of minutes of loss of service at some specific point is not even an issue&hellip; but you need to recover quickly and be stable on time.</p>
+
+<p>I cannot imagine a car manufacturer like BMW or Toyota replicating their entire manufacturing plants to support loss of service for HA. True that is not comparable in costs to run a couple more CPUs, but the same decoupling, flexibility and scalability best practices apply to get the same HA experience as CI/CD.</p>
+
+<p>Let&rsquo;s change our mindset. If we provide a scalable and distributed solution that deploys natively on a resilient platform, we don&rsquo;t even need to think about HA.</p>
+
+            </div>
+        </article>
+
+        <hr />
+
+        <div class="post-info">
+            
+                <p><svg
+                    width="24"
+                    height="24"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="feather feather-pen-tool"
+                  >
+                    <path d="M12 19l7-7 3 3-7 7-3-3z" />
+                    <path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z" />
+                    <path d="M2 2l7.586 7.586" />
+                    <circle cx="11" cy="11" r="2" />
+                  </svg><a href="/authors/david-ca%C3%B1adillas">David Cañadillas</a></p>
+                  
+                <p>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="https://technologists.dev/tags/jenkins">jenkins</a></span><span class="tag"><a href="https://technologists.dev/tags/jenkins-x">jenkins x</a></span><span class="tag"><a href="https://technologists.dev/tags/ci/cd-pipelines">CI/CD pipelines</a></span><span class="tag"><a href="https://technologists.dev/tags/high-availability">High Availability</a></span>
+                </p>
+
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>2436 Words</p>
+
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2019-10-28 00:51 &#43;0000</p>
+                <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-git-commit"><circle cx="12" cy="12" r="4"></circle><line x1="1.05" y1="12" x2="7" y2="12"></line><line x1="17.01" y1="12" x2="22.96" y2="12"></line></svg><a href="https://github.com/cb-technologists/blog/commit/a438c8c92bceddf797b057376769e72b1026a5ea" target="_blank" rel="noopener">a438c8c</a> @ 2019-11-04</p>
+        </div>
+
+        
+            <div class="pagination">
+                <div class="pagination__title">
+                    <span class="pagination__title-h"></span>
+                    <hr />
+                </div>
+
+                <div class="pagination__buttons">
+                    
+                        <span class="button previous">
+                            <a href="https://technologists.dev/posts/building-images-with-img/">
+                                <span class="button__icon">←</span>
+                                <span class="button__text">Unprivileged Container Image Builds with img and Jenkins on Kubernetes</span>
+                            </a>
+                        </span>
+                    
+
+                    
+                        <span class="button next">
+                            <a href="https://technologists.dev/posts/best-practices-for-cloudbees-core-jenkins-on-kubernetes/securely-using-cloud-services-from-jenkins-kubernetes-agents/">
+                                <span class="button__text">Securely Using Cloud Services from Jenkins Kubernetes Agents</span>
+                                <span class="button__icon">→</span>
+                            </a>
+                        </span>
+                    
+                </div>
+            </div>
+        
+
+        
+    </main>
+
+            </div>
+
+            
+                <footer class="footer">
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span>&copy; 2019</span>
+            
+            <span></span>
+            <span> <a href="https://technologists.dev/posts/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a></span>
+        </div>
+    </div>
+    <div class="footer__inner">
+        <div class="footer__content">
+
+        </div>
+    </div>
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span>Powered by <a href="http://gohugo.io">Hugo</a></span>
+            <span>Made with &#10084; by <a href="https://github.com/rhazdon">rhazdon</a></span>
+        </div>
+    </div>
+</footer>
+
+            
+        </div>
+
+        
+
+
+
+
+<script type="text/javascript" src="/bundle.min.cf7871ed49474a80ed457154d24e61f7881adbe0f9384951a74ac46b688a39a4dbfa68bc6d37baeb058186de354ead3487d4ee7f083ea4cba860c48600b694f3.js" integrity="sha512-z3hx7UlHSoDtRXFU0k5h94ga2&#43;D5OElRp0rEa2iKOaTb&#43;mi8bTe66wWBht41Tq00h9Tufwg&#43;pMuoYMSGALaU8w=="></script>
+
+
+        <script>
+            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+            })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+            ga('create', 'UA-141077309-1', 'auto');
+            
+            ga('set', 'dimension2', '2019-10-28 00:51 \x2b0000');
+            ga('send', 'pageview');
+        </script>
+
+
+
+
+    </body>
+</html>

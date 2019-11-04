@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>High Availability on CloudBees Technologists</title>
+    <link>https://technologists.dev/tags/high-availability/</link>
+    <description>Recent content in High Availability on CloudBees Technologists</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 28 Oct 2019 01:51:10 +0100</lastBuildDate>
+    
+	<atom:link href="https://technologists.dev/tags/high-availability/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>CI/CD High Availability: The Real Thing</title>
+      <link>https://technologists.dev/posts/cicd_ha/</link>
+      <pubDate>Mon, 28 Oct 2019 01:51:10 +0100</pubDate>
+      
+      <guid>https://technologists.dev/posts/cicd_ha/</guid>
+      <description>High availability scenarios are key configurations for all mission critical software platforms and solutions at every company.
+But in my experience from every technology conversation, I&amp;rsquo;ve found out that High Availability (HA from now on) is one of those terms that is usually misunderstood when talking about CI/CD. The reason? Because HA can be a subjective topic depending on who you are talking to (IT, Development, Operations, end users, etc.</description>
+    </item>
+    
+  </channel>
+</rss>
