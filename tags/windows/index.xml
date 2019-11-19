@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>EKS on CloudBees Technologists</title>
-    <link>https://technologists.dev/tags/eks/</link>
-    <description>Recent content in EKS on CloudBees Technologists</description>
+    <title>windows on CloudBees Technologists</title>
+    <link>https://technologists.dev/tags/windows/</link>
+    <description>Recent content in windows on CloudBees Technologists</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Mon, 18 Nov 2019 17:00:00 -0400</lastBuildDate>
     
-	<atom:link href="https://technologists.dev/tags/eks/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://technologists.dev/tags/windows/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -19,15 +19,6 @@
       <guid>https://technologists.dev/posts/windows-containers/</guid>
       <description>Kubernetes 1.14 was released in March 2019 and the release brought production support for Windows Containers on Windows Server nodes. Before moving on, I would like to highlight a few things from the previous link:
  Kubernetes control plane runs in Linux (and there is no plan to change that for a full Windows Kubernetes cluster) Versions supported for worker nodes and containers: Windows Server 1809/Windows Server 2019 Windows containers have to be scheduled on Windows nodes  At the time this post was written (Nov 19), AKS, GKE and EKS offer some level of support for Windows based containers (EKS is the first to offer GA support for Windows based containers).</description>
-    </item>
-    
-    <item>
-      <title>Securely Using Cloud Services from Jenkins Kubernetes Agents</title>
-      <link>https://technologists.dev/posts/best-practices-for-cloudbees-core-jenkins-on-kubernetes/securely-using-cloud-services-from-jenkins-kubernetes-agents/</link>
-      <pubDate>Sun, 20 Oct 2019 09:05:15 -0400</pubDate>
-      
-      <guid>https://technologists.dev/posts/best-practices-for-cloudbees-core-jenkins-on-kubernetes/securely-using-cloud-services-from-jenkins-kubernetes-agents/</guid>
-      <description>In the second part of this series on best practices for Jenkins (and CloudBees Core) on Kubernetes we will continue to look at security. In this post we will look at how to reduce security risk of using cloud services from Jenkins Kubernetes agents, similar to how the previous post in this series showed how Kubernetes Pod Security Policies can be used with Jenkins Kubernetes agents to limit the security risk of Jenkins agent containers.</description>
     </item>
     
   </channel>

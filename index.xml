@@ -6,10 +6,20 @@
     <description>Recent content on CloudBees Technologists</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 31 Oct 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 18 Nov 2019 17:00:00 -0400</lastBuildDate>
     
 	<atom:link href="https://technologists.dev/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Using Windows containers with Jenkins on Kubernetes 1.14</title>
+      <link>https://technologists.dev/posts/windows-containers/</link>
+      <pubDate>Mon, 18 Nov 2019 17:00:00 -0400</pubDate>
+      
+      <guid>https://technologists.dev/posts/windows-containers/</guid>
+      <description>Kubernetes 1.14 was released in March 2019 and the release brought production support for Windows Containers on Windows Server nodes. Before moving on, I would like to highlight a few things from the previous link:
+ Kubernetes control plane runs in Linux (and there is no plan to change that for a full Windows Kubernetes cluster) Versions supported for worker nodes and containers: Windows Server 1809/Windows Server 2019 Windows containers have to be scheduled on Windows nodes  At the time this post was written (Nov 19), AKS, GKE and EKS offer some level of support for Windows based containers (EKS is the first to offer GA support for Windows based containers).</description>
+    </item>
     
     <item>
       <title>Unprivileged Container Image Builds with img and Jenkins on Kubernetes</title>

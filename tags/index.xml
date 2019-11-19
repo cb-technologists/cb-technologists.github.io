@@ -6,10 +6,64 @@
     <description>Recent content in Tags on CloudBees Technologists</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 31 Oct 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 18 Nov 2019 17:00:00 -0400</lastBuildDate>
     
 	<atom:link href="https://technologists.dev/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>AKS</title>
+      <link>https://technologists.dev/tags/aks/</link>
+      <pubDate>Mon, 18 Nov 2019 17:00:00 -0400</pubDate>
+      
+      <guid>https://technologists.dev/tags/aks/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>EKS</title>
+      <link>https://technologists.dev/tags/eks/</link>
+      <pubDate>Mon, 18 Nov 2019 17:00:00 -0400</pubDate>
+      
+      <guid>https://technologists.dev/tags/eks/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Kubernetes</title>
+      <link>https://technologists.dev/tags/kubernetes/</link>
+      <pubDate>Mon, 18 Nov 2019 17:00:00 -0400</pubDate>
+      
+      <guid>https://technologists.dev/tags/kubernetes/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>azure</title>
+      <link>https://technologists.dev/tags/azure/</link>
+      <pubDate>Mon, 18 Nov 2019 17:00:00 -0400</pubDate>
+      
+      <guid>https://technologists.dev/tags/azure/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>jenkins</title>
+      <link>https://technologists.dev/tags/jenkins/</link>
+      <pubDate>Mon, 18 Nov 2019 17:00:00 -0400</pubDate>
+      
+      <guid>https://technologists.dev/tags/jenkins/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>windows</title>
+      <link>https://technologists.dev/tags/windows/</link>
+      <pubDate>Mon, 18 Nov 2019 17:00:00 -0400</pubDate>
+      
+      <guid>https://technologists.dev/tags/windows/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>containers</title>
@@ -44,24 +98,6 @@
       <pubDate>Thu, 31 Oct 2019 00:00:00 +0000</pubDate>
       
       <guid>https://technologists.dev/tags/img/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>jenkins</title>
-      <link>https://technologists.dev/tags/jenkins/</link>
-      <pubDate>Thu, 31 Oct 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://technologists.dev/tags/jenkins/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>kubernetes</title>
-      <link>https://technologists.dev/tags/kubernetes/</link>
-      <pubDate>Thu, 31 Oct 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://technologists.dev/tags/kubernetes/</guid>
       <description></description>
     </item>
     
@@ -152,15 +188,6 @@
       <pubDate>Sun, 20 Oct 2019 09:05:15 -0400</pubDate>
       
       <guid>https://technologists.dev/tags/core-v2/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>EKS</title>
-      <link>https://technologists.dev/tags/eks/</link>
-      <pubDate>Sun, 20 Oct 2019 09:05:15 -0400</pubDate>
-      
-      <guid>https://technologists.dev/tags/eks/</guid>
       <description></description>
     </item>
     
@@ -300,7 +327,7 @@
     </item>
     
     <item>
-      <title>GitOps</title>
+      <title>gitops</title>
       <link>https://technologists.dev/tags/gitops/</link>
       <pubDate>Sat, 27 Jul 2019 10:50:46 -0400</pubDate>
       
