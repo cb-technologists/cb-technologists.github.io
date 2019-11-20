@@ -6,10 +6,20 @@
     <description>Recent content in GKE on CloudBees Technologists</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 20 Oct 2019 09:05:15 -0400</lastBuildDate>
+    <lastBuildDate>Wed, 20 Nov 2019 05:05:15 -0400</lastBuildDate>
     
 	<atom:link href="https://technologists.dev/tags/gke/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Serverless Preview Environments and GitOps with CloudBees Core and Google Cloud Run</title>
+      <link>https://technologists.dev/posts/cloud-run-with-core/</link>
+      <pubDate>Wed, 20 Nov 2019 05:05:15 -0400</pubDate>
+      
+      <guid>https://technologists.dev/posts/cloud-run-with-core/</guid>
+      <description>Google Cloud Run is Google Cloud&amp;rsquo;s serverless platform for stateless containerized applications that leverage HTTP and event driven workloads. Cloud Run can be fully managed or you can use Cloud Run for Anthos to deploy applications in an Anthos GKE cluster running on Google Cloud or on-premises.
+CloudBees Core is an enterprise version of Jenkins that provides better scalability, manageability, security and availability by running on and leveraging Kubernetes.</description>
+    </item>
     
     <item>
       <title>Securely Using Cloud Services from Jenkins Kubernetes Agents</title>

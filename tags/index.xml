@@ -6,10 +6,118 @@
     <description>Recent content in Tags on CloudBees Technologists</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 18 Nov 2019 17:00:00 -0400</lastBuildDate>
+    <lastBuildDate>Wed, 20 Nov 2019 05:05:15 -0400</lastBuildDate>
     
 	<atom:link href="https://technologists.dev/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Anthos</title>
+      <link>https://technologists.dev/tags/anthos/</link>
+      <pubDate>Wed, 20 Nov 2019 05:05:15 -0400</pubDate>
+      
+      <guid>https://technologists.dev/tags/anthos/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>CD</title>
+      <link>https://technologists.dev/tags/cd/</link>
+      <pubDate>Wed, 20 Nov 2019 05:05:15 -0400</pubDate>
+      
+      <guid>https://technologists.dev/tags/cd/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>CI</title>
+      <link>https://technologists.dev/tags/ci/</link>
+      <pubDate>Wed, 20 Nov 2019 05:05:15 -0400</pubDate>
+      
+      <guid>https://technologists.dev/tags/ci/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>CaaS</title>
+      <link>https://technologists.dev/tags/caas/</link>
+      <pubDate>Wed, 20 Nov 2019 05:05:15 -0400</pubDate>
+      
+      <guid>https://technologists.dev/tags/caas/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Cloud Run</title>
+      <link>https://technologists.dev/tags/cloud-run/</link>
+      <pubDate>Wed, 20 Nov 2019 05:05:15 -0400</pubDate>
+      
+      <guid>https://technologists.dev/tags/cloud-run/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>CloudBees Core</title>
+      <link>https://technologists.dev/tags/cloudbees-core/</link>
+      <pubDate>Wed, 20 Nov 2019 05:05:15 -0400</pubDate>
+      
+      <guid>https://technologists.dev/tags/cloudbees-core/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>FaaS</title>
+      <link>https://technologists.dev/tags/faas/</link>
+      <pubDate>Wed, 20 Nov 2019 05:05:15 -0400</pubDate>
+      
+      <guid>https://technologists.dev/tags/faas/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>GKE</title>
+      <link>https://technologists.dev/tags/gke/</link>
+      <pubDate>Wed, 20 Nov 2019 05:05:15 -0400</pubDate>
+      
+      <guid>https://technologists.dev/tags/gke/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>containers</title>
+      <link>https://technologists.dev/tags/containers/</link>
+      <pubDate>Wed, 20 Nov 2019 05:05:15 -0400</pubDate>
+      
+      <guid>https://technologists.dev/tags/containers/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>kubernetes</title>
+      <link>https://technologists.dev/tags/kubernetes/</link>
+      <pubDate>Wed, 20 Nov 2019 05:05:15 -0400</pubDate>
+      
+      <guid>https://technologists.dev/tags/kubernetes/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>serverless</title>
+      <link>https://technologists.dev/tags/serverless/</link>
+      <pubDate>Wed, 20 Nov 2019 05:05:15 -0400</pubDate>
+      
+      <guid>https://technologists.dev/tags/serverless/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>workload identity</title>
+      <link>https://technologists.dev/tags/workload-identity/</link>
+      <pubDate>Wed, 20 Nov 2019 05:05:15 -0400</pubDate>
+      
+      <guid>https://technologists.dev/tags/workload-identity/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>AKS</title>
@@ -48,29 +156,11 @@
     </item>
     
     <item>
-      <title>kubernetes</title>
-      <link>https://technologists.dev/tags/kubernetes/</link>
-      <pubDate>Mon, 18 Nov 2019 17:00:00 -0400</pubDate>
-      
-      <guid>https://technologists.dev/tags/kubernetes/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>windows</title>
       <link>https://technologists.dev/tags/windows/</link>
       <pubDate>Mon, 18 Nov 2019 17:00:00 -0400</pubDate>
       
       <guid>https://technologists.dev/tags/windows/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>containers</title>
-      <link>https://technologists.dev/tags/containers/</link>
-      <pubDate>Thu, 31 Oct 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://technologists.dev/tags/containers/</guid>
       <description></description>
     </item>
     
@@ -102,15 +192,6 @@
     </item>
     
     <item>
-      <title>workload identity</title>
-      <link>https://technologists.dev/tags/workload-identity/</link>
-      <pubDate>Thu, 31 Oct 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://technologists.dev/tags/workload-identity/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>CI/CD pipelines</title>
       <link>https://technologists.dev/tags/ci/cd-pipelines/</link>
       <pubDate>Mon, 28 Oct 2019 01:51:10 +0100</pubDate>
@@ -129,7 +210,7 @@
     </item>
     
     <item>
-      <title>jenkins-x</title>
+      <title>jenkins x</title>
       <link>https://technologists.dev/tags/jenkins-x/</link>
       <pubDate>Mon, 28 Oct 2019 01:51:10 +0100</pubDate>
       
@@ -147,38 +228,11 @@
     </item>
     
     <item>
-      <title>CD</title>
-      <link>https://technologists.dev/tags/cd/</link>
-      <pubDate>Sun, 20 Oct 2019 09:05:15 -0400</pubDate>
-      
-      <guid>https://technologists.dev/tags/cd/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>CI</title>
-      <link>https://technologists.dev/tags/ci/</link>
-      <pubDate>Sun, 20 Oct 2019 09:05:15 -0400</pubDate>
-      
-      <guid>https://technologists.dev/tags/ci/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>Cloud</title>
       <link>https://technologists.dev/tags/cloud/</link>
       <pubDate>Sun, 20 Oct 2019 09:05:15 -0400</pubDate>
       
       <guid>https://technologists.dev/tags/cloud/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>CloudBees Core</title>
-      <link>https://technologists.dev/tags/cloudbees-core/</link>
-      <pubDate>Sun, 20 Oct 2019 09:05:15 -0400</pubDate>
-      
-      <guid>https://technologists.dev/tags/cloudbees-core/</guid>
       <description></description>
     </item>
     
@@ -197,15 +251,6 @@
       <pubDate>Sun, 20 Oct 2019 09:05:15 -0400</pubDate>
       
       <guid>https://technologists.dev/tags/gcp/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>GKE</title>
-      <link>https://technologists.dev/tags/gke/</link>
-      <pubDate>Sun, 20 Oct 2019 09:05:15 -0400</pubDate>
-      
-      <guid>https://technologists.dev/tags/gke/</guid>
       <description></description>
     </item>
     
@@ -264,20 +309,20 @@
     </item>
     
     <item>
+      <title>DevSecOps</title>
+      <link>https://technologists.dev/tags/devsecops/</link>
+      <pubDate>Wed, 31 Jul 2019 07:00:00 +0000</pubDate>
+      
+      <guid>https://technologists.dev/tags/devsecops/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>cloudbees</title>
       <link>https://technologists.dev/tags/cloudbees/</link>
       <pubDate>Wed, 31 Jul 2019 07:00:00 +0000</pubDate>
       
       <guid>https://technologists.dev/tags/cloudbees/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>devsecops</title>
-      <link>https://technologists.dev/tags/devsecops/</link>
-      <pubDate>Wed, 31 Jul 2019 07:00:00 +0000</pubDate>
-      
-      <guid>https://technologists.dev/tags/devsecops/</guid>
       <description></description>
     </item>
     

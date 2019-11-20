@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="author"
+    content="">
+<meta name="description"
+    content="Google Cloud Run is Google Cloud&amp;rsquo;s serverless platform for stateless containerized applications that leverage HTTP and event driven workloads. Cloud Run can be fully managed or you can use Cloud Run for Anthos to deploy applications in an Anthos GKE cluster running on Google Cloud or on-premises.
+CloudBees Core is an enterprise version of Jenkins that provides better scalability, manageability, security and availability by running on and leveraging Kubernetes." />
+<meta name="keywords" content="" />
+<meta name="robots" content="noodp" />
+
+
+    
+<link rel="canonical" href="https://www.cloudbees.com/blog/serverless-preview-environments-and-gitops-cloudbees-core-and-google-cloud-run" />
+    
+
+
+
+<title>
+    
+    Serverless Preview Environments and GitOps with CloudBees Core and Google Cloud Run :: CloudBees Technologists 
+    
+</title>
+
+
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.1/css/flag-icon.min.css" rel="stylesheet"
+    type="text/css">
+
+
+
+<link rel="stylesheet" href="/main.min.395ecbf6e8ef0edf502e990c8e3a72272f3140a88bcc503883e0c6f25c938dfc.css">
+
+
+
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#252627">
+<link rel="shortcut icon" href="/favicon.ico">
+<meta name="theme-color" content="#252627">
+<meta itemprop="name" content="Serverless Preview Environments and GitOps with CloudBees Core and Google Cloud Run">
+<meta itemprop="description" content="Google Cloud Run is Google Cloud&rsquo;s serverless platform for stateless containerized applications that leverage HTTP and event driven workloads. Cloud Run can be fully managed or you can use Cloud Run for Anthos to deploy applications in an Anthos GKE cluster running on Google Cloud or on-premises.
+CloudBees Core is an enterprise version of Jenkins that provides better scalability, manageability, security and availability by running on and leveraging Kubernetes.">
+
+
+<meta itemprop="datePublished" content="2019-11-20T05:05:15-04:00" />
+<meta itemprop="dateModified" content="2019-11-20T15:01:20&#43;00:00" />
+<meta itemprop="wordCount" content="2005">
+
+
+
+<meta itemprop="keywords" content="Kubernetes,containers,Cloud Run,serverless,CaaS,FaaS,CloudBees Core,Anthos,CI,CD,GKE,Workload Identity," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Serverless Preview Environments and GitOps with CloudBees Core and Google Cloud Run"/>
+<meta name="twitter:description" content="Google Cloud Run is Google Cloud&rsquo;s serverless platform for stateless containerized applications that leverage HTTP and event driven workloads. Cloud Run can be fully managed or you can use Cloud Run for Anthos to deploy applications in an Anthos GKE cluster running on Google Cloud or on-premises.
+CloudBees Core is an enterprise version of Jenkins that provides better scalability, manageability, security and availability by running on and leveraging Kubernetes."/>
+
+
+
+
+<meta property="article:published_time" content="2019-11-20 05:05:15 -0400 -0400" />
+
+
+
+
+
+
+
+    </head>
+
+    <body class="dark-theme">
+        <div class="container">
+            <header class="header">
+    <span class="header__inner">
+        <a href="https://technologists.dev/" style="text-decoration: none;">
+    <div class="logo">
+        
+            <span class="logo__mark">></span>
+            <span class="logo__text">technologists</span>
+            <span class="logo__cursor"></span>
+        
+    </div>
+</a>
+
+
+        <span class="header__right">
+            
+                <nav class="menu">
+    <ul class="menu__inner">
+            
+            
+            
+            
+            <li class='menu-item-active'><a href="https://technologists.dev/posts">Blog</a></li>
+            
+            
+            
+            
+            <li class='menu-item'><a href="https://technologists.dev/series">Series</a></li>
+            
+            
+            
+            
+            <li class='menu-item'><a href="https://technologists.dev/authors">Authors</a></li>
+            
+            
+            
+            
+            <li class='menu-item'><a href="https://technologists.dev/about">About</a></li>
+    </ul>
+</nav>
+
+                <span class="menu-trigger">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+                    </svg>
+                </span>
+            
+
+            <span class="theme-toggle"><svg class="theme-toggler" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M22 41C32.4934 41 41 32.4934 41 22C41 11.5066 32.4934 3 22
+  3C11.5066 3 3 11.5066 3 22C3 32.4934 11.5066 41 22 41ZM7 22C7
+  13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22Z"/>
+</svg>
+</span>
+        </span>
+    </span>
+</header>
+
+
+            <div class="content">
+                
+    <main class="post">
+
+        <div class="post-info">
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>10 minutes
+
+            
+
+            </p>
+        </div>
+
+        <article>
+            
+            <h1 class="post-title"><a href="https://technologists.dev/posts/cloud-run-with-core/">Serverless Preview Environments and GitOps with CloudBees Core and Google Cloud Run</a></h1>
+            
+            <p><span>by</span> 
+  
+  <a href="/authors/kurt-madel">Kurt Madel</a>
+
+   & 
+  <a href="/authors/logan-donley">Logan Donley</a>
+</p>
+
+            
+            
+            
+            <div class="box">
+              <figure class="series-photo" itemprop="associatedMedia" itemscope="" itemtype="http://schema.org/ImageObject">
+                <div class="img">
+                  <img itemprop="thumbnail" src="/posts/cloud-run-with-core/badlands-clouds.png" alt="SONY RX-100 ISO 125 13.75mm ƒ/6.3 1/800">
+                </div>
+                <a href="/posts/cloud-run-with-core/badlands-clouds.png" itemprop="contentUrl"></a>
+                <figcaption>Badlands National Park, SD<br>Photograph by Kurt Madel ©2019</figcaption>
+              </figure>
+            </div>
+            
+
+            <div class="post-content">
+                
+
+<p><a href="https://cloud.google.com/run/">Google Cloud Run</a> is Google Cloud&rsquo;s serverless platform for stateless containerized applications that leverage HTTP and event driven workloads. Cloud Run can be fully managed or you can use Cloud Run for Anthos to deploy applications in an Anthos GKE cluster running on Google Cloud or on-premises.</p>
+
+<p>CloudBees Core is an enterprise version of Jenkins that provides better scalability, manageability, security and availability by running on and leveraging Kubernetes.</p>
+
+<p>In this post we will explore a combination of features and best practices for using CloudBees Core on Kubernetes to deploy serverless preview development environments for GitHub Pull Requests(PR) to Cloud Run, allowing developers to review and test changes for a web application before those changes are merged to the master branch and deployed to production. After the PR is reviewed and merged to the master branch, the web application will be deployed to <a href="https://cloud.google.com/run/docs/quickstarts/prebuilt-deploy-gke">GKE on Google Cloud running Cloud Run for Anthos</a>. Finally, CloudBees Core <a href="https://docs.cloudbees.com/docs/cloudbees-core/latest/cloud-admin-guide/external-http-endpoints">external HTTP endpoints</a> for <a href="https://docs.cloudbees.com/docs/cloudbees-core/latest/cloud-admin-guide/cross-team-collaboration">CloudBees Cross Team Collaboration</a> will be used to automatically clean up the PR Cloud Run preview environment.</p>
+
+<h2 id="why-serverless">Why Serverless?</h2>
+
+<p>Of course serverless doesn&rsquo;t mean there aren&rsquo;t any servers. Rather serverless refers to reducing or completely removing the need to manage infrastructure for applications and making deployment of those applications easier. Cloud Run takes the auto-management of your application deployment to a new level by providing managed autoscaling, redundancy, and TLS. And when your application isn&rsquo;t servicing requests, it is spun down and you pay nothing.</p>
+
+<h3 id="why-cloud-run">Why Cloud Run?</h3>
+
+<p>There are already a number of articles that compare Cloud Run to other serverless offerings. And just to be clear, Cloud Run is not a Function-as-a-Service (FaaS) offering. Cloud Run is more akin to a Container-as-a-Service (CaaS) and as such has several advantages over FaaS offerings. These advantages include more flexibility, better testability and portability as <a href="https://medium.com/google-cloud/cloud-run-and-cloud-function-what-i-use-and-why-12bb5d3798e1">outlined by this great post</a> by Guillaume Blaquiere. In that article, Guillaume Blaquiere comes to the conclusion that he would rather use Cloud Run than Google Cloud Functions for the majority of his own use cases.</p>
+
+<h4 id="a-knative-foundation-provides-portability">A Knative Foundation Provides Portability</h4>
+
+<p>Cloud Run is built on top of the open source <a href="https://knative.dev/">Knative project</a> that describes itself as a &ldquo;platform to deploy and manage modern serverless workloads.&rdquo; This provides a level of portability that is atypical of most other serverless offerings from other cloud providers. Here is the resulting Kubernetes Knative YAML manifest from deploying to the managed Cloud Run service:</p>
+
+<pre><code class="language-yaml">apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: hugo-cloud-run
+  namespace: cloud-run
+  selfLink: /apis/serving.knative.dev/v1/namespaces/cloud-run/services/hugo-cloud-run
+  uid: 86050f4c-0555-11ea-a0c6-42010a9600e6
+  resourceVersion: '82604296'
+  generation: 1
+  creationTimestamp: '2019-11-12T14:05:46Z'
+  annotations:
+    client.knative.dev/user-image: gcr.io/core-workshop/hugo-cloud-run:master-4
+    serving.knative.dev/creator: core-cloud-run@core-workshop.iam.gserviceaccount.com
+    serving.knative.dev/lastModifier: core-cloud-run@core-workshop.iam.gserviceaccount.com
+spec:
+  traffic:
+  - percent: 100
+    latestRevision: true
+  template:
+    metadata:
+      labels:
+        client.knative.dev/nonce: oxxbnmdxld
+      initializers: {}
+    spec:
+      timeoutSeconds: 300
+      containers:
+      - name: user-container
+        image: gcr.io/core-workshop/hugo-cloud-run:master-4
+        resources: {}
+        readinessProbe:
+          successThreshold: 1
+</code></pre>
+
+<p>The YAML spec for a Cloud Run services are available via the UI of the <strong>Cloud Run &gt; Service Details</strong> console. You may also retrieve it with the following <a href="https://cloud.google.com/sdk/gcloud/reference/beta/run/services/describe">Google Cloud SDK command</a>:</p>
+
+<pre><code class="language-bash">gcloud beta run services describe hugo-cloud-run --platform gke \
+--cluster core-labs-cb-sa --cluster-location us-east4-b \
+--namespace cloud-run --format=yaml
+</code></pre>
+
+<p>Furthermore, the current alpha release of the Google Cloud SDK allows <a href="https://cloud.google.com/sdk/gcloud/reference/alpha/run/services/replace">creating or replacing a Cloud Run service from such a YAML specification</a>.</p>
+
+<h2 id="ephemeral-preview-environments-for-continuous-delivery-with-cloudbees-core-and-cloud-run">Ephemeral Preview Environments for Continuous Delivery with CloudBees Core and Cloud Run</h2>
+
+<p>When developers commit deployable code they want to see it working, especially for web based applications. <a href="https://jenkins-x.io/developing/preview/">Preview environments</a> for GitHub Pull Requests is a developer friendly feature that <a href="https://jenkins-x.io/">Jenkins X</a> has provided for some time now but preview environments aren&rsquo;t limited to Jenkins X. Cloud Run provides an excellent platform for creating light-weight ephemeral preview environments for stateless containers that leverage HTTP workloads - and even better, when your application isn&rsquo;t receiving requests your service is scaled down to zero and you pay nothing. So even if that PR sits there for a few days, you only pay for the time your application is being used and that may only be a handful of minutes over several days.</p>
+
+<p>CloudBees Core provides the perfect balance of flexibility and operational consistency for Pipelines to orchestrate preview environments and GitOps with GitHub and Cloud Run. By combining team specific Jenkins Masters with Pipeline templates and external event notifications we are able to create a complex orchestration that is easy for developers to use - so they can concentrate on their code.</p>
+
+<h3 id="cloudbees-pipeline-template-catalogs">CloudBees Pipeline Template Catalogs</h3>
+
+<p><a href="https://docs.cloudbees.com/docs/admin-resources/latest/pipeline-templates-user-guide/setting-up-a-pipeline-template-catalog">CloudBees Pipeline Template Catalogs</a>, paired with <a href="https://jenkins.io/doc/book/pipeline/shared-libraries/">Pipeline Shared Libraries</a>, provide an easily managed and scalable solution to support the seamless deployments of hundreds of applications to Cloud Run while employing best practices around security, compliance, performance and agent management for Jenkins Pipelines. All the developer has to do is fill in a few template parameters and they have an instant <a href="https://jenkins.io/doc/book/pipeline/multibranch/#creating-a-multibranch-pipeline">Multi-branch Pipeline</a> that provides end to end deployment from PR preview environments to production deployments for the master branch. And better yet, once their templated Jenkins Pipeline is created they never have to leave GitHub since the <strong><em>Hugo Pipeline</em></strong> template will update the PR with a link to a fully managed Cloud Run preview environment for the updated blog site and a merge to the master branch will automatically trigger a production deployment to Cloud Run.</p>
+
+<p>The <a href="https://github.com/cloudbees-days/pipeline-template-catalog/tree/master/templates/hugo"><strong><em>Hugo Pipeline</em></strong> template</a> will:</p>
+
+<ol>
+<li><a href="https://github.com/cloudbees-days/pipeline-template-catalog/blob/master/templates/hugo/template.yaml">Be parameterized</a> to allow deploying to the fully managed Cloud Run, Cloud Run for Anthos Anthos GKE clusters running on Google Cloud or on-prem - and a different deployment target can be selected for PRs vs master branch deployments.</li>
+<li><a href="https://github.com/cloudbees-days/pipeline-template-catalog/blob/master/templates/hugo/Jenkinsfile#L40">Use Hugo to generate the static website</a>.</li>
+<li><a href="https://github.com/cloudbees-days/pipeline-template-catalog/blob/master/templates/hugo/Jenkinsfile#L47">Build a container image</a> using <a href="https://github.com/genuinetools/img">img</a> and push to GCR with <a href="https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity">GKE Workload Identity</a>.</li>
+<li><a href="https://github.com/cloudbees-days/pipeline-template-catalog/blob/master/templates/hugo/Jenkinsfile#L55">Use the Google Cloud SDK with GKE Workload Identity to deploy the container as a Cloud Run service</a> - a temporary preview environment for PRs and a production Cloud Run deployment for the master branch.</li>
+<li><a href="https://github.com/cloudbees-days/pipeline-library/blob/master/vars/cloudRunDeploy.groovy#L26-L35">For GitHub Pull Requests (PR), use the GitHub API to add a comment to the PR with a link to the running Cloud Run Service</a>.</li>
+<li><a href="https://github.com/cloudbees-days/pipeline-template-catalog/blob/master/templates/hugo/Jenkinsfile#L99-L121">For merged/closed PRs, use the Google Cloud SDK with GKE Workload Identity to delete the PR associated Cloud Run deployment</a>.</li>
+</ol>
+
+<h4 id="pipeline-shared-libraries">Pipeline Shared Libraries</h4>
+
+<p>A Pipeline Shared Library provides reusable global variables used in the catalog template that are similar in use to built-in Pipeline steps. The shared library will also provide Kubernetes Pod specs (Jenkins agent templates) for ephemeral containerized agents.  The structure and the pertinent files of the <a href="https://github.com/cloudbees-days/pipeline-library">shared library used with the <strong><em>Hugo Pipeline</em></strong> template</a> are described below:</p>
+
+<pre><code>+- vars
+|   +- cloudRunDeploy.groovy             # uses Google Cloud SDK to deploy container images to Cloud Run, also updates PRs with link to Cloud Run service
+|   +- cloudRunDelete.groovy             # uses Google Cloud SDK to delete Cloud Run services
+|   +- containerBuildPushGeneric.groovy  # uses img to build and push container images to a container registry
++- resources                             # resource files 
+|   +- podtemplates
+|       +- containerBuildPush.yml        # provides img with Google Cloud SDK for building and pusing container images, used by containerBuildPushGeneric.groovy
+|       +- cloud-run.yml                 # Provides Google Cloud SDK, used by both cloudRunDeploy.groovy and cloudRunDelete.groovy 
+|       +- hugo
+|           +- pod.yml                   # provides Hugo image for generating static content, used directly by the Huge Pipeline template Jenkinsfile
+</code></pre>
+
+<h4 id="security">Security</h4>
+
+<p>By leveraging <a href="https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity">Workload Identity for GKE</a> we are able to securely provide GCP IAM permissions without exporting service account keys (keys that don&rsquo;t expire for 10 years unless manually rotated). You will note that neither the <a href="https://github.com/cloudbees-days/pipeline-library/blob/master/vars/cloudRunDeploy.groovy"><code>cloudRunDeploy.groovy</code></a> nor the <a href="https://github.com/cloudbees-days/pipeline-library/blob/master/vars/cloudRunDelete.groovy"><code>cloudRunDelete.groovy</code></a> shared library scripts have any explicit Google Cloud authentication steps. That is because the Google Cloud SDK provides seamless integration with GKE Workload Identity and automatically authenticates when accessing Google Cloud APIs with a Kubernetes <code>ServiceAccount</code> that is bound to an IAM Service Account with Workload Identity. To set this up we:</p>
+
+<ul>
+<li><p>Created a GCP IAM Service Account with the most limited set of permissions for pushing and pulling GCR container images and deploying, describing and deleting Cloud Run services.</p></li>
+
+<li><p>Created a Cloud Run specific Kubernetes <code>Namespace</code> and Kubernetes <code>ServiceAccount</code> in our CloudBees Core GKE cluster.</p></li>
+</ul>
+
+<pre><code class="language-yaml">apiVersion: v1
+kind: Namespace
+metadata:
+  name: cloud-run
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: cloud-run-sa
+  namespace: cloud-run
+</code></pre>
+
+<ul>
+<li>Bound the IAM Service Account to a Kubernetes Service Account.</li>
+</ul>
+
+<pre><code class="language-bash">gcloud iam service-accounts add-iam-policy-binding \
+  --role roles/iam.workloadIdentityUser \
+  --member &quot;serviceAccount:core-workshop.svc.id.goog[cloud-run/cloud-run-sa]&quot; \
+  core-cloud-run@core-workshop.iam.gserviceaccount.com
+</code></pre>
+
+<ul>
+<li>Created a Jenkins Kubernetes Cloud configured to connect to the CloudBees Core GKE cluster with the IAM bound Kubernetes <code>ServiceAccount</code> <code>cloud-run-sa</code>.
+<br /></li>
+</ul>
+
+<pre><code class="language-yaml">  clouds:
+  - kubernetes:
+      connectTimeout: 5
+      containerCapStr: &quot;10&quot;
+      credentialsId: &quot;k8s-cloud-run-sa&quot;
+      defaultsProviderTemplate: &quot;default-jnlp&quot;
+      maxRequestsPerHostStr: &quot;32&quot;
+      name: &quot;kubernetes&quot;
+      namespace: &quot;cloud-run&quot;
+</code></pre>
+
+<p>The <code>k8s-cloud-run-sa</code>  <code>credentialsId</code> refers to a Jenkins Secret Text credential with the value being the <code>ServiceAccount</code> token of the <code>cloud-run-sa</code> Kubernetes <code>ServiceAccount</code> and only the Team Master that is configured to use this Jenkins credential will be able to provision Kubernetes agent <code>Pods</code> with the <code>cloud-run-sa</code> <code>ServiceAccount</code> thus limiting access to deploy to Cloud Run to the team with access to this Team Master.</p>
+
+<p><em>from <a href="https://github.com/kypseli/demo-mm-jcasc/blob/cloud-run/jcasc.yml">https://github.com/kypseli/demo-mm-jcasc/blob/cloud-run/jcasc.yml</a></em></p>
+
+<ul>
+<li>Created a Jenkins Kubernetes Pod Template to run the <code>google/cloud-sdk:252.0.0-slim</code> container image.</li>
+</ul>
+
+<pre><code class="language-yaml">kind: Pod
+metadata:
+  name: cloud-run-pod
+spec:
+  containers:
+  - name: gcp-sdk
+    image: google/cloud-sdk:252.0.0-slim
+    command:
+    - cat
+    tty: true
+    volumeMounts:
+      - name: gcp-logs
+        mountPath: /.config/gcloud/logs
+  volumes:
+  - name: gcp-logs
+    emptyDir: {}
+</code></pre>
+
+<p><em>from <a href="https://github.com/cloudbees-days/pipeline-library/blob/master/resources/podtemplates/cloud-run.yml">https://github.com/cloudbees-days/pipeline-library/blob/master/resources/podtemplates/cloud-run.yml</a></em></p>
+
+<ul>
+<li>Use the Google Cloud SDK from within the Jenkins Pipeline, in this case from a shared library script with Workload Identity taking care of authenticating with the <code>core-cloud-run@core-workshop.iam.gserviceaccount.com</code> IAM service account that has permissions to deploy to Cloud Run:</li>
+</ul>
+
+<pre><code class="language-groovy">def call(Map config) {
+  def podYaml = libraryResource 'podtemplates/cloud-run.yml'
+  def label = &quot;cloudrun-${UUID.randomUUID().toString()}&quot;
+  def CLOUD_RUN_URL
+  podTemplate(name: 'cloud-run-pod', label: label, yaml: podYaml, nodeSelector: 'workload=general') {
+    node(label) {
+      container(name: 'gcp-sdk') {
+       sh &quot;gcloud beta run deploy ${config.serviceName} --image ${config.image} --platform gke --cluster ${config.clusterName} --cluster-location ${config.region} --namespace ${config.namespace}&quot;
+      }
+    }
+  }
+}
+</code></pre>
+
+<p><em>from <a href="https://github.com/cloudbees-days/pipeline-library/blob/master/vars/cloudRunDeploy.groovy">https://github.com/cloudbees-days/pipeline-library/blob/master/vars/cloudRunDeploy.groovy</a></em></p>
+
+<p>With this approach we have no long-lived GCP IAM Service Account key file, no mounting Kubernetes <code>Secrets</code>, and no Jenkins Credentials. The actual GCP service account token that is finally created for authentication is short lived and non-persistent.</p>
+
+<p><em>Check out this blog post for more details on <a href="https://technologists.dev/posts/best-practices-for-cloudbees-core-jenkins-on-kubernetes/securely-using-cloud-services-from-jenkins-kubernetes-agents/">using Workload Identity with CloudBees Core</a>.</em></p>
+
+<p>We are also using <a href="https://blog.jessfraz.com/post/building-container-images-securely-on-kubernetes/">img</a> along with a <a href="https://github.com/kypseli/demo-oc-k8s/blob/master/kustomize/cb-restricted-psp.yml">very restrictive</a> <a href="https://kubernetes.io/docs/concepts/policy/pod-security-policy/">Pod Security Policy</a> to provide a more secure Kubernetes CI/CD environment for container image builds.</p>
+
+<p><em>Checkout out this blog post for details on <a href="https://technologists.dev/posts/building-images-with-img/">using img for securely building container images on Kubernetes with Jenkins</a>.</em></p>
+
+<h4 id="preview-environment-clean-up-with-cloudbees-cross-team-collaboration">Preview Environment Clean-up with CloudBees Cross Team Collaboration</h4>
+
+<p>One useful feature of CloudBees Cross Team Collaboration is support for external notifications. Notification Webhook HTTP Endpoints for GitHub webhooks allow us to create a GitHub webhook for the Hugo blog repository that uses that CloudBees Core notification endpoint as its <em>Payload URL</em> and is only triggered on PR events. We can then set-up an event trigger for <code>closed</code> PRs for the Hugo blog repository and add that as a trigger for the <strong><em>Hugo Pipeline</em></strong> template:</p>
+
+<pre><code class="language-groovy">  triggers {
+    eventTrigger jmespathQuery(&quot;action=='closed' &amp;&amp; repository.full_name=='${repoOwner}/${repo}'&quot;)
+  }
+</code></pre>
+
+<p>A  <code>PR Delete</code> <code>stage</code> is added to the <strong><em>Hugo Pipeline</em></strong> template configured with a conditional <code>when</code> clause that will only execute the <code>stage</code> when the <code>eventTrigger</code> conditions are met - a closed PR on the blog repository and only for the <code>master</code> branch (as we can&rsquo;t rely on other branches not being deleted). The Jenkins CLI is used to get the Cross Team Collaboration payload and <a href="https://stedolan.github.io/jq/">jq</a> is used to extract the PR number from the GitHub webhook payload. The PR number is passed, with other Cloud Run specific parameters, to the <code>cloudRunDelete.groovy</code> shared library pseudo step. Here is the entire <code>stage</code>:</p>
+
+<pre><code class="language-groovy">    stage('PR Delete') {
+      agent {
+        kubernetes {
+          label 'default-jnlp'
+        }
+      }
+      when {
+        beforeAgent true
+        allOf {
+          branch 'master'
+          triggeredBy 'EventTriggerCause' 
+        }
+      }
+      steps {
+        withCredentials([usernamePassword(credentialsId: 'cli-username-token', usernameVariable: 'JENKINS_CLI_USR', passwordVariable: 'JENKINS_CLI_PSW')]) {
+          script {
+            prNumber = sh (script: &quot;curl -u $JENKINS_CLI_USR:$JENKINS_CLI_PSW --silent ${BUILD_URL}api/json | jq -r '.actions[0].causes[0].event.number' | tr -d '\n'&quot;, 
+                returnStdout: true)
+          }
+        }
+        cloudRunDelete(serviceName: &quot;${projectName}-pr-${prNumber}&quot;, deployType: &quot;${deployTypePR}&quot;, region: &quot;${gcpRegionPR}&quot;, clusterName: &quot;${clusterNamePR}&quot;, namespace: &quot;${namespacePR}&quot;)
+      }
+    }
+</code></pre>
+
+<h2 id="summary">Summary</h2>
+
+<p>CloudBees Core Pipeline Templates provide the flexibility for incorporating best practices around security, compliance, performance and streamlined management for Jenkins Pipelines. And combining CloudBees Core with Google Cloud Run greatly accelerates deployments of containerized web applications - regardless if it is a temporary preview environment for PRs or a production deployment.</p>
+
+            </div>
+        </article>
+
+        <hr />
+
+        <div class="post-info">
+            
+                <p><svg
+                    width="24"
+                    height="24"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="feather feather-pen-tool"
+                  >
+                    <path d="M12 19l7-7 3 3-7 7-3-3z" />
+                    <path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z" />
+                    <path d="M2 2l7.586 7.586" />
+                    <circle cx="11" cy="11" r="2" />
+                  </svg><a href="/authors/kurt-madel">Kurt Madel</a></p>
+                  
+                <p><svg
+                    width="24"
+                    height="24"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="feather feather-pen-tool"
+                  >
+                    <path d="M12 19l7-7 3 3-7 7-3-3z" />
+                    <path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z" />
+                    <path d="M2 2l7.586 7.586" />
+                    <circle cx="11" cy="11" r="2" />
+                  </svg><a href="/authors/logan-donley">Logan Donley</a></p>
+                  
+                <p>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="https://technologists.dev/tags/kubernetes">Kubernetes</a></span><span class="tag"><a href="https://technologists.dev/tags/containers">containers</a></span><span class="tag"><a href="https://technologists.dev/tags/cloud-run">Cloud Run</a></span><span class="tag"><a href="https://technologists.dev/tags/serverless">serverless</a></span><span class="tag"><a href="https://technologists.dev/tags/caas">CaaS</a></span><span class="tag"><a href="https://technologists.dev/tags/faas">FaaS</a></span><span class="tag"><a href="https://technologists.dev/tags/cloudbees-core">CloudBees Core</a></span><span class="tag"><a href="https://technologists.dev/tags/anthos">Anthos</a></span><span class="tag"><a href="https://technologists.dev/tags/ci">CI</a></span><span class="tag"><a href="https://technologists.dev/tags/cd">CD</a></span><span class="tag"><a href="https://technologists.dev/tags/gke">GKE</a></span><span class="tag"><a href="https://technologists.dev/tags/workload-identity">Workload Identity</a></span>
+                </p>
+
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>2005 Words</p>
+
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2019-11-20 09:05 &#43;0000</p>
+                <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-git-commit"><circle cx="12" cy="12" r="4"></circle><line x1="1.05" y1="12" x2="7" y2="12"></line><line x1="17.01" y1="12" x2="22.96" y2="12"></line></svg><a href="https://github.com/cb-technologists/blog/commit/f4ccaa16307ba8e806baa18fefce49255201f104" target="_blank" rel="noopener">f4ccaa1</a> @ 2019-11-20</p>
+        </div>
+
+        
+            <div class="pagination">
+                <div class="pagination__title">
+                    <span class="pagination__title-h"></span>
+                    <hr />
+                </div>
+
+                <div class="pagination__buttons">
+                    
+
+                    
+                        <span class="button next">
+                            <a href="https://technologists.dev/posts/windows-containers/">
+                                <span class="button__text">Using Windows containers with Jenkins on Kubernetes 1.14</span>
+                                <span class="button__icon">→</span>
+                            </a>
+                        </span>
+                    
+                </div>
+            </div>
+        
+
+        
+    </main>
+
+            </div>
+
+            
+                <footer class="footer">
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span>&copy; 2019</span>
+            
+            <span></span>
+            <span> <a href="https://technologists.dev/posts/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a></span>
+        </div>
+    </div>
+    <div class="footer__inner">
+        <div class="footer__content">
+
+        </div>
+    </div>
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span>Powered by <a href="http://gohugo.io">Hugo</a></span>
+            <span>Made with &#10084; by <a href="https://github.com/rhazdon">rhazdon</a></span>
+        </div>
+    </div>
+</footer>
+
+            
+        </div>
+
+        
+
+
+
+
+<script type="text/javascript" src="/bundle.min.cf7871ed49474a80ed457154d24e61f7881adbe0f9384951a74ac46b688a39a4dbfa68bc6d37baeb058186de354ead3487d4ee7f083ea4cba860c48600b694f3.js" integrity="sha512-z3hx7UlHSoDtRXFU0k5h94ga2&#43;D5OElRp0rEa2iKOaTb&#43;mi8bTe66wWBht41Tq00h9Tufwg&#43;pMuoYMSGALaU8w=="></script>
+
+
+        <script>
+            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+            })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+            ga('create', 'UA-141077309-1', 'auto');
+            
+            ga('set', 'dimension2', '2019-11-20 09:05 \x2b0000');
+            ga('send', 'pageview');
+        </script>
+
+
+
+
+    </body>
+</html>
