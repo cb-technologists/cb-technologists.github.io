@@ -30,15 +30,6 @@
     </item>
     
     <item>
-      <title>Kubernetes</title>
-      <link>https://technologists.dev/tags/kubernetes/</link>
-      <pubDate>Mon, 18 Nov 2019 17:00:00 -0400</pubDate>
-      
-      <guid>https://technologists.dev/tags/kubernetes/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>azure</title>
       <link>https://technologists.dev/tags/azure/</link>
       <pubDate>Mon, 18 Nov 2019 17:00:00 -0400</pubDate>
@@ -53,6 +44,15 @@
       <pubDate>Mon, 18 Nov 2019 17:00:00 -0400</pubDate>
       
       <guid>https://technologists.dev/tags/jenkins/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>kubernetes</title>
+      <link>https://technologists.dev/tags/kubernetes/</link>
+      <pubDate>Mon, 18 Nov 2019 17:00:00 -0400</pubDate>
+      
+      <guid>https://technologists.dev/tags/kubernetes/</guid>
       <description></description>
     </item>
     
@@ -129,7 +129,7 @@
     </item>
     
     <item>
-      <title>jenkins x</title>
+      <title>jenkins-x</title>
       <link>https://technologists.dev/tags/jenkins-x/</link>
       <pubDate>Mon, 28 Oct 2019 01:51:10 +0100</pubDate>
       
@@ -264,20 +264,20 @@
     </item>
     
     <item>
-      <title>DevSecOps</title>
-      <link>https://technologists.dev/tags/devsecops/</link>
-      <pubDate>Wed, 31 Jul 2019 07:00:00 +0000</pubDate>
-      
-      <guid>https://technologists.dev/tags/devsecops/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>cloudbees</title>
       <link>https://technologists.dev/tags/cloudbees/</link>
       <pubDate>Wed, 31 Jul 2019 07:00:00 +0000</pubDate>
       
       <guid>https://technologists.dev/tags/cloudbees/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>devsecops</title>
+      <link>https://technologists.dev/tags/devsecops/</link>
+      <pubDate>Wed, 31 Jul 2019 07:00:00 +0000</pubDate>
+      
+      <guid>https://technologists.dev/tags/devsecops/</guid>
       <description></description>
     </item>
     
