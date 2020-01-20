@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="author"
+    content="">
+<meta name="description"
+    content="A question my colleagues and I are often asked is &amp;ldquo;if I&amp;rsquo;m already using ECS is there any point in moving to EKS (or Kubernetes in general) for running CloudBees Core?&amp;rdquo; Both Amazon ECS and EKS are great products, but we have a strong preference towards Kubernetes. We&amp;rsquo;ll take a look at why in this post.
+What are ECS and EKS? These are both services from AWS which deal with container orchestration." />
+<meta name="keywords" content="" />
+<meta name="robots" content="noodp" />
+
+
+    
+<link rel="canonical" href="https://technologists.dev/posts/eks-vs-ecs/" />
+    
+
+
+
+<title>
+    
+    Amazon ECS vs EKS for running CloudBees Core/Jenkins :: CloudBees Technologists 
+    
+</title>
+
+
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.1/css/flag-icon.min.css" rel="stylesheet"
+    type="text/css">
+
+
+
+<link rel="stylesheet" href="/main.min.395ecbf6e8ef0edf502e990c8e3a72272f3140a88bcc503883e0c6f25c938dfc.css">
+
+
+
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#252627">
+<link rel="shortcut icon" href="/favicon.ico">
+<meta name="theme-color" content="#252627">
+<meta itemprop="name" content="Amazon ECS vs EKS for running CloudBees Core/Jenkins">
+<meta itemprop="description" content="A question my colleagues and I are often asked is &ldquo;if I&rsquo;m already using ECS is there any point in moving to EKS (or Kubernetes in general) for running CloudBees Core?&rdquo; Both Amazon ECS and EKS are great products, but we have a strong preference towards Kubernetes. We&rsquo;ll take a look at why in this post.
+What are ECS and EKS? These are both services from AWS which deal with container orchestration.">
+
+
+<meta itemprop="datePublished" content="2020-01-13T05:05:15-04:00" />
+<meta itemprop="dateModified" content="2020-01-20T16:01:41&#43;00:00" />
+<meta itemprop="wordCount" content="1145">
+
+
+
+<meta itemprop="keywords" content="Kubernetes,aws,EKS,ECS," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Amazon ECS vs EKS for running CloudBees Core/Jenkins"/>
+<meta name="twitter:description" content="A question my colleagues and I are often asked is &ldquo;if I&rsquo;m already using ECS is there any point in moving to EKS (or Kubernetes in general) for running CloudBees Core?&rdquo; Both Amazon ECS and EKS are great products, but we have a strong preference towards Kubernetes. We&rsquo;ll take a look at why in this post.
+What are ECS and EKS? These are both services from AWS which deal with container orchestration."/>
+
+
+
+
+<meta property="article:published_time" content="2020-01-13 05:05:15 -0400 -0400" />
+
+
+
+
+
+
+
+    </head>
+
+    <body class="dark-theme">
+        <div class="container">
+            <header class="header">
+    <span class="header__inner">
+        <a href="https://technologists.dev/" style="text-decoration: none;">
+    <div class="logo">
+        
+            <span class="logo__mark">></span>
+            <span class="logo__text">technologists</span>
+            <span class="logo__cursor"></span>
+        
+    </div>
+</a>
+
+
+        <span class="header__right">
+            
+                <nav class="menu">
+    <ul class="menu__inner">
+            
+            
+            
+            
+            <li class='menu-item-active'><a href="https://technologists.dev/posts">Blog</a></li>
+            
+            
+            
+            
+            <li class='menu-item'><a href="https://technologists.dev/series">Series</a></li>
+            
+            
+            
+            
+            <li class='menu-item'><a href="https://technologists.dev/authors">Authors</a></li>
+            
+            
+            
+            
+            <li class='menu-item'><a href="https://technologists.dev/about">About</a></li>
+    </ul>
+</nav>
+
+                <span class="menu-trigger">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+                    </svg>
+                </span>
+            
+
+            <span class="theme-toggle"><svg class="theme-toggler" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M22 41C32.4934 41 41 32.4934 41 22C41 11.5066 32.4934 3 22
+  3C11.5066 3 3 11.5066 3 22C3 32.4934 11.5066 41 22 41ZM7 22C7
+  13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22Z"/>
+</svg>
+</span>
+        </span>
+    </span>
+</header>
+
+
+            <div class="content">
+                
+    <main class="post">
+
+        <div class="post-info">
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>6 minutes
+
+            
+
+            </p>
+        </div>
+
+        <article>
+            
+            <h1 class="post-title"><a href="https://technologists.dev/posts/eks-vs-ecs/">Amazon ECS vs EKS for running CloudBees Core/Jenkins</a></h1>
+            
+            <p><span>by</span> 
+  
+  <a href="/authors/logan-donley">Logan Donley</a>
+</p>
+
+            
+            
+            
+
+            <div class="post-content">
+                
+
+<p>A question my colleagues and I are often asked is &ldquo;if I&rsquo;m already using ECS is there any point in moving to EKS (or Kubernetes in general) for running CloudBees Core?&rdquo; Both Amazon ECS and EKS are great products, but we have a strong preference towards Kubernetes. We&rsquo;ll take a look at why in this post.</p>
+
+<h2 id="what-are-ecs-and-eks">What are ECS and EKS?</h2>
+
+<p>These are both services from AWS which deal with container orchestration. Containers have become a crucial component in the modern tech stack, but as your applications scale, having an orchestrator is a must.</p>
+
+<h3 id="ecs">ECS</h3>
+
+<p>Amazon Elastic Container Service is a platform which will orchestrate your containers in a straightforward manner. You create an application definition and it will ensure that the container is running.</p>
+
+<p>With ECS there are a couple of ways you can run your containers: on EC2 instances or with <a href="https://aws.amazon.com/fargate/">Fargate</a>, AWS&rsquo;s serverless compute-engine.</p>
+
+<p>With EC2 you operate like you normally would and configure auto-scaling groups, networking, etc. Fargate on the other hand abstracts away the individual server and let you instead request specific cpu and memory for your workloads. The cost when using Fargate will be higher per compute/memory resource but it handles a lot for you.</p>
+
+<h3 id="eks">EKS</h3>
+
+<p>Amazon Elastic Kubernetes Service is AWS&rsquo;s managed Kubernetes platform. Kubernetes has become the community-favored container orchestrator and for good reason. It&rsquo;s incredibly powerful, resilient, and now has a great ecosystem built around it.</p>
+
+<p>With all of the power of Kubernetes comes some complexity on the infrastructure side. Setting up and maintaining your own Kubernetes cluster can be challenging, even for those with lots of experience. That&rsquo;s why whenever possible, we would recommend you use a managed Kubernetes service like EKS, GKE, or AKS since they solve those challenges for you.</p>
+
+<p>In December 2019, AWS started to <a href="https://aws.amazon.com/about-aws/whats-new/2019/12/run-serverless-kubernetes-pods-using-amazon-eks-and-aws-fargate/">support using EKS with Fargate</a>, so that specific differentiator between using ECS and EKS has vanished. Now you can deploy services in Kubernetes without worrying about the underlying infrastructure at all by using the Fargate serverless compute engine with EKS.</p>
+
+<p>Using EKS is in many ways similar to using ECS since whether you use Fargate or EC2, AWS will take care of provisioning the resources for you, letting you instead focus on the applications you will be running. The real differences come down to which container orchestrator you are using. ECS&rsquo;s solution or Kubernetes&rsquo;.</p>
+
+<h2 id="battle-of-the-orchestrators">Battle of the orchestrators</h2>
+
+<p>If at the end of the day an application is going to be running in a container does it really matter which orchestrator you use as long as it works? Especially if one is simpler than the other? I would argue that it does matter.</p>
+
+<p>Container orchestrators have become the new platform on which you build and deploy applications. While we often talk about avoiding vendor lock-in as a best practice, it happens just as frequently with technologies. For instance, if you are developing for Linux machines your application isn&rsquo;t necessarily portable to a Windows machine. At least not without extra work. This is a form of lock-in.</p>
+
+<p>Investing time and effort into a container platform is locking you in to that platform to some degree. Sure your applications will be portable as they are containers, but the process and lifecycle will be different depending on which platform you use. This isn&rsquo;t to say that the migration between the two is complicated, just that it does require some time and effort.</p>
+
+<p>The focus of this post is about how this relates to CloudBees Core &amp; Jenkins, but first let&rsquo;s do a quick pros/cons of both ECS and EKS.</p>
+
+<h3 id="ecs-pros-cons">ECS Pros &amp; Cons</h3>
+
+<table>
+<thead>
+<tr>
+<th>Pros</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>+ Easy to use</td>
+</tr>
+
+<tr>
+<td>+ Longstanding integration with Fargate to abstract away the infrastructure</td>
+</tr>
+
+<tr>
+<td>+ Tight integration with the AWS ecosystem</td>
+</tr>
+</tbody>
+</table>
+
+<table>
+<thead>
+<tr>
+<th>Cons</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>- Proprietary tooling</td>
+</tr>
+
+<tr>
+<td>- Limited third-party ecosystem</td>
+</tr>
+
+<tr>
+<td>- Not portable outside of AWS</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="eks-pros-cons">EKS Pros &amp; Cons</h3>
+
+<table>
+<thead>
+<tr>
+<th>Pros</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>+ All the power of Kubernetes</td>
+</tr>
+
+<tr>
+<td>+ Any Kubernetes work done is portable to any other Kubernetes cluster</td>
+</tr>
+
+<tr>
+<td>+ Easy to build tooling around</td>
+</tr>
+
+<tr>
+<td>+ New integration with Fargate to add serverless functionality*</td>
+</tr>
+</tbody>
+</table>
+
+<table>
+<thead>
+<tr>
+<th>Cons</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>- Kubernetes can be challenging to learn</td>
+</tr>
+
+<tr>
+<td>- Without automation or tooling, the process of deploying a single application is more involved</td>
+</tr>
+
+<tr>
+<td>- Can be overkill for small projects</td>
+</tr>
+</tbody>
+</table>
+
+<ul>
+<li>It&rsquo;s important to note that with the Fargate integration, there are some limitations. For the time being, Fargate doesn&rsquo;t support stateful applications, so you wouldn&rsquo;t run Jenkins/Core directly on Fargate, but rather use it for agents. There is also a limited number of regions which support Fargate on EKS. More details here: <a href="https://docs.aws.amazon.com/eks/latest/userguide/fargate.html">https://docs.aws.amazon.com/eks/latest/userguide/fargate.html</a>.</li>
+</ul>
+
+<h2 id="running-cloudbees-core-jenkins">Running CloudBees Core/Jenkins</h2>
+
+<p>Up this point, we&rsquo;ve taken a look at ECS vs EKS and how Fargate fits into the mix. Now let&rsquo;s look at why we prefer running CloudBees Core and Jenkins on Kubernetes.</p>
+
+<h3 id="portability">Portability</h3>
+
+<p>Kubernetes is an open-standard. When you build your CI/CD system on Kubernetes, it can run on EKS, GKE, AKS, OpenShift, PKS, home-built, etc. without issue (well some vendor flavors like OpenShift have additional resources which aren&rsquo;t portable to standard k8s clusters).</p>
+
+<p>Some organizations are fine with going all-in on a single cloud vendor, but many others try to avoid vendor lock-in as much as possible. Leveraging as many open and portable platforms as possible ensures that the effort you put in while building your system won&rsquo;t be wasted if you switch from AWS to GCP or Azure.</p>
+
+<p>The ECS platform exists only in AWS and is proprietary, so you don&rsquo;t have portability to other vendors.</p>
+
+<p>This is a big plus for using EKS (or any Kubernetes).</p>
+
+<h3 id="community">Community</h3>
+
+<p>As of writing this post, Kubernetes is the open standard for container orchestration, in major part because of it&rsquo;s huge and rapid community adoption. Since it is the standard, a large amount of DevOps tooling has been built on top of it. Most CI/CD processes will run through many different tools, so opting for the platform with the greatest marketshare is a safe choice.</p>
+
+<p>Because of this reality, we at CloudBees have built lots of functionality into CloudBees Core specific to Kubernetes which adds a lot of quality of life improvements. The ability to dynamically provision masters and agents is in my opinion a game changer. There are features like hibernating masters which we have recently released as a technical preview which allows for potentially huge cost savings by spinning down masters that haven&rsquo;t been used in a while. Functionality like this is only possible on a consistent platform, and Kubernetes gives us this.</p>
+
+<h2 id="wrapping-it-up">Wrapping it up</h2>
+
+<p>When it comes to running CloudBees Core on a modern platform, Kubernetes is our recommendation. With recent changes to Amazon&rsquo;s EKS to support Fargate, it is now possible to run your agents as serverless workloads, giving you one less thing to manage.</p>
+
+<p>ECS is a nice tool, especially for smaller projects, but it pales in comparison to Kubernetes when it comes to the quality features required by the DevOps community.</p>
+
+            </div>
+        </article>
+
+        <hr />
+
+        <div class="post-info">
+            
+                <p><svg
+                    width="24"
+                    height="24"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="feather feather-pen-tool"
+                  >
+                    <path d="M12 19l7-7 3 3-7 7-3-3z" />
+                    <path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z" />
+                    <path d="M2 2l7.586 7.586" />
+                    <circle cx="11" cy="11" r="2" />
+                  </svg><a href="/authors/logan-donley">Logan Donley</a></p>
+                  
+                <p>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="https://technologists.dev/tags/kubernetes">Kubernetes</a></span><span class="tag"><a href="https://technologists.dev/tags/aws">aws</a></span><span class="tag"><a href="https://technologists.dev/tags/eks">EKS</a></span><span class="tag"><a href="https://technologists.dev/tags/ecs">ECS</a></span>
+                </p>
+
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>1145 Words</p>
+
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2020-01-13 09:05 &#43;0000</p>
+                <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-git-commit"><circle cx="12" cy="12" r="4"></circle><line x1="1.05" y1="12" x2="7" y2="12"></line><line x1="17.01" y1="12" x2="22.96" y2="12"></line></svg><a href="https://github.com/cb-technologists/blog/commit/0364612bb822e37ebe475a59c4d1b828fb3cf679" target="_blank" rel="noopener">0364612</a> @ 2020-01-20</p>
+        </div>
+
+        
+            <div class="pagination">
+                <div class="pagination__title">
+                    <span class="pagination__title-h"></span>
+                    <hr />
+                </div>
+
+                <div class="pagination__buttons">
+                    
+
+                    
+                        <span class="button next">
+                            <a href="https://technologists.dev/posts/cloud-run-with-core/">
+                                <span class="button__text">Serverless Preview Environments and GitOps with CloudBees Core and Google Cloud Run</span>
+                                <span class="button__icon">→</span>
+                            </a>
+                        </span>
+                    
+                </div>
+            </div>
+        
+
+        
+    </main>
+
+            </div>
+
+            
+                <footer class="footer">
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span>&copy; 2020</span>
+            
+            <span></span>
+            <span> <a href="https://technologists.dev/posts/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a></span>
+        </div>
+    </div>
+    <div class="footer__inner">
+        <div class="footer__content">
+
+        </div>
+    </div>
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span>Powered by <a href="http://gohugo.io">Hugo</a></span>
+            <span>Made with &#10084; by <a href="https://github.com/rhazdon">rhazdon</a></span>
+        </div>
+    </div>
+</footer>
+
+            
+        </div>
+
+        
+
+
+
+
+<script type="text/javascript" src="/bundle.min.cf7871ed49474a80ed457154d24e61f7881adbe0f9384951a74ac46b688a39a4dbfa68bc6d37baeb058186de354ead3487d4ee7f083ea4cba860c48600b694f3.js" integrity="sha512-z3hx7UlHSoDtRXFU0k5h94ga2&#43;D5OElRp0rEa2iKOaTb&#43;mi8bTe66wWBht41Tq00h9Tufwg&#43;pMuoYMSGALaU8w=="></script>
+
+
+        <script>
+            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+            })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+            ga('create', 'UA-141077309-1', 'auto');
+            
+            ga('set', 'dimension2', '2020-01-13 09:05 \x2b0000');
+            ga('send', 'pageview');
+        </script>
+
+
+
+
+    </body>
+</html>

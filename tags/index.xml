@@ -6,10 +6,46 @@
     <description>Recent content in Tags on CloudBees Technologists</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 20 Nov 2019 05:05:15 -0400</lastBuildDate>
+    <lastBuildDate>Mon, 13 Jan 2020 05:05:15 -0400</lastBuildDate>
     
 	<atom:link href="https://technologists.dev/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>ECS</title>
+      <link>https://technologists.dev/tags/ecs/</link>
+      <pubDate>Mon, 13 Jan 2020 05:05:15 -0400</pubDate>
+      
+      <guid>https://technologists.dev/tags/ecs/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>EKS</title>
+      <link>https://technologists.dev/tags/eks/</link>
+      <pubDate>Mon, 13 Jan 2020 05:05:15 -0400</pubDate>
+      
+      <guid>https://technologists.dev/tags/eks/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Kubernetes</title>
+      <link>https://technologists.dev/tags/kubernetes/</link>
+      <pubDate>Mon, 13 Jan 2020 05:05:15 -0400</pubDate>
+      
+      <guid>https://technologists.dev/tags/kubernetes/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>aws</title>
+      <link>https://technologists.dev/tags/aws/</link>
+      <pubDate>Mon, 13 Jan 2020 05:05:15 -0400</pubDate>
+      
+      <guid>https://technologists.dev/tags/aws/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>Anthos</title>
@@ -84,20 +120,20 @@
     </item>
     
     <item>
+      <title>Workload Identity</title>
+      <link>https://technologists.dev/tags/workload-identity/</link>
+      <pubDate>Wed, 20 Nov 2019 05:05:15 -0400</pubDate>
+      
+      <guid>https://technologists.dev/tags/workload-identity/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>containers</title>
       <link>https://technologists.dev/tags/containers/</link>
       <pubDate>Wed, 20 Nov 2019 05:05:15 -0400</pubDate>
       
       <guid>https://technologists.dev/tags/containers/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>kubernetes</title>
-      <link>https://technologists.dev/tags/kubernetes/</link>
-      <pubDate>Wed, 20 Nov 2019 05:05:15 -0400</pubDate>
-      
-      <guid>https://technologists.dev/tags/kubernetes/</guid>
       <description></description>
     </item>
     
@@ -111,29 +147,11 @@
     </item>
     
     <item>
-      <title>workload identity</title>
-      <link>https://technologists.dev/tags/workload-identity/</link>
-      <pubDate>Wed, 20 Nov 2019 05:05:15 -0400</pubDate>
-      
-      <guid>https://technologists.dev/tags/workload-identity/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>AKS</title>
       <link>https://technologists.dev/tags/aks/</link>
       <pubDate>Mon, 18 Nov 2019 17:00:00 -0400</pubDate>
       
       <guid>https://technologists.dev/tags/aks/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>EKS</title>
-      <link>https://technologists.dev/tags/eks/</link>
-      <pubDate>Mon, 18 Nov 2019 17:00:00 -0400</pubDate>
-      
-      <guid>https://technologists.dev/tags/eks/</guid>
       <description></description>
     </item>
     
@@ -215,15 +233,6 @@
       <pubDate>Mon, 28 Oct 2019 01:51:10 +0100</pubDate>
       
       <guid>https://technologists.dev/tags/jenkins-x/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>AWS</title>
-      <link>https://technologists.dev/tags/aws/</link>
-      <pubDate>Sun, 20 Oct 2019 09:05:15 -0400</pubDate>
-      
-      <guid>https://technologists.dev/tags/aws/</guid>
       <description></description>
     </item>
     

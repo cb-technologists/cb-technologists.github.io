@@ -5,8 +5,180 @@
         <description>Recent content in Posts on CloudBees Technologists</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>en-us</language>
-        <lastBuildDate>Wed, 20 Nov 2019 05:05:15 -0400</lastBuildDate>
+        <lastBuildDate>Mon, 13 Jan 2020 05:05:15 -0400</lastBuildDate>
         <atom:link href="https://technologists.dev/posts/index.xml" rel="self" type="application/rss+xml" />
+        
+        <item>
+            <title>Amazon ECS vs EKS for running CloudBees Core/Jenkins</title>
+            <link>https://technologists.dev/posts/eks-vs-ecs/</link>
+            <pubDate>Mon, 13 Jan 2020 05:05:15 -0400</pubDate>
+            
+            <guid>https://technologists.dev/posts/eks-vs-ecs/</guid>
+            <description>A question my colleagues and I are often asked is &amp;ldquo;if I&amp;rsquo;m already using ECS is there any point in moving to EKS (or Kubernetes in general) for running CloudBees Core?&amp;rdquo; Both Amazon ECS and EKS are great products, but we have a strong preference towards Kubernetes. We&amp;rsquo;ll take a look at why in this post.
+What are ECS and EKS? These are both services from AWS which deal with container orchestration.</description>
+            <content type="html"><![CDATA[
+
+<p>A question my colleagues and I are often asked is &ldquo;if I&rsquo;m already using ECS is there any point in moving to EKS (or Kubernetes in general) for running CloudBees Core?&rdquo; Both Amazon ECS and EKS are great products, but we have a strong preference towards Kubernetes. We&rsquo;ll take a look at why in this post.</p>
+
+<h2 id="what-are-ecs-and-eks">What are ECS and EKS?</h2>
+
+<p>These are both services from AWS which deal with container orchestration. Containers have become a crucial component in the modern tech stack, but as your applications scale, having an orchestrator is a must.</p>
+
+<h3 id="ecs">ECS</h3>
+
+<p>Amazon Elastic Container Service is a platform which will orchestrate your containers in a straightforward manner. You create an application definition and it will ensure that the container is running.</p>
+
+<p>With ECS there are a couple of ways you can run your containers: on EC2 instances or with <a href="https://aws.amazon.com/fargate/">Fargate</a>, AWS&rsquo;s serverless compute-engine.</p>
+
+<p>With EC2 you operate like you normally would and configure auto-scaling groups, networking, etc. Fargate on the other hand abstracts away the individual server and let you instead request specific cpu and memory for your workloads. The cost when using Fargate will be higher per compute/memory resource but it handles a lot for you.</p>
+
+<h3 id="eks">EKS</h3>
+
+<p>Amazon Elastic Kubernetes Service is AWS&rsquo;s managed Kubernetes platform. Kubernetes has become the community-favored container orchestrator and for good reason. It&rsquo;s incredibly powerful, resilient, and now has a great ecosystem built around it.</p>
+
+<p>With all of the power of Kubernetes comes some complexity on the infrastructure side. Setting up and maintaining your own Kubernetes cluster can be challenging, even for those with lots of experience. That&rsquo;s why whenever possible, we would recommend you use a managed Kubernetes service like EKS, GKE, or AKS since they solve those challenges for you.</p>
+
+<p>In December 2019, AWS started to <a href="https://aws.amazon.com/about-aws/whats-new/2019/12/run-serverless-kubernetes-pods-using-amazon-eks-and-aws-fargate/">support using EKS with Fargate</a>, so that specific differentiator between using ECS and EKS has vanished. Now you can deploy services in Kubernetes without worrying about the underlying infrastructure at all by using the Fargate serverless compute engine with EKS.</p>
+
+<p>Using EKS is in many ways similar to using ECS since whether you use Fargate or EC2, AWS will take care of provisioning the resources for you, letting you instead focus on the applications you will be running. The real differences come down to which container orchestrator you are using. ECS&rsquo;s solution or Kubernetes&rsquo;.</p>
+
+<h2 id="battle-of-the-orchestrators">Battle of the orchestrators</h2>
+
+<p>If at the end of the day an application is going to be running in a container does it really matter which orchestrator you use as long as it works? Especially if one is simpler than the other? I would argue that it does matter.</p>
+
+<p>Container orchestrators have become the new platform on which you build and deploy applications. While we often talk about avoiding vendor lock-in as a best practice, it happens just as frequently with technologies. For instance, if you are developing for Linux machines your application isn&rsquo;t necessarily portable to a Windows machine. At least not without extra work. This is a form of lock-in.</p>
+
+<p>Investing time and effort into a container platform is locking you in to that platform to some degree. Sure your applications will be portable as they are containers, but the process and lifecycle will be different depending on which platform you use. This isn&rsquo;t to say that the migration between the two is complicated, just that it does require some time and effort.</p>
+
+<p>The focus of this post is about how this relates to CloudBees Core &amp; Jenkins, but first let&rsquo;s do a quick pros/cons of both ECS and EKS.</p>
+
+<h3 id="ecs-pros-cons">ECS Pros &amp; Cons</h3>
+
+<table>
+<thead>
+<tr>
+<th>Pros</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>+ Easy to use</td>
+</tr>
+
+<tr>
+<td>+ Longstanding integration with Fargate to abstract away the infrastructure</td>
+</tr>
+
+<tr>
+<td>+ Tight integration with the AWS ecosystem</td>
+</tr>
+</tbody>
+</table>
+
+<table>
+<thead>
+<tr>
+<th>Cons</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>- Proprietary tooling</td>
+</tr>
+
+<tr>
+<td>- Limited third-party ecosystem</td>
+</tr>
+
+<tr>
+<td>- Not portable outside of AWS</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="eks-pros-cons">EKS Pros &amp; Cons</h3>
+
+<table>
+<thead>
+<tr>
+<th>Pros</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>+ All the power of Kubernetes</td>
+</tr>
+
+<tr>
+<td>+ Any Kubernetes work done is portable to any other Kubernetes cluster</td>
+</tr>
+
+<tr>
+<td>+ Easy to build tooling around</td>
+</tr>
+
+<tr>
+<td>+ New integration with Fargate to add serverless functionality*</td>
+</tr>
+</tbody>
+</table>
+
+<table>
+<thead>
+<tr>
+<th>Cons</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>- Kubernetes can be challenging to learn</td>
+</tr>
+
+<tr>
+<td>- Without automation or tooling, the process of deploying a single application is more involved</td>
+</tr>
+
+<tr>
+<td>- Can be overkill for small projects</td>
+</tr>
+</tbody>
+</table>
+
+<ul>
+<li>It&rsquo;s important to note that with the Fargate integration, there are some limitations. For the time being, Fargate doesn&rsquo;t support stateful applications, so you wouldn&rsquo;t run Jenkins/Core directly on Fargate, but rather use it for agents. There is also a limited number of regions which support Fargate on EKS. More details here: <a href="https://docs.aws.amazon.com/eks/latest/userguide/fargate.html">https://docs.aws.amazon.com/eks/latest/userguide/fargate.html</a>.</li>
+</ul>
+
+<h2 id="running-cloudbees-core-jenkins">Running CloudBees Core/Jenkins</h2>
+
+<p>Up this point, we&rsquo;ve taken a look at ECS vs EKS and how Fargate fits into the mix. Now let&rsquo;s look at why we prefer running CloudBees Core and Jenkins on Kubernetes.</p>
+
+<h3 id="portability">Portability</h3>
+
+<p>Kubernetes is an open-standard. When you build your CI/CD system on Kubernetes, it can run on EKS, GKE, AKS, OpenShift, PKS, home-built, etc. without issue (well some vendor flavors like OpenShift have additional resources which aren&rsquo;t portable to standard k8s clusters).</p>
+
+<p>Some organizations are fine with going all-in on a single cloud vendor, but many others try to avoid vendor lock-in as much as possible. Leveraging as many open and portable platforms as possible ensures that the effort you put in while building your system won&rsquo;t be wasted if you switch from AWS to GCP or Azure.</p>
+
+<p>The ECS platform exists only in AWS and is proprietary, so you don&rsquo;t have portability to other vendors.</p>
+
+<p>This is a big plus for using EKS (or any Kubernetes).</p>
+
+<h3 id="community">Community</h3>
+
+<p>As of writing this post, Kubernetes is the open standard for container orchestration, in major part because of it&rsquo;s huge and rapid community adoption. Since it is the standard, a large amount of DevOps tooling has been built on top of it. Most CI/CD processes will run through many different tools, so opting for the platform with the greatest marketshare is a safe choice.</p>
+
+<p>Because of this reality, we at CloudBees have built lots of functionality into CloudBees Core specific to Kubernetes which adds a lot of quality of life improvements. The ability to dynamically provision masters and agents is in my opinion a game changer. There are features like hibernating masters which we have recently released as a technical preview which allows for potentially huge cost savings by spinning down masters that haven&rsquo;t been used in a while. Functionality like this is only possible on a consistent platform, and Kubernetes gives us this.</p>
+
+<h2 id="wrapping-it-up">Wrapping it up</h2>
+
+<p>When it comes to running CloudBees Core on a modern platform, Kubernetes is our recommendation. With recent changes to Amazon&rsquo;s EKS to support Fargate, it is now possible to run your agents as serverless workloads, giving you one less thing to manage.</p>
+
+<p>ECS is a nice tool, especially for smaller projects, but it pales in comparison to Kubernetes when it comes to the quality features required by the DevOps community.</p>
+]]></content>
+        </item>
         
         <item>
             <title>Serverless Preview Environments and GitOps with CloudBees Core and Google Cloud Run</title>

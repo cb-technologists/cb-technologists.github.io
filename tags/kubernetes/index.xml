@@ -1,15 +1,25 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>kubernetes on CloudBees Technologists</title>
+    <title>Kubernetes on CloudBees Technologists</title>
     <link>https://technologists.dev/tags/kubernetes/</link>
-    <description>Recent content in kubernetes on CloudBees Technologists</description>
+    <description>Recent content in Kubernetes on CloudBees Technologists</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 20 Nov 2019 05:05:15 -0400</lastBuildDate>
+    <lastBuildDate>Mon, 13 Jan 2020 05:05:15 -0400</lastBuildDate>
     
 	<atom:link href="https://technologists.dev/tags/kubernetes/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Amazon ECS vs EKS for running CloudBees Core/Jenkins</title>
+      <link>https://technologists.dev/posts/eks-vs-ecs/</link>
+      <pubDate>Mon, 13 Jan 2020 05:05:15 -0400</pubDate>
+      
+      <guid>https://technologists.dev/posts/eks-vs-ecs/</guid>
+      <description>A question my colleagues and I are often asked is &amp;ldquo;if I&amp;rsquo;m already using ECS is there any point in moving to EKS (or Kubernetes in general) for running CloudBees Core?&amp;rdquo; Both Amazon ECS and EKS are great products, but we have a strong preference towards Kubernetes. We&amp;rsquo;ll take a look at why in this post.
+What are ECS and EKS? These are both services from AWS which deal with container orchestration.</description>
+    </item>
     
     <item>
       <title>Serverless Preview Environments and GitOps with CloudBees Core and Google Cloud Run</title>
